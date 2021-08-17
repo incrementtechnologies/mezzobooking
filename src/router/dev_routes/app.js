@@ -84,6 +84,27 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/rooms',
+    name: 'rooms',
+    component: resolve => require(['modules/room/List.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/coupons',
+    name: 'coupons',
+    component: resolve => require(['modules/coupon/List.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/customers',
+    name: 'customers',
+    component: resolve => require(['modules/customer/List.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
