@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <div id="app" style="background-color:#F9F9F9">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
       <div v-if="tokenData.token !== null && parseInt(user.userID) > 0 && tokenData.loading === false">
        <system-header></system-header>
-       <system-sidebar></system-sidebar>
+       <custom-sidebar></custom-sidebar>
        <!-- <support-messenger></support-messenger> -->
        <system-footer></system-footer>
        <tutorial></tutorial>
@@ -214,7 +214,7 @@ export default {
   components: {
     'login-header': () => import('modules/home/Landing/Header.vue'),
     'system-header': () => import('modules/frame/Header.vue'),
-    'system-sidebar': () => import('components/increment/generic/frame/Sidebar.vue'),
+    'custom-sidebar': () => import('modules/frame/Sidebar.vue'),
     'system-content': () => import('modules/frame/Content.vue'),
     'system-footer': () => import('components/increment/generic/frame/Footer.vue'),
     'system-loading': () => import('components/loader/Loading.vue'),

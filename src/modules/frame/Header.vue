@@ -13,7 +13,8 @@
       <!-- <span class="left-menu-icons">
         <label class="account-type  hide-on-mobile bg-warning" v-if="!common.header.indexOf('status') && user !== null">{{user.type}}</label>
       </span> -->
-      <span class="right-menu-icons">
+
+      <!-- <span class="right-menu-icons">
         <div class="dropdown"> 
           <span class="nav-item" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')">
             <span>
@@ -41,17 +42,14 @@
               <span class="dropdown-item dropdown-item-menu-title">
                 <label>Documents</label>
               </span>
-              <!--GUIDE-->
               <span class="dropdown-item" @click="openModal('#guideModal')">
                 <i class="far fa-question-circle"></i>
                 <label>Guide</label>
               </span>
-              <!--PRIVACY POLICY-->
               <span class="dropdown-item" @click="openModal('#privacyModal')">
                 <i class="fas fa-shield-alt"></i>
                 <label>Privacy Policy</label>
               </span>            
-              <!--TERMS AND CONDITIONS-->
               <span class="dropdown-item" @click="openModal('#termsAndConditionsModal')">
                 <i class="fa fa-handshake-o"></i>
                 <label>Terms and Conditions</label>
@@ -62,7 +60,7 @@
                 </span>
             </span>
           </span>
-        </div>
+        </div> -->
 
 <!--         <div class="dropdown"> 
           <span class="nav-item" v-bind:class="{'active-menu': settingFlag === true}" data-toggle="dropdown" id="settings" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('dropdown')" v-bind:onkeypress="makeActive('')">
@@ -78,7 +76,7 @@
           </span>
         </div>     
  -->
-        <div class="dropdown" v-if="user.messages.data !== null"> 
+        <!-- <div class="dropdown" v-if="user.messages.data !== null"> 
             <span class="nav-item" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false">
               <span>
                 <i class="fas fa-envelope" style="font-size: 22px;margin-top: 2px;"></i>
@@ -123,7 +121,7 @@
             </span>
         </div>
 
-      </span>
+      </span> -->
 
     </nav>
 
@@ -202,7 +200,7 @@ body{
     height: 50px;
     font-size: 24px;
     width: 18%;
-    background: $darkPrimary;
+    background: $primary;
     text-align: center;
     position: fixed;
   }

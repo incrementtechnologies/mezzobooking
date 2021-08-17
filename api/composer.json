@@ -61,13 +61,11 @@
             "Increment\\Messenger\\": "packages/increment/messenger/src/",
             "Increment\\Common\\Notification\\": "packages/increment/common/notification/src/",
             "Increment\\Account\\": "packages/increment/account/src/",
-            "Increment\\Imarket\\Merchant\\": "packages/increment/imarket/merchant/src/",
             "Increment\\Imarket\\Location\\": "packages/increment/imarket/location/src/",
             "Increment\\Imarket\\Reservation\\": "packages/increment/imarket/reservation/src/",
             "Increment\\Imarket\\Product\\":"packages/increment/imarket/product/src/",
-            "Increment\\Imarket\\Bundled\\":"packages/increment/imarket/bundled/src/",
-            "Increment\\Common\\MyCircle\\":"packages/increment/common/mycircle/src/",
-            "Increment\\Imarket\\Installment\\":"packages/increment/imarket/installment/src/"
+            "Increment\\Imarket\\Merchant\\":"packages/increment/imarket/merchant/src/",
+            "Increment\\Imarket\\Coupon\\":"packages/increment/imarket/coupon/src/"
         }
     },
     "autoload-dev": {
