@@ -9,10 +9,11 @@
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <thead>
         <tr>
-          <td>Reservee</td>
-          <td>Date of Reservation</td>
-          <td>No. of Guest</td>
           <td>Code</td>
+          <td>Room</td>
+          <td>Email</td>
+          <td>CheckIn</td>
+          <td>CheckOut</td>
           <td>Status</td>
           <td>Action</td>
         </tr>
@@ -20,17 +21,20 @@
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index">
           <td>
-            {{item.reservee}}
+            <a style="color: #CBAB58;cursor:pointer">{{item.code}}</a>
           </td>
-          <td>{{item.date_time_at_human}}</td>
-          <td>{{item.members ? item.members.length : 0}}</td>
-          <td v-if="item.status === 'accepted' || item.status === 'completed'" @click="toggleCode(item)" style="cursor:pointer">
+          <td>{{item.title}}</td>
+          <td>{{item.email}}</td>
+          <td>{{item.check_in}}</td>
+          <td>{{item.check_out}}</td>
+          <td>{{item.status}}</td>
+          <!-- <td v-if="item.status === 'accepted' || item.status === 'completed'" @click="toggleCode(item)" style="cursor:pointer">
               {{item.code.slice(-6)}}
           </td>
-          <td v-else></td>
-          <td>{{item.status}}</td>
+          <td v-else></td> -->
           <td>
-            <button class="btn btn-primary" style="display: block;margin: auto;" @click="showModal(item)">EDIT</button>
+            <button class="btn btn-primary" style="margin: auto;" @click="showModal(item)">VERIFY</button>
+            <button class="btn btn-danger" style="margin: auto;" @click="showModal(item)">CANCEL</button>
           </td>
         </tr>
       </tbody>
@@ -92,7 +96,7 @@ import AUTH from 'src/services/auth'
 import moment from 'moment'
 export default {
   mounted() {
-    this.retrieve({'status': 'asc'}, {column: 'status', value: ''}, false)
+    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
   },
   data() {
     return {
@@ -105,27 +109,67 @@ export default {
       guest: null,
       data: [],
       category: [{
-        title: 'Bookings',
+        title: 'Sort By',
         sorting: [{
-          title: 'Status ascending',
+          title: 'Code Ascending',
+          payload: 'code',
+          payload_value: 'asc',
+          type: 'text'
+        }, {
+          title: 'Code Descending',
+          payload: 'code',
+          payload_value: 'desc',
+          type: 'text'
+        }, {
+          title: 'Email Ascending',
+          payload: 'email',
+          payload_value: 'asc',
+          type: 'text'
+        }, {
+          title: 'Email Descending',
+          payload: 'email',
+          payload_value: 'desc',
+          type: 'text'
+        }, {
+          title: 'Room Ascending',
+          payload: 'payload_value',
+          payload_value: 'asc',
+          type: 'text'
+        }, {
+          title: 'Room Descending',
+          payload: 'payload_value',
+          payload_value: 'desc',
+          type: 'text'
+        }, {
+          title: 'CheckIn Ascending',
+          payload: 'check_in',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'CheckIn Ascending',
+          payload: 'check_in',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'CheckOut Ascending',
+          payload: 'check_out',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'CheckOut Descending',
+          payload: 'check_out',
+          payload_value: 'desc',
+          type: 'date'
+        }, {
+          title: 'Status Ascending',
           payload: 'status',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Status descending',
+          title: 'Status Descending',
           payload: 'status',
           payload_value: 'desc',
           type: 'text'
-        }, {
-          title: 'Date of reservation ascending',
-          payload: 'datetime',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'Date of reservation descending',
-          payload: 'datetime',
-          payload_value: 'desc',
-          type: 'date'
         }]
       }],
       currentFilter: null,
@@ -157,14 +201,6 @@ export default {
       }
       let parameter = {
         condition: [{
-          value: this.user.merchant ? this.user.merchant.id : null,
-          column: 'merchant_id',
-          clause: '='
-        }, {
-          value: this.user.merchant ? this.user.merchant.id : null,
-          column: 'merchant_id',
-          clause: '='
-        }, {
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
           column: this.currentFilter.column,
           clause: 'like'
@@ -175,7 +211,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('reservations/retrieve_web', parameter).then(response => {
+      this.APIRequest('reservations/retrieve_bookings', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {
