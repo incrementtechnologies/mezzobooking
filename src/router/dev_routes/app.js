@@ -45,7 +45,7 @@ export default{
   }, {
     path: '/login',
     name: 'loginAccount',
-    component: resolve => require(['components/increment/basic/LogIn.vue'], resolve),
+    component: resolve => require(['modules/account/login.vue'], resolve),
     meta: {
       tokenRequired: false
     }
