@@ -105,6 +105,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/booking-details',
+    name: 'booking-details',
+    component: resolve => require(['modules/booking/Details.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
