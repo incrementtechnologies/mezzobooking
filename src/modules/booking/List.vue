@@ -6,80 +6,34 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
+    <div style="float:left">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
+     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
-      <thead>
-        <tr>
-          <td>Code</td>
-          <td>Room</td>
-          <td>Email</td>
-          <td>CheckIn</td>
-          <td>CheckOut</td>
-          <td>Status</td>
-          <td>Action</td>
-        </tr>
-      </thead>
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index">
+        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
           <td>
-            <a style="color: #CBAB58;cursor:pointer">{{item.code}}</a>
+            <b><span style="font-size: 14px">{{item.email}}-{{item.status}}</span></b><br/>
+            <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
-          <td>{{item.title}}</td>
-          <td>{{item.email}}</td>
-          <td>{{item.check_in}}</td>
-          <td>{{item.check_out}}</td>
-          <td>{{item.status}}</td>
-          <!-- <td v-if="item.status === 'accepted' || item.status === 'completed'" @click="toggleCode(item)" style="cursor:pointer">
-              {{item.code.slice(-6)}}
-          </td>
-          <td v-else></td> -->
           <td>
-            <button class="btn btn-primary" style="margin: auto;" @click="showModal(item)">VERIFY</button>
-            <button class="btn btn-danger" style="margin: auto;" @click="showModal(item)">CANCEL</button>
+            <div style="text-align:center"><b>Adults</b> <br/>{{item.details.adults}}</div>
+          </td>
+          <td>
+            <div style="text-align:center"><b>Children</b> <br/>{{item.details.children}}</div>
+          </td>
+          <td style="padding: 20px 0;">
+            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.price}}</div>
           </td>
         </tr>
       </tbody>
     </table>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button>
-   <div class="modal fade" id="editBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
-          <button type="button" class="close" @click="hideModal()" aria-label="Close">
-            <span aria-hidden="true" class="text-primary">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="name">Reservee: <span>*</span></label>
-            <input type="text" placeholder="Reservee" v-model="reservee" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">Date of Reservation: <span>*</span></label>
-            <input type="datetime" maxlength="150" placeholder="Date of Reservation" v-model="datetime" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">No. of Guest: <span>*</span></label>
-            <input type="text" maxlength="150" placeholder="No. of Guest" v-model="guest" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">Status: <span>*</span></label>
-            <br>
-            <select class="form-group form-control-custom form-control" v-model="status" :disabled="reservationStatus === 'completed' || reservationStatus === 'cancelled'">
-              <option value="accepted">Accepted</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
-          <button type="button" class="btn btn-primary" @click="update()">Save</button>
-        </div>
-      </div>
-    </div>
-    </div>
+    <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
     <confirmation
     :title="'Confirmation Modal'"
@@ -94,6 +48,7 @@
 <script>
 import AUTH from 'src/services/auth'
 import moment from 'moment'
+import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -111,16 +66,6 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Code Ascending',
-          payload: 'code',
-          payload_value: 'asc',
-          type: 'text'
-        }, {
-          title: 'Code Descending',
-          payload: 'code',
-          payload_value: 'desc',
-          type: 'text'
-        }, {
           title: 'Email Ascending',
           payload: 'email',
           payload_value: 'asc',
@@ -128,16 +73,6 @@ export default {
         }, {
           title: 'Email Descending',
           payload: 'email',
-          payload_value: 'desc',
-          type: 'text'
-        }, {
-          title: 'Room Ascending',
-          payload: 'payload_value',
-          payload_value: 'asc',
-          type: 'text'
-        }, {
-          title: 'Room Descending',
-          payload: 'payload_value',
           payload_value: 'desc',
           type: 'text'
         }, {
@@ -175,18 +110,21 @@ export default {
       currentFilter: null,
       currentSort: null,
       offset: 0,
-      limit: 6,
+      limit: 5,
       id: null,
       synqt: null,
       reservationStatus: false,
-      click: false
+      click: false,
+      numPages: null,
+      activePage: 1
     }
   },
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
-    'show-booking': require('modules/booking/ReserveeInformation.vue')
+    'show-booking': require('modules/booking/ReserveeInformation.vue'),
+    Pager
   },
   methods: {
     retrieve(sort = null, filter = null, flag = null){
@@ -255,27 +193,8 @@ export default {
         }
       })
     },
-    showModal(item) {
-      this.reservee = item.reservee
-      this.datetime = item.datetime
-      this.status = item.status
-      this.guest = item.members ? item.members.length : 0
-      this.editId = item.id
-      this.synqt = item.payload_value
-      this.reservationStatus = item.status
-      console.log(this.reservationStatus)
-      $('#editBooking').modal('show')
-    },
-    hideModal() {
-      $('#editBooking').modal('hide')
-    },
-    removeItem(item) {
-      this.id = item.id
-      $('#connectionError').modal('show')
-    },
-    toggleCode(item){
-      this.click = !this.click
-      this.$refs.booking.show(item)
+    redirect(){
+      this.$router.push('/booking-details')
     }
   }
 }
@@ -283,3 +202,24 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 </script>
+<style lang="scss" scoped>
+  .table{
+    border-collapse:separate !important;
+    border-spacing:0 15px !important;
+    border: none;
+  }
+  .btn{
+    width: 200px;
+    height: 50px
+  }
+  .table-row{
+    background-color:white;
+  }
+  .table-row:hover{
+    cursor: pointer;
+    background: rgba(0,0,0, 0.1)
+  }
+  .table-row:active{
+    background-color: white;
+  }
+</style>
