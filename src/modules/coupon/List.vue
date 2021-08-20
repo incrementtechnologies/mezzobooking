@@ -1,5 +1,13 @@
 <template>
   <div style="margin: 56px;">
+    <div style="float:left">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
+     <button class="btn btn-primary pull-right" style="margin-bottom: 25px;">Add Coupon</button>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -76,7 +84,7 @@
       </div>
     </div>
     </div>
-    <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data === null || data.length === 0" :title="'Empty Coupons!'" :action="'No activity at the moment.'"></empty>
     <confirmation
     :title="'Confirmation Modal'"
     :message="'Are you sure you want to delete ?'"
@@ -90,6 +98,7 @@
 <script>
 import AUTH from 'src/services/auth'
 import moment from 'moment'
+import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 export default {
   mounted() {
     this.retrieve({'status': 'asc'}, {column: 'status', value: ''}, false)
@@ -131,64 +140,66 @@ export default {
       currentFilter: null,
       currentSort: null,
       offset: 0,
-      limit: 6,
+      limit: 5,
       id: null,
       synqt: null,
       reservationStatus: false,
-      click: false
+      click: false,
+      numPages: null,
+      activePage: 1
     }
   },
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
-    'show-booking': require('modules/booking/ReserveeInformation.vue')
+    'show-booking': require('modules/booking/ReserveeInformation.vue'),
+    Pager
   },
   methods: {
     retrieve(sort = null, filter = null, flag = null){
-      if(flag === true) {
-        this.offset += this.limit
-      }
-      if(filter !== null){
-        this.currentFilter = filter
-      }
-      if(sort !== null){
-        this.currentSort = sort
-      }
-      let parameter = {
-        condition: [{
-          value: this.user.merchant ? this.user.merchant.id : null,
-          column: 'merchant_id',
-          clause: '='
-        }, {
-          value: this.user.merchant ? this.user.merchant.id : null,
-          column: 'merchant_id',
-          clause: '='
-        }, {
-          value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
-          column: this.currentFilter.column,
-          clause: 'like'
-        }],
-        limit: flag ? this.limit : this.offset + this.limit,
-        offset: flag ? this.offset : 0,
-        sort: sort
-      }
-      $('#loading').css({'display': 'block'})
-      console.log(flag)
-      this.APIRequest('reservations/retrieve_web', parameter).then(response => {
-        $('#loading').css({'display': 'none'})
-        if(flag === true) {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-            this.data.push(element)
-          })
-        } else {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-          })
-          this.data = response.data
-        }
-      })
+      // if(flag === true) {
+      //   this.offset += this.limit
+      // }
+      // if(filter !== null){
+      //   this.currentFilter = filter
+      // }
+      // if(sort !== null){
+      //   this.currentSort = sort
+      // }
+      // let parameter = {
+      //   condition: [{
+      //     value: this.user.merchant ? this.user.merchant.id : null,
+      //     column: 'merchant_id',
+      //     clause: '='
+      //   }, {
+      //     value: this.user.merchant ? this.user.merchant.id : null,
+      //     column: 'merchant_id',
+      //     clause: '='
+      //   }, {
+      //     value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
+      //     column: this.currentFilter.column,
+      //     clause: 'like'
+      //   }],
+      //   limit: flag ? this.limit : this.offset + this.limit,
+      //   offset: flag ? this.offset : 0,
+      //   sort: sort
+      // }
+      // $('#loading').css({'display': 'block'})
+      // this.APIRequest('reservations/retrieve_web', parameter).then(response => {
+      //   $('#loading').css({'display': 'none'})
+      //   if(flag === true) {
+      //     response.data.forEach(element => {
+      //       element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+      //       this.data.push(element)
+      //     })
+      //   } else {
+      //     response.data.forEach(element => {
+      //       element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+      //     })
+      //     this.data = response.data
+      //   }
+      // })
     },
     update(){
       let parameter = {
