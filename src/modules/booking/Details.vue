@@ -97,8 +97,7 @@
       </div>
       <section class="mt-3">
         <div style="margin-left: 15%"><b>Customer Details</b></div>
-        <div style="width: 70%; background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
-            <div class="row">
+            <div class="row" style="width: 70%; background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
                 <div class="col-md-6">
                     <span style="font-size:12px">Customer ID: 12334</span><br/>
                     <span style="font-weight:bold; font-size:16px">Test User</span>
@@ -108,7 +107,20 @@
                     <span>Email Address: <b>testaccount@email.com</b></span>
                 </div>
             </div>
-        </div>
+      </section>
+      <section class="actionBtns mt-3">
+          <div class="row" style="width: 70%; margin-left:auto; margin-right:auto;">
+              <div class="col-md-6">
+                  <button class="btn btn-danger">Cancel</button>
+                  <button class="btn btn-danger">Refund</button>
+              </div>
+              <div class="col-md-6">
+                  <div style="float:right">
+                    <button class="btn btn-secondary">Confirm</button>
+                    <button class="btn btn-primary">Complete</button>
+                  </div>
+              </div>
+          </div>
       </section>
   </div>
 </template>
