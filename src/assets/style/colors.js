@@ -1,7 +1,7 @@
 export default{
-  primary: '#01009A',
+  primary: '#000033',
   darkPrimary: '#01004e',
-  secondary: '#F3E4A7',
+  secondary: '#CBAB58',
   warning: '#F1BF14',
   danger: '#FF0000'
 }

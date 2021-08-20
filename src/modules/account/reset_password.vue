@@ -4,7 +4,7 @@
       <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-xs-7 QouteCardContainer mb-5">
         <div class="QouteCard">
           <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 25%;height:auto">
-          <div class="SubQoute" style="margin-top: 5%; color: white">
+          <div class="SubQoute" style="margin-top: 1%; color: white">
             <h5 class="QouteText" style="color: white">Mezzo Hotel Admin App</h5>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
               when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
@@ -18,54 +18,31 @@
         <div class="card LoginCard">
           <div class="card-body LoginCardBody">
             <div class="d-flex justify-content-center pt-5 pb-5 mb-3">
-              <b>Login with Mezzo Hotel</b>
+              <b>Request to Reset Password with Mezzo Hotel</b>
             </div>
             <div>
-              <p
-                class="mb-2 pb-0 errorMessage"
-                v-if="errorMessage != ''"
-              >{{errorMessage}}</p>
               <roundedInput 
                 :type="'text'"
-                :placeholder="'Username'"
-                :class="!this.isValid && username == '' ? 'mb-0 ' : ' LoginField'"
                 :styles="{
-                  border: !this.isValid && username == '' ? '1px solid red !important' : 'none',
+                  border: !this.isEmailError ? '.2px solid red !important' : 'none'
                 }"
-                v-model="username"
+                :placeholder="'Email Address'"
+                :class="''"
+                v-model="email"
               />
               <p
                 class="mb-0 pb-0 invalidEmail"
-                v-if="!this.isValid && username == ''"
-              >Required Field</p>
-              <roundedInput 
-                :type="'password'"
-                :placeholder="'Password'"
-                :class="!this.isValid && password == ''? 'mb-0 ' : ' LoginField'"
-                :styles="{
-                  border: !this.isValid && password == '' ? '1px solid red !important' : 'none'
-                }"
-                v-model="password"
-                :onEnter="login"
-              />
-              <p
-                class="mb-0 pb-0 invalidEmail"
-                v-if="!this.isValid && password == ''"
-              >Required Field</p>
+                v-if="!this.isEmailError"
+              >{{email == '' ? 'Required Field' :'Invalid email'}}</p>
             </div>
-            <div class="d-flex justify-content-between">
-
-              <roundedBtn
-                :onClick="forgotPassword"
-                :text="'Forgot your password?'"
-                :styles="{
-                  background: 'none',
-                  color: '272727'
-                }"
-              />
+            <div class="message mt-1 mb-2">
+              <i v-if="showResponse" class="resetPasswordMessage">We send recory email to yor email address at <u>{{email}}</u>. Please give us a moment, it may take few minutes. Please check your email address to continue.</i>
+              <i v-if="showError" class="resetPasswordMessage" style="color:red">Something went wrong.</i>
+            </div>
+            <div class="d-flex justify-content-end">
               <roundedBtn 
-                :onClick="login"
-                :text="'Login'"
+                :onClick="reset"
+                :text="'Send Request'"
                 :styles="{
                   backgroundColor: colors.secondary,
                   color: 'white'
@@ -73,13 +50,13 @@
               />
             </div>
             <div class="d-flex justify-content-center orSeparatorB">
-              <p style="color: #CBAB58;"><u>Don't have an account?</u></p>
+              <p style="color: #CBAB58;"><u>Remembered your Account?</u></p>
             </div>
             <hr>
-            <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-end" style="margin-left: 4%">
+            <div class="col-sm-12 mb-3 col-md-12 col-lg-12 d-flex justify-content-end" style="margin-left: 4%">
               <roundedBtn 
-                :onClick="register"
-                :text="'Register Now'"
+                :onClick="redirect"
+                :text="'Login'"
                 :styles="{
                   backgroundColor: colors.primary,
                   color: 'white'
@@ -98,17 +75,15 @@ import dialogueBtn from 'src/modules/generic/dialogueBtn'
 import roundedInput from 'src/modules/generic/roundedInput'
 import roundedBtn from 'src/modules/generic/roundedBtn'
 import COLORS from 'src/assets/style/colors.js'
-import AUTH from 'src/services/auth'
-import ROUTER from 'src/router'
+import global from 'src/helpers/global'
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      errorMessage: '',
-      isValid: true,
-      colors: COLORS,
-      user: AUTH.user
+      email: '',
+      showResponse: false,
+      isEmailError: true,
+      showError: false,
+      colors: COLORS
     }
   },
   components: {
@@ -116,34 +91,37 @@ export default {
     roundedInput,
     roundedBtn
   },
-  mounted() {},
   methods: {
-    login(event) {
-      if(this.username !== '' && this.password !== '') {
-        this.isValid = true
-        $('#loading').css({'display': 'block'})
-        AUTH.authenticate(this.username, this.password, (response) => {
-          $('#loading').css({'display': 'none'})
-          ROUTER.push(`/dashboard`)
-        }, (response, status) => {
-          $('#loading').css({'display': 'none'})
-          if(status === 401){
-            this.errorMessage = 'Username and Password did not match.'
-          }else if(status === 402){
-            this.errorMessage = response.error
+    reset(event) {
+      console.log('Reset password:::', global.validateEmail(this.email))
+      if(global.validateEmail(this.email)){
+        this.isEmailError = true
+        let parameter = {
+          email: this.email
+        }
+        this.APIRequest('accounts/request_reset', parameter).then(response => {
+          if(response.data === true){
+            console.log('ACCOUNTS RESPONSE: ', response)
+            this.showResponse = true
+            this.showError = false
+          }else{
+            this.showError = true
+            this.showResponse = false
           }
         })
       }else{
-        this.isValid = false
+        this.isEmailError = false
       }
     },
-    register(event) {
-      console.log('register:::')
-      this.$router.push('/signup')
+    redirect(event){
+      this.$router.push('/login')
+    },
+    login(event) {
+      console.log('login:::')
+      this.$router.push('/')
     },
     forgotPassword(event) {
       console.log('forgot password:::')
-      this.$router.push('/request_reset_password')
     }
   }
 }
@@ -151,18 +129,16 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
-.errorMessage {
-  margin-top: -14px;
-  color: $danger;
-  font-size: 10px;
-  margin-bottom: 25px !important;
-  text-align: center;
-}
 .invalidEmail {
   color: $danger;
   font-size: 10px;
   margin-left: 20px;
-  margin-bottom: 25px !important;
+}
+.resetPasswordMessage {
+  font-size: 12px;
+}
+.message {
+  min-height: 80px;
 }
 .orSeparatorA {
   margin-top: 35px;
@@ -190,40 +166,36 @@ export default {
 }
 .LoginCard {
   width: 475px;
-  background-color: $primary;
+  background-color: white;
   border-radius: 20px;
   box-shadow: 3px 3px 1px -2px rgba(1,0,154,0.75);
   -webkit-box-shadow: 3px 3px 1px -2px rgba(1,0,154,0.75);
   -moz-box-shadow: 3px 3px 1px -2px rgba(1,0,154,0.75);
-  max-height: 42.5rem;
 }
-.LoginCardBody {
-  background-color: white;
-  border-radius: 20px;
-}
+.LoginCardBody {}
 .LoginContainer {
   min-height: 91.9vh;
   background-color: $primary;
 }
 .RowContainer {
-  background-color: $primary;
+  background: $primary;
 }
 .QouteCardContainer {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  background: none;
+  background: $primary;
   margin-top: 5%;
 }
 .LoginCardContainer {
-  background-color: $primary;
-  margin-top: 5%;
+  margin-top: 7%;
+  background: none;
+  height: calc(100% + 10px);
 }
 
 @media (max-width: 500px) {
   .LoginCard {
     width: 100%;
-    max-height: 50.5rem;
   }
   .QouteText {
   font-size: 30px;
@@ -278,7 +250,7 @@ export default {
   .QouteText {
   font-size: 35px;
   }
-    .QouteCard img {
+  .QouteCard img {
     width: 100% !important;
   }
 }
