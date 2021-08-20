@@ -7,6 +7,7 @@
 </template>
 <style scoped>
   .content-holder{
+    /* background-color: #000033; */
     width: 100%;
     min-height: 400px;
     float: left;

@@ -10,7 +10,7 @@ export default{
   }, {
     path: '/signup',
     name: 'signup',
-    component: resolve => require(['components/increment/basic/Signup.vue'], resolve),
+    component: resolve => require(['modules/account/register.vue'], resolve),
     meta: {
       tokenRequired: false
     }
@@ -45,14 +45,14 @@ export default{
   }, {
     path: '/login',
     name: 'loginAccount',
-    component: resolve => require(['components/increment/basic/LogIn.vue'], resolve),
+    component: resolve => require(['modules/account/login.vue'], resolve),
     meta: {
       tokenRequired: false
     }
   }, {
     path: '/request_reset_password',
     name: 'requestResetPassword',
-    component: resolve => require(['components/increment/basic/RequestResetPassword.vue'], resolve),
+    component: resolve => require(['modules/account/reset_password.vue'], resolve),
     meta: {
       tokenRequired: false
     }
