@@ -64,8 +64,7 @@
             "Increment\\Imarket\\Location\\": "packages/increment/imarket/location/src/",
             "Increment\\Imarket\\Reservation\\": "packages/increment/imarket/reservation/src/",
             "Increment\\Imarket\\Product\\":"packages/increment/imarket/product/src/",
-            "Increment\\Imarket\\Merchant\\":"packages/increment/imarket/merchant/src/",
-            "Increment\\Imarket\\Coupon\\":"packages/increment/imarket/coupon/src/"
+            "Increment\\Imarket\\Merchant\\":"packages/increment/imarket/merchant/src/"
         }
     },
     "autoload-dev": {

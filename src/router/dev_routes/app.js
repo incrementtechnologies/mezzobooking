@@ -112,6 +112,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/add-coupons/:code?',
+    name: 'add-coupons',
+    component: resolve => require(['modules/coupon/AddCoupon.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

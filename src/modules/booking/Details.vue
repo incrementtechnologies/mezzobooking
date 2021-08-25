@@ -111,23 +111,29 @@
       <section class="actionBtns mt-3">
           <div class="row" style="width: 70%; margin-left:auto; margin-right:auto;">
               <div class="col-md-6">
-                  <button class="btn btn-danger">Cancel</button>
-                  <button class="btn btn-danger">Refund</button>
+                  <button class="btn btn-danger footerBtn">Cancel</button>
+                  <button class="btn btn-danger footerBtn">Refund</button>
               </div>
               <div class="col-md-6">
                   <div style="float:right">
-                    <button class="btn btn-secondary">Confirm</button>
-                    <button class="btn btn-primary">Complete</button>
+                    <button class="btn btn-secondary footerBtn">Confirm</button>
+                    <button class="btn btn-primary footerBtn">Complete</button>
                   </div>
               </div>
           </div>
       </section>
+			<section  style="width: 70%; margin-left:auto; margin-right:auto;">
+				<RoomCard/>
+			</section>
   </div>
 </template>
 
 <script>
+import RoomCard from 'src/generic/RoomCard.vue'
 export default {
-
+  components: {
+    RoomCard
+  }
 }
 </script>
 
@@ -167,5 +173,9 @@ export default {
     }
     .fa-trash{
         color: red;
+    }
+    .footerBtn{
+        width: 150px;
+        height: 50px
     }
 </style>
