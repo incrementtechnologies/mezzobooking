@@ -140,6 +140,7 @@ $route = env('PACKAGE_ROUTE', '').'/coupons/';
 $controller = 'CouponController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
+Route::post($route.'retrieve_coupon', $controller."retrieveCoupon");
 Route::post($route.'validate', $controller."retrieveByValidation");
 Route::post($route.'delete', $controller."delete");
 Route::post($route.'update', $controller."update");

@@ -7,7 +7,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-     <button class="btn btn-primary pull-right" style="margin-bottom: 25px;">Add Coupon</button>
+    <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add Coupon</button>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -15,83 +15,47 @@
       :grid="['list']">
     </filter-product>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
-      <thead>
-        <tr>
-          <td>Reservee</td>
-          <td>Date of Reservation</td>
-          <td>No. of Guest</td>
-          <td>Code</td>
-          <td>Status</td>
-          <td>Action</td>
-        </tr>
-      </thead>
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index">
+        <tr v-for="(item, index) in data" :key="index" class="table-row">
           <td>
-            {{item.reservee}}
+            <b><span style="font-size: 14px">{{item.code}}</span></b><br/>
+            <span style="font-size: 12px">10% OFF</span>
           </td>
-          <td>{{item.date_time_at_human}}</td>
-          <td>{{item.members ? item.members.length : 0}}</td>
-          <td v-if="item.status === 'accepted' || item.status === 'completed'" @click="toggleCode(item)" style="cursor:pointer">
-              {{item.code.slice(-6)}}
+          <td style="width: 200px">
+            <div style="text-align:center"><b>Start Date</b> <br/>{{item.start_date}}</div>
           </td>
-          <td v-else></td>
-          <td>{{item.status}}</td>
-          <td>
-            <button class="btn btn-primary" style="display: block;margin: auto;" @click="showModal(item)">EDIT</button>
+          <td style="width: 200px">
+            <div style="text-align:center"><b>End Date</b> <br/>{{item.end_date}}</div>
+          </td>
+          <td style="width: 200px">
+            <div style="text-align:center"><b>Limit</b> <br/>{{item.limit_customer}}</div>
+          </td>
+          <td style="padding-left: 0; padding-right: 0; width: 200px">
+            <div class="row">
+              <div class="col-sm-6">
+                <div style="text-align:center;horizontal-alignment:center; color:#CBAB58">
+                  <span>Revenue</span>
+                  <p style="font-size:16px;font-weight:bold;">PHP {{item.value}}</p>
+                </div>
+              </div>
+              <div class="col-md-4" style="width: 300px">
+                <i class="fa fa-pencil text-primary" @click="$router.push('/add-coupons/'+ item.code)"></i>
+                <i class="fa fa-trash text-danger"></i>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button>
-   <div class="modal fade" id="editBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
-          <button type="button" class="close" @click="hideModal()" aria-label="Close">
-            <span aria-hidden="true" class="text-primary">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="name">Reservee: <span>*</span></label>
-            <input type="text" placeholder="Reservee" v-model="reservee" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">Date of Reservation: <span>*</span></label>
-            <input type="datetime" maxlength="150" placeholder="Date of Reservation" v-model="datetime" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">No. of Guest: <span>*</span></label>
-            <input type="text" maxlength="150" placeholder="No. of Guest" v-model="guest" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">Status: <span>*</span></label>
-            <br>
-            <select class="form-group form-control-custom form-control" v-model="status" :disabled="reservationStatus === 'completed' || reservationStatus === 'cancelled'">
-              <option value="accepted">Accepted</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
-          <button type="button" class="btn btn-primary" @click="update()">Save</button>
-        </div>
-      </div>
-    </div>
-    </div>
-    <empty v-if="data === null || data.length === 0" :title="'Empty Coupons!'" :action="'No activity at the moment.'"></empty>
-    <confirmation
+    <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
+    <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
+    <!-- <confirmation
     :title="'Confirmation Modal'"
     :message="'Are you sure you want to delete ?'"
     ref="confirms"
     @onConfirm="remove()"
     >
-    </confirmation>
+    </confirmation> -->
     <show-booking ref="booking"/>
   </div>
 </template>
@@ -101,7 +65,7 @@ import moment from 'moment'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 export default {
   mounted() {
-    this.retrieve({'status': 'asc'}, {column: 'status', value: ''}, false)
+    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
   },
   data() {
     return {
@@ -114,27 +78,47 @@ export default {
       guest: null,
       data: [],
       category: [{
-        title: 'Bookings',
+        title: 'Sort By',
         sorting: [{
-          title: 'Status ascending',
-          payload: 'status',
+          title: 'Code Ascending',
+          payload: 'code',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Status descending',
-          payload: 'status',
+          title: 'Code Descending',
+          payload: 'code',
           payload_value: 'desc',
           type: 'text'
         }, {
-          title: 'Date of reservation ascending',
-          payload: 'datetime',
+          title: 'Start-Date Ascending',
+          payload: 'start_date',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'Date of reservation descending',
-          payload: 'datetime',
+          title: 'Start-Date Ascending',
+          payload: 'start_date',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'End-Date Ascending',
+          payload: 'end_date',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'End-Date Descending',
+          payload: 'end_date',
           payload_value: 'desc',
           type: 'date'
+        }, {
+          title: 'Limit Ascending',
+          payload: 'limit',
+          payload_value: 'asc',
+          type: 'text'
+        }, {
+          title: 'Limit Descending',
+          payload: 'limit',
+          payload_value: 'desc',
+          type: 'text'
         }]
       }],
       currentFilter: null,
@@ -158,48 +142,42 @@ export default {
   },
   methods: {
     retrieve(sort = null, filter = null, flag = null){
-      // if(flag === true) {
-      //   this.offset += this.limit
-      // }
-      // if(filter !== null){
-      //   this.currentFilter = filter
-      // }
-      // if(sort !== null){
-      //   this.currentSort = sort
-      // }
-      // let parameter = {
-      //   condition: [{
-      //     value: this.user.merchant ? this.user.merchant.id : null,
-      //     column: 'merchant_id',
-      //     clause: '='
-      //   }, {
-      //     value: this.user.merchant ? this.user.merchant.id : null,
-      //     column: 'merchant_id',
-      //     clause: '='
-      //   }, {
-      //     value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
-      //     column: this.currentFilter.column,
-      //     clause: 'like'
-      //   }],
-      //   limit: flag ? this.limit : this.offset + this.limit,
-      //   offset: flag ? this.offset : 0,
-      //   sort: sort
-      // }
-      // $('#loading').css({'display': 'block'})
-      // this.APIRequest('reservations/retrieve_web', parameter).then(response => {
-      //   $('#loading').css({'display': 'none'})
-      //   if(flag === true) {
-      //     response.data.forEach(element => {
-      //       element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-      //       this.data.push(element)
-      //     })
-      //   } else {
-      //     response.data.forEach(element => {
-      //       element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-      //     })
-      //     this.data = response.data
-      //   }
-      // })
+      if(flag === true) {
+        this.offset += this.limit
+      }
+      if(filter !== null){
+        this.currentFilter = filter
+      }
+      if(sort !== null){
+        this.currentSort = sort
+      }
+      let parameter = {
+        condition: [{
+          value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
+          column: this.currentFilter.column,
+          clause: 'like'
+        }],
+        limit: flag ? this.limit : this.offset + this.limit,
+        offset: flag ? this.offset : 0,
+        account_id: this.user.userID,
+        sort: sort
+      }
+      $('#loading').css({'display': 'block'})
+      console.log(flag)
+      this.APIRequest('coupons/retrieve', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(flag === true) {
+          response.data.forEach(element => {
+            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+            this.data.push(element)
+          })
+        } else {
+          response.data.forEach(element => {
+            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+          })
+          this.data = response.data
+        }
+      })
     },
     update(){
       let parameter = {
@@ -230,27 +208,8 @@ export default {
         }
       })
     },
-    showModal(item) {
-      this.reservee = item.reservee
-      this.datetime = item.datetime
-      this.status = item.status
-      this.guest = item.members ? item.members.length : 0
-      this.editId = item.id
-      this.synqt = item.payload_value
-      this.reservationStatus = item.status
-      console.log(this.reservationStatus)
-      $('#editBooking').modal('show')
-    },
-    hideModal() {
-      $('#editBooking').modal('hide')
-    },
-    removeItem(item) {
-      this.id = item.id
-      $('#connectionError').modal('show')
-    },
-    toggleCode(item){
-      this.click = !this.click
-      this.$refs.booking.show(item)
+    redirect(){
+      this.$router.push('/booking-details')
     }
   }
 }
@@ -258,3 +217,25 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 </script>
+<style lang="scss" scoped>
+  .table{
+    border-collapse:separate !important;
+    border-spacing:0 15px !important;
+    border: none;
+  }
+  .btn{
+    width: 200px;
+    height: 50px
+  }
+  .table-row{
+    background-color:white;
+  }
+  .table-row:hover{
+    cursor: pointer;
+    background: rgba(0,0,0, 0.1)
+  }
+  .table-row:active{
+    background-color: white;
+  }
+</style>
+

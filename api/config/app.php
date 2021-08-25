@@ -183,7 +183,6 @@ return [
         Increment\Imarket\Reservation\ReservationServiceProvider::class,
         Increment\Imarket\Location\LocationServiceProvider::class,
         Increment\Imarket\Product\ProductServiceProvider::class,
-        Increment\Imarket\Coupon\CouponServiceProvider::class,
         Increment\Imarket\Merchant\MerchantServiceProvider::class,
         /*
          * Application Service Providers...
