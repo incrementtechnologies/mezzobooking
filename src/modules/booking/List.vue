@@ -13,7 +13,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;">Export to CSV</button>
+    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
@@ -48,7 +48,9 @@
 <script>
 import AUTH from 'src/services/auth'
 import moment from 'moment'
+import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
+import { ExportToCsv } from 'export-to-csv'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -195,6 +197,41 @@ export default {
     },
     redirect(){
       this.$router.push('/booking-details')
+    },
+    exportData(){
+      let options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: true,
+        title: 'Trackr',
+        useTextFile: false,
+        useBom: true,
+        // useKeysAsHeaders: true,
+        filename: COMMON.APP_NAME,
+        headers: ['Name', 'Check_in', 'Check_out', 'No. of adults', 'No. of children', 'status', 'Amount']
+      }
+      var exportData = []
+      if(this.data.length > 0){
+        for (let index = 0; index < this.data.length; index++) {
+          const item = this.data[index]
+          let obj = {
+            name: item.email,
+            check_in: item.check_in,
+            check_out: item.check_out,
+            no_of_adults: item.details.adults,
+            no_of_children: item.details.children,
+            status: item.status,
+            amount: item.price
+          }
+          exportData.push(obj)
+        }
+      }
+      if(exportData.length > 0){
+        var csvExporter = new ExportToCsv(options)
+        csvExporter.generateCsv(exportData)
+      }
     }
   }
 }

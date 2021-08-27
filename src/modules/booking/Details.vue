@@ -1,7 +1,7 @@
 <template>
   <div style="margin:56px">
-      <div style="margin-left: 15%"><b>Booking Details</b></div>
-      <div style="width: 70%; background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
+      <div><b>Booking Details</b></div>
+      <div style="background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
           <div class="mb-5">
             <span>Booking #:</span>
             <b>MEZZOHOTEL-AMAZINGCODE</b>
@@ -96,8 +96,8 @@
         </section>
       </div>
       <section class="mt-3">
-        <div style="margin-left: 15%"><b>Customer Details</b></div>
-            <div class="row" style="width: 70%; background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
+        <div><b>Customer Details</b></div>
+            <div class="row" style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
                 <div class="col-md-6">
                     <span style="font-size:12px">Customer ID: 12334</span><br/>
                     <span style="font-weight:bold; font-size:16px">Test User</span>
@@ -109,7 +109,7 @@
             </div>
       </section>
       <section class="actionBtns mt-3">
-          <div class="row" style="width: 70%; margin-left:auto; margin-right:auto;">
+          <div class="row" style="margin-left:auto; margin-right:auto;">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn">Cancel</button>
                   <button class="btn btn-danger footerBtn">Refund</button>
@@ -122,7 +122,7 @@
               </div>
           </div>
       </section>
-			<section  style="width: 70%; margin-left:auto; margin-right:auto;">
+			<section  style="margin-left:auto; margin-right:auto;">
 				<RoomCard/>
 			</section>
   </div>

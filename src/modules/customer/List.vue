@@ -13,7 +13,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;">Export to CSV</button>
+     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
@@ -55,6 +55,8 @@
 import AUTH from 'src/services/auth'
 import moment from 'moment'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
+import { ExportToCsv } from 'export-to-csv'
+import COMMON from 'src/common.js'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -200,6 +202,40 @@ export default {
       })
     },
     redirect(){
+    },
+    exportData(){
+      let options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: true,
+        title: 'Trackr',
+        useTextFile: false,
+        useBom: true,
+        // useKeysAsHeaders: true,
+        filename: COMMON.APP_NAME,
+        headers: ['Customer Id', 'Name', 'Email', 'Phone', 'Total Spent', 'Total Bookings']
+      }
+      var exportData = []
+      if(this.data.length > 0){
+        for (let index = 0; index < this.data.length; index++) {
+          const item = this.data[index]
+          let obj = {
+            customer_id: item.id,
+            name: item.name !== ' ' ? item.name : item.username,
+            email: item.email,
+            phone: item.phone !== null ? item.phone : 'N/A',
+            total_spent: item.total_spent,
+            total_bookings: item.total_bookings
+          }
+          exportData.push(obj)
+        }
+      }
+      if(exportData.length > 0){
+        var csvExporter = new ExportToCsv(options)
+        csvExporter.generateCsv(exportData)
+      }
     }
   }
 }

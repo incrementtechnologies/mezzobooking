@@ -179,6 +179,7 @@ return [
         Increment\Common\Ticket\TicketServiceProvider::class,
         Increment\Common\Notification\NotificationServiceProvider::class,
         Increment\Common\Invitation\InvitationServiceProvider::class,
+        Increment\Common\Payload\PayloadServiceProvider::class,
         Increment\Messenger\MessengerServiceProvider::class,
         Increment\Imarket\Reservation\ReservationServiceProvider::class,
         Increment\Imarket\Location\LocationServiceProvider::class,
