@@ -208,9 +208,6 @@ export default {
         }
       })
     },
-    redirect(){
-      this.$router.push('/booking-details')
-    }
   }
 }
 $(function () {

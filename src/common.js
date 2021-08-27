@@ -8,6 +8,7 @@ export default {
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Coupons', icon: 'fas fa-gift', path: 'coupons', flag: false, subMenu: null},
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Customers', icon: 'fas fa-address-book', path: 'customers', flag: false, subMenu: null},
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Accounts', icon: 'fa fa-users', path: 'accounts', flag: false, subMenu: null},
+    {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Setting', icon: 'fa fa-cog', path: 'settings', flag: false, subMenu: null},
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Logout', icon: 'fas fa-sign-out-alt', path: 'logout', flag: false, subMenu: null}
 
   ],
@@ -35,8 +36,35 @@ export default {
   broadcastingFlag: true,
   header: ['status', 'notification'], // 'messenger', '',
   settingsMenu: [
-    {title: 'Profile', type: 'profile', allowed: ['cellular_number', 'address']},
-    {title: 'Account', type: 'account', allowed: []},
-    {title: 'Business Setting', type: 'merchant', allowed: ['prefix', 'website', 'address', 'schedule', 'information']}
+    {
+      title: 'Account Settings',
+      description: 'Receives email address every time there’s a login of the account.',
+      route: 'account_settings'
+    },
+    {
+      title: 'General Rooms Limits Settings',
+      description: 'Receives email address every time there’s a login of the account.',
+      route: 'room_limit_settings'
+    },
+    {
+      title: 'General Sale Settings',
+      description: 'Receives email address every time there’s a login of the account.',
+      route: 'general_sale_settings'
+    },
+    {
+      title: 'Room Types',
+      description: 'Add or edit room types',
+      route: 'room_types'
+    },
+    {
+      title: 'Room Features',
+      description: 'Add or edit room features',
+      route: 'room_features'
+    },
+    {
+      title: 'Add-on Settings',
+      description: 'Add or edit checkout and room add-ons',
+      route: 'add_on_setttings'
+    }
   ]
 }

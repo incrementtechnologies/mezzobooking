@@ -119,6 +119,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/settings',
+    name: 'settings',
+    component: resolve => require(['modules/settings/List.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

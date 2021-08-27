@@ -222,9 +222,9 @@
     display: block;
   }
   .content-holder{
-    width: 80%;
+    width: 60%;
     margin: 60px 0px 0px 0px;
-    margin-right: 1%;
+    margin-right: 15%;
     float: right; /*- changed float left to right -*/
   }
   /*  Change with Menu Toggled */
