@@ -207,7 +207,7 @@ export default {
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
       })
-    },
+    }
   }
 }
 $(function () {
