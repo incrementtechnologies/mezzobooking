@@ -1,82 +1,40 @@
 <template>
   <div style="margin: 56px;">
+    <div style="float:left">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
+    <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-rooms')">Add Room</button>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
+    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
-      <thead>
-        <tr>
-          <td>Reservee</td>
-          <td>Date of Reservation</td>
-          <td>No. of Guest</td>
-          <td>Code</td>
-          <td>Status</td>
-          <td>Action</td>
-        </tr>
-      </thead>
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index">
+        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
           <td>
-            {{item.reservee}}
+            <b><span style="font-size: 14px">{{item.email}}-{{item.status}}</span></b><br/>
+            <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
-          <td>{{item.date_time_at_human}}</td>
-          <td>{{item.members ? item.members.length : 0}}</td>
-          <td v-if="item.status === 'accepted' || item.status === 'completed'" @click="toggleCode(item)" style="cursor:pointer">
-              {{item.code.slice(-6)}}
-          </td>
-          <td v-else></td>
-          <td>{{item.status}}</td>
           <td>
-            <button class="btn btn-primary" style="display: block;margin: auto;" @click="showModal(item)">EDIT</button>
+            <div style="text-align:center"><b>Adults</b> <br/>{{item.details.adults}}</div>
+          </td>
+          <td>
+            <div style="text-align:center"><b>Children</b> <br/>{{item.details.children}}</div>
+          </td>
+          <td style="padding: 20px 0;">
+            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.price}}</div>
           </td>
         </tr>
       </tbody>
     </table>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button>
-   <div class="modal fade" id="editBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
-          <button type="button" class="close" @click="hideModal()" aria-label="Close">
-            <span aria-hidden="true" class="text-primary">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="name">Reservee: <span>*</span></label>
-            <input type="text" placeholder="Reservee" v-model="reservee" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">Date of Reservation: <span>*</span></label>
-            <input type="datetime" maxlength="150" placeholder="Date of Reservation" v-model="datetime" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">No. of Guest: <span>*</span></label>
-            <input type="text" maxlength="150" placeholder="No. of Guest" v-model="guest" class="form-control-custom form-control" required disabled>
-          </div>
-          <div class="form-group">
-            <label for="name">Status: <span>*</span></label>
-            <br>
-            <select class="form-group form-control-custom form-control" v-model="status" :disabled="reservationStatus === 'completed' || reservationStatus === 'cancelled'">
-              <option value="accepted">Accepted</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" @click="hideModal()">Cancel</button>
-          <button type="button" class="btn btn-primary" @click="update()">Save</button>
-        </div>
-      </div>
-    </div>
-    </div>
-    <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data === null || data.length === 0" :title="'Empty Rooms!'" :action="'No activity at the moment.'"></empty>
     <confirmation
     :title="'Confirmation Modal'"
     :message="'Are you sure you want to delete ?'"
@@ -90,9 +48,12 @@
 <script>
 import AUTH from 'src/services/auth'
 import moment from 'moment'
+import COMMON from 'src/common.js'
+import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
+import { ExportToCsv } from 'export-to-csv'
 export default {
   mounted() {
-    this.retrieve({'status': 'asc'}, {column: 'status', value: ''}, false)
+    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
   },
   data() {
     return {
@@ -105,44 +66,67 @@ export default {
       guest: null,
       data: [],
       category: [{
-        title: 'Bookings',
+        title: 'Sort By',
         sorting: [{
-          title: 'Status ascending',
+          title: 'Email Ascending',
+          payload: 'email',
+          payload_value: 'asc',
+          type: 'text'
+        }, {
+          title: 'Email Descending',
+          payload: 'email',
+          payload_value: 'desc',
+          type: 'text'
+        }, {
+          title: 'CheckIn Ascending',
+          payload: 'check_in',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'CheckIn Ascending',
+          payload: 'check_in',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'CheckOut Ascending',
+          payload: 'check_out',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'CheckOut Descending',
+          payload: 'check_out',
+          payload_value: 'desc',
+          type: 'date'
+        }, {
+          title: 'Status Ascending',
           payload: 'status',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Status descending',
+          title: 'Status Descending',
           payload: 'status',
           payload_value: 'desc',
           type: 'text'
-        }, {
-          title: 'Date of reservation ascending',
-          payload: 'datetime',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'Date of reservation descending',
-          payload: 'datetime',
-          payload_value: 'desc',
-          type: 'date'
         }]
       }],
       currentFilter: null,
       currentSort: null,
       offset: 0,
-      limit: 6,
+      limit: 5,
       id: null,
       synqt: null,
       reservationStatus: false,
-      click: false
+      click: false,
+      numPages: null,
+      activePage: 1
     }
   },
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
-    'show-booking': require('modules/booking/ReserveeInformation.vue')
+    'show-booking': require('modules/booking/ReserveeInformation.vue'),
+    Pager
   },
   methods: {
     retrieve(sort = null, filter = null, flag = null){
@@ -157,14 +141,6 @@ export default {
       }
       let parameter = {
         condition: [{
-          value: this.user.merchant ? this.user.merchant.id : null,
-          column: 'merchant_id',
-          clause: '='
-        }, {
-          value: this.user.merchant ? this.user.merchant.id : null,
-          column: 'merchant_id',
-          clause: '='
-        }, {
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
           column: this.currentFilter.column,
           clause: 'like'
@@ -175,7 +151,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('reservations/retrieve_web', parameter).then(response => {
+      this.APIRequest('reservations/retrieve_bookings', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {
@@ -219,27 +195,43 @@ export default {
         }
       })
     },
-    showModal(item) {
-      this.reservee = item.reservee
-      this.datetime = item.datetime
-      this.status = item.status
-      this.guest = item.members ? item.members.length : 0
-      this.editId = item.id
-      this.synqt = item.payload_value
-      this.reservationStatus = item.status
-      console.log(this.reservationStatus)
-      $('#editBooking').modal('show')
+    redirect(){
+      this.$router.push('/booking-details')
     },
-    hideModal() {
-      $('#editBooking').modal('hide')
-    },
-    removeItem(item) {
-      this.id = item.id
-      $('#connectionError').modal('show')
-    },
-    toggleCode(item){
-      this.click = !this.click
-      this.$refs.booking.show(item)
+    exportData(){
+      let options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: true,
+        title: 'Trackr',
+        useTextFile: false,
+        useBom: true,
+        // useKeysAsHeaders: true,
+        filename: COMMON.APP_NAME,
+        headers: ['Name', 'Check_in', 'Check_out', 'No. of adults', 'No. of children', 'status', 'Amount']
+      }
+      var exportData = []
+      if(this.data.length > 0){
+        for (let index = 0; index < this.data.length; index++) {
+          const item = this.data[index]
+          let obj = {
+            name: item.email,
+            check_in: item.check_in,
+            check_out: item.check_out,
+            no_of_adults: item.details.adults,
+            no_of_children: item.details.children,
+            status: item.status,
+            amount: item.price
+          }
+          exportData.push(obj)
+        }
+      }
+      if(exportData.length > 0){
+        var csvExporter = new ExportToCsv(options)
+        csvExporter.generateCsv(exportData)
+      }
     }
   }
 }
@@ -247,3 +239,24 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 </script>
+<style lang="scss" scoped>
+  .table{
+    border-collapse:separate !important;
+    border-spacing:0 15px !important;
+    border: none;
+  }
+  .btn{
+    width: 200px;
+    height: 50px
+  }
+  .table-row{
+    background-color:white;
+  }
+  .table-row:hover{
+    cursor: pointer;
+    background: rgba(0,0,0, 0.1)
+  }
+  .table-row:active{
+    background-color: white;
+  }
+</style>
