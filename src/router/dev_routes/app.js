@@ -133,6 +133,41 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/profile/:parameter?',
+    name: 'profile',
+    component: resolve => require(['components/increment/settings/UpdateBasic.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/general-limit',
+    name: 'general_limit',
+    component: resolve => require(['modules/settings/settingPages/GeneralLimit.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/general-sales',
+    name: 'general_sales',
+    component: resolve => require(['modules/settings/settingPages/GeneralSale.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/room-types',
+    name: 'room_types',
+    component: resolve => require(['modules/settings/settingPages/RoomType.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/add-room-types/:id?',
+    name: 'add_room_types',
+    component: resolve => require(['modules/settings/settingPages/AddRoomType.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

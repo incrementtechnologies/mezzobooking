@@ -47,6 +47,12 @@
           </div>
           <div class="row">
               <div class="col-md-6">
+                <label>Additional information(Optional)</label>
+                <div class="input-group">
+                    <textarea class="form-control-custom form-control" style="height: 165px !important;"></textarea>
+                </div>
+              </div>
+               <div class="col-md-6">
                 <label>Coupon</label>
                 <div class="input-group">
                     <input type="text" class="form-control-custom form-control" style="border-right-style: none;">
@@ -54,8 +60,6 @@
                         <i class="fas fa-sync-alt" aria-hidden="true"></i>
                     </span>
                 </div>
-              </div>
-               <div class="col-md-6">
               </div>
           </div>
           <b>Payment Methods</b>
@@ -108,6 +112,19 @@
                 </div>
             </div>
       </section>
+      <!-- <section>
+        <div><b>Room Assigning</b></div>
+        <div class="row" style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
+            <div class="col-md-6">
+                <span style="font-size:12px">Customer ID: 12334</span><br/>
+                <span style="font-weight:bold; font-size:16px">Test User</span>
+                <p style="font-size:12px">123344556667</p>
+            </div>
+            <div class="col-md-6" style="padding: 10px 0px">
+                <span>Email Address: <b>testaccount@email.com</b></span>
+            </div>
+        </div>
+      </section> -->
       <section class="actionBtns mt-3">
           <div class="row" style="margin-left:auto; margin-right:auto;">
               <div class="col-md-6">

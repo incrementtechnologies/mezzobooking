@@ -36,25 +36,30 @@ export default {
   broadcastingFlag: true,
   header: ['status', 'notification'], // 'messenger', '',
   settingsMenu: [
+    {title: 'Profile', type: 'profile', allowed: ['cellular_number', 'address']},
+    {title: 'Account', type: 'account', allowed: []},
+    {title: 'Business Setting', type: 'merchant', allowed: ['prefix', 'website', 'address', 'schedule', 'information']}
+  ],
+  settingsTabMenu: [
     {
       title: 'Account Settings',
       description: 'Receives email address every time there’s a login of the account.',
-      route: 'account_settings'
+      route: '/profile'
     },
     {
       title: 'General Rooms Limits Settings',
       description: 'Receives email address every time there’s a login of the account.',
-      route: 'room_limit_settings'
+      route: '/general-limit'
     },
     {
       title: 'General Sale Settings',
       description: 'Receives email address every time there’s a login of the account.',
-      route: 'general_sale_settings'
+      route: '/general-sales'
     },
     {
       title: 'Room Types',
       description: 'Add or edit room types',
-      route: 'room_types'
+      route: '/room-types'
     },
     {
       title: 'Room Features',
