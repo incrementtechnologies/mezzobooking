@@ -1,7 +1,7 @@
 <template>
     <div style="margin: 56px;">
         <b>Settings</b>
-        <div class="row cards" v-for="(menu, idx) in common.settingsMenu" :key="idx">
+        <div class="row cards" v-for="(menu, idx) in common.settingsTabMenu" :key="idx" @click="redirect(menu.route)">
             <div class="col-md-10 column">
                 <p>
                   <b>{{menu.title}}</b><br>
@@ -21,6 +21,11 @@ export default {
   data(){
     return {
       common: COMMON
+    }
+  },
+  methods: {
+    redirect(route){
+      this.$router.push(route)
     }
   }
 }

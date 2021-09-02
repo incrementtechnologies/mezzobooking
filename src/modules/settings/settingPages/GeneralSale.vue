@@ -1,5 +1,11 @@
 <template>
   <div style="margin: 56px;">
+    <filter-product v-bind:category="category" 
+      :activeCategoryIndex="0"
+      :activeSortingIndex="0"
+      @changeSortEvent="retrieve($event.sort, $event.filter)"
+      :grid="['list']">
+    </filter-product>
     <div style="float:left">
     <Pager
       :pages="numPages"
@@ -7,40 +13,27 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add Coupon</button>
-    <filter-product v-bind:category="category" 
-      :activeCategoryIndex="0"
-      :activeSortingIndex="0"
-      @changeSortEvent="retrieve($event.sort, $event.filter)"
-      :grid="['list']">
-    </filter-product>
+    <button v-if="data.length > 0" class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add Sale</button>
+    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index" class="table-row">
+        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
           <td>
-            <b><span style="font-size: 14px">{{item.code}}</span></b><br/>
-            <span style="font-size: 12px">10% OFF</span>
-          </td>
-          <td style="width: 200px">
-            <div style="text-align:center"><b>Start Date</b> <br/>{{item.start_date}}</div>
-          </td>
-          <td style="width: 200px">
-            <div style="text-align:center"><b>End Date</b> <br/>{{item.end_date}}</div>
-          </td>
-          <td style="width: 200px">
-            <div style="text-align:center"><b>Limit</b> <br/>{{item.limit_customer}}</div>
-          </td>
-          <td style="padding-left: 0; padding-right: 0; width: 200px">
-            <div class="row">
-              <div class="col-sm-6">
-                <div style="text-align:center;horizontal-alignment:center; color:#CBAB58">
-                  <span>Revenue</span>
-                  <p style="font-size:16px;font-weight:bold;">PHP {{item.value}}</p>
-                </div>
+            <div class="row" style="margin-left: 2%;padding-right: 2%">
+              <div class="col-md-6" style="padding: 20px 0px">
+                <b><span style="font-size: 12px">Cutomer ID: {{item.id}}</span></b><br/>
+                <span style="font-size: 24px; font-weight: bold">{{item.name !== " " ? item.name : item.username}}</span><br/>
+                <span style="font-size: 12px">{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
               </div>
-              <div class="col-md-4" style="width: 300px">
-                <i class="fa fa-pencil text-primary" @click="$router.push('/add-coupons/'+ item.code)"></i>
-                <i class="fa fa-trash text-danger"></i>
+              <div class="col-md-6 column">
+                <div class="box mr-1">
+                  <p class="box-title">Total Bookings</p>
+                  <span><b>{{item.total_bookings}}</b></span>
+                </div>
+                <div class="box">
+                  <p class="box-title">Total Spent</p>
+                  <span><b>PHP{{item.total_spent}}</b></span>
+                </div>
               </div>
             </div>
           </td>
@@ -49,13 +42,13 @@
     </table>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
-    <!-- <confirmation
+    <confirmation
     :title="'Confirmation Modal'"
     :message="'Are you sure you want to delete ?'"
     ref="confirms"
     @onConfirm="remove()"
     >
-    </confirmation> -->
+    </confirmation>
     <show-booking ref="booking"/>
   </div>
 </template>
@@ -63,6 +56,8 @@
 import AUTH from 'src/services/auth'
 import moment from 'moment'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
+import { ExportToCsv } from 'export-to-csv'
+import COMMON from 'src/common.js'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -80,43 +75,43 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Code Ascending',
-          payload: 'code',
+          title: 'Email Ascending',
+          payload: 'email',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Code Descending',
-          payload: 'code',
+          title: 'Email Descending',
+          payload: 'email',
           payload_value: 'desc',
           type: 'text'
         }, {
-          title: 'Start-Date Ascending',
-          payload: 'start_date',
+          title: 'CheckIn Ascending',
+          payload: 'check_in',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'Start-Date Ascending',
-          payload: 'start_date',
+          title: 'CheckIn Ascending',
+          payload: 'check_in',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'End-Date Ascending',
-          payload: 'end_date',
+          title: 'CheckOut Ascending',
+          payload: 'check_out',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'End-Date Descending',
-          payload: 'end_date',
+          title: 'CheckOut Descending',
+          payload: 'check_out',
           payload_value: 'desc',
           type: 'date'
         }, {
-          title: 'Limit Ascending',
-          payload: 'limit',
+          title: 'Status Ascending',
+          payload: 'status',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Limit Descending',
-          payload: 'limit',
+          title: 'Status Descending',
+          payload: 'status',
           payload_value: 'desc',
           type: 'text'
         }]
@@ -159,12 +154,11 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        account_id: this.user.userID,
         sort: sort
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('coupons/retrieve', parameter).then(response => {
+      this.APIRequest('customers/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {
@@ -207,6 +201,42 @@ export default {
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
       })
+    },
+    redirect(){
+    },
+    exportData(){
+      let options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: true,
+        title: 'Trackr',
+        useTextFile: false,
+        useBom: true,
+        // useKeysAsHeaders: true,
+        filename: COMMON.APP_NAME,
+        headers: ['Customer Id', 'Name', 'Email', 'Phone', 'Total Spent', 'Total Bookings']
+      }
+      var exportData = []
+      if(this.data.length > 0){
+        for (let index = 0; index < this.data.length; index++) {
+          const item = this.data[index]
+          let obj = {
+            customer_id: item.id,
+            name: item.name !== ' ' ? item.name : item.username,
+            email: item.email,
+            phone: item.phone !== null ? item.phone : 'N/A',
+            total_spent: item.total_spent,
+            total_bookings: item.total_bookings
+          }
+          exportData.push(obj)
+        }
+      }
+      if(exportData.length > 0){
+        var csvExporter = new ExportToCsv(options)
+        csvExporter.generateCsv(exportData)
+      }
     }
   }
 }
@@ -215,6 +245,7 @@ $(function () {
 })
 </script>
 <style lang="scss" scoped>
+@import "~assets/style/colors.scss";
   .table{
     border-collapse:separate !important;
     border-spacing:0 15px !important;
@@ -227,12 +258,20 @@ $(function () {
   .table-row{
     background-color:white;
   }
-  .table-row:hover{
-    cursor: pointer;
-    background: rgba(0,0,0, 0.1)
+  .box{
+    // border-color: $gray !important;
+    // border-style: solid;
+    border: 1px $gray solid;
+    padding: 30px 0px;
+    width: 30%;
+    text-align: center;
   }
-  .table-row:active{
-    background-color: white;
+  .column div{
+    float: right;
+    clear: none;
+    margin-right: 2%;
+  }
+  .box-title{
+    color: $secondary;
   }
 </style>
-
