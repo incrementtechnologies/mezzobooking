@@ -176,9 +176,9 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/add-features',
-    name: 'add_features',
-    component: resolve => require(['modules/settings/settingPages/AddRoomFeatures.vue'], resolve),
+    path: '/add-ons',
+    name: 'add_ons',
+    component: resolve => require(['modules/settings/settingPages/AddOn.vue'], resolve),
     meta: {
       tokenRequired: true
     }

@@ -69,7 +69,7 @@ export default {
     {
       title: 'Add-on Settings',
       description: 'Add or edit checkout and room add-ons',
-      route: 'add_on_setttings'
+      route: 'add-ons'
     }
   ],
   feature: [

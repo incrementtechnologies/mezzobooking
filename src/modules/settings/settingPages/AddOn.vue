@@ -1,5 +1,19 @@
 <template>
   <div style="margin: 56px;">
+    <div class="mb-5">
+      <span>
+          <span @click="$router.push('/settings')" class="backBtn">
+              <i class="fa fa-chevron-left"></i>
+              Back
+          </span>
+      </span>
+      <span style="float:right">
+          <span>
+              <b class="mr-5 actionBtn btn1">Room Add-ons</b>
+              <b class="actionBtn btn2">Checkout Add-ons</b>
+          </span>
+      </span>
+    </div>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -13,7 +27,11 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
+    <div>
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add</button>
+      <input type="text" class="form-control" placeholder="Type defaul here">
+      <input type="text" class="form-control addOns" placeholder="Type your add-ons here">
+    </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data" style="height:102px;">
         <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
@@ -25,13 +43,13 @@
                 <span style="font-size: 12px">{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
               </div>
               <div class="col-md-6 column">
-                <div class="box mr-1">
-                  <p class="box-title">Total Bookings</p>
-                  <span><b>{{item.total_bookings}}</b></span>
+                <div class="actionBtn ml-2">
+                  <i class="fa fa-pencil"></i>
+                  <span><i class="fa fa-trash"></i></span>
                 </div>
-                <div class="box">
-                  <p class="box-title">Total Spent</p>
-                  <span><b>PHP{{item.total_spent}}</b></span>
+                <div class="box mr-1">
+                  <p class="box-title">Total Price</p>
+                  <span><b>1,999</b></span>
                 </div>
               </div>
             </div>
@@ -251,10 +269,6 @@ $(function () {
     border: none;
     padding: 0;
   }
-  .btn{
-    width: 200px;
-    height: 50px
-  }
   .table-row{
     background-color:white;
   }
@@ -265,6 +279,26 @@ $(function () {
     text-align: center;
     margin-top: 20px;
   }
+  .actionBtn{
+    text-align: center;
+    margin-top: 20px;
+  }
+  .btn1{
+    color: $primary;
+  }
+  .btn2{
+    color: $secondary;
+  }
+  .fa-pencil, .fa-trash{
+    font-size: 20px !important;
+    cursor: pointer;
+  }
+  .fa-pencil{
+    color: $primary;
+  }
+  .fa-trash{
+    color: $danger
+  }
   .column div{
     float: right;
     clear: none;
@@ -272,5 +306,18 @@ $(function () {
   }
   .box-title{
     color: $secondary;
+  }
+  .form-control{
+    width: 20%;
+    float: right;
+    margin-right: 10px;
+    height: 40px !important
+  }
+
+  .addOns{
+    width: 40%;
+    float: right;
+    margin-right: 10px;
+    height: 40px !important
   }
 </style>
