@@ -24,7 +24,7 @@
 
 <script>
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
-import RoomTypeCard from 'src/generic/RoomTypeCard.vue'
+import RoomTypeCard from 'src/modules/generic/RoomTypeCard.vue'
 import AUTH from 'src/services/auth'
 export default {
   components: {

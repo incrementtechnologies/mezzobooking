@@ -64,12 +64,12 @@ export default {
     {
       title: 'Room Features',
       description: 'Add or edit room features',
-      route: 'room_features'
+      route: 'features'
     },
     {
       title: 'Add-on Settings',
       description: 'Add or edit checkout and room add-ons',
-      route: 'add_on_setttings'
+      route: 'add-ons'
     }
   ],
   feature: [

@@ -168,6 +168,20 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/features',
+    name: 'features',
+    component: resolve => require(['modules/settings/settingPages/Features.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/add-ons',
+    name: 'add_ons',
+    component: resolve => require(['modules/settings/settingPages/AddOn.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
