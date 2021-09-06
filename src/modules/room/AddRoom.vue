@@ -9,7 +9,7 @@
           </span>
           <span style="float:right">
               <span>
-                  <b class="mr-5 actionBtn">Go to Bookings</b>
+                  <b class="mr-5 actionBtn" @click="$router.push('/bookings')">Go to Bookings</b>
                   <b class="actionBtn" @click="create()">Save</b>
               </span>
           </span>
@@ -29,8 +29,8 @@
                 <label>Room Type</label>
                 <div class="input-group">
                     <select v-model="room_type" type="text" class="form-control-custom form-control">
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
+                        <option value="pending">Junior Suite</option>
+                        <option value="completed">Superior Suite</option>
                     </select>
                 </div>
             </div>
@@ -47,48 +47,97 @@
             v-model="description"
           >
           </textarea>
-            <!-- <div class="input-group">
-                <input v-model="description" rows="10" type="text" class="form-control-custom form-control">
-            </div> -->
+        </div>
+        <div class="mt-4">
+            <label>Features</label>
+            <searchField
+            :placeholder="'Select Features'"
+            :items="feature"
+            :styles="{
+              background: 'none',
+              color: '#84868B !important',
+              width: '100% !important',
+              borderRadius: '5px !important',
+              border: 'none',
+              border: !this.isValid && selectedFeature.length === 0 ? '1px solid red !important' : 'none',
+              marginBottom: !this.isValid && selectedFeature.length === 0 ? '0px' : '35px'
+            }"
+            :dropdownItemStyles="{
+              borderRadius: '5px',
+              overflow: 'hidden',
+              width: 'calc(100% - 30px)'
+            }"
+            :class="!this.isValid && selectedFeature.length === 0 ? 'multiselect__tags1' : 'none'"
+            :selectedIndex="selectedIndex"
+            @onSelect="onSelectAdd"
+            v-if="!isClearing"
+            ref="searchField"
+          />
+        </div>
+        <div class="mt-4">
+            <label>Add-ons</label>
+            <searchField
+            :placeholder="'Select Add-ons'"
+            :items="addOns"
+            :styles="{
+              background: 'none',
+              color: '#84868B !important',
+              width: '100% !important',
+              borderRadius: '5px !important',
+              border: 'none',
+              border: !this.isValid && selectedAddOns.length === 0 ? '1px solid red !important' : 'none',
+              marginBottom: !this.isValid && selectedAddOns.length === 0 ? '0px' : '35px'
+            }"
+            :dropdownItemStyles="{
+              borderRadius: '5px',
+              overflow: 'hidden',
+              width: 'calc(100% - 30px)'
+            }"
+            :class="!this.isValid && selectedAddOns.length === 0 ? 'multiselect__tags1' : 'none'"
+            :selectedIndex="selectedIndex"
+            @onSelect="onSelect"
+            v-if="!isClearing"
+            ref="searchField"
+          />
         </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <label>Limit Customers</label>
+                <label>Regular Price</label>
                 <div class="input-group">
-                    <input v-model="title" type="number" class="form-control-custom form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label>Limit per customer</label>
-                <div class="input-group">
-                    <input v-model="room_type"  type="number" class="form-control-custom form-control">
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <label>Type</label>
-                <div class="input-group">
-                    <input v-model="value"  type="number" class="form-control-custom form-control">
+                    <input v-model="regular_price"  type="number" class="form-control-custom form-control">
                     <select v-model="type" class="form-control" style="width:102px; height:60px">
                         <option value="PHP">PHP</option>
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
             <div class="col-md-6">
-                <label>Status</label>
+                <label>Price Terms</label>
                 <div class="input-group">
-                    <select v-model="status" type="text" class="form-control-custom form-control">
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
+                    <select v-model="price_terms" type="text" class="form-control-custom form-control">
+                        <option value="pending">Per Night</option>
+                        <option value="completed">Per Day</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="mt-4">
-            <button class="btn btn-danger footerBtn">Delete</button>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <label>Non-Refundable Price</label>
+                <div class="input-group">
+                    <input v-model="non_price"  type="number" class="form-control-custom form-control">
+                    <select v-model="type" class="form-control" style="width:102px; height:60px">
+                        <option value="PHP">PHP</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label>Status</label>
+                <div class="input-group">
+                    <select v-model="status" type="text" class="form-control-custom form-control">
+                        <option value="pending">Publish</option>
+                    </select>
+                </div>
+            </div>
         </div>
       </div>
   </div>
@@ -96,89 +145,70 @@
 
 <script>
 import AUTH from 'src/services/auth'
+import searchField from 'src/modules/generic/searchField.vue'
+import COMMON from 'src/common.js'
 export default {
   data(){
     return {
       data: null,
       user: AUTH.user,
-      code: null,
       description: null,
-      start_date: null,
-      end_date: null,
+      regular_price: null,
+      price_terms: null,
       title: null,
       room_type: null,
       type: null,
+      non_price: null,
       value: null,
       status: null,
-      errorMessage: null
+      errorMessage: null,
+      feature: COMMON.feature,
+      addOns: COMMON.addOns,
+      selectedFeature: [],
+      selectedAddOns: [],
+      isClearing: false,
+      isValid: true,
+      selectedIndex: null
     }
   },
-  mounted(){
-    if(this.$route.params.code !== undefined){
-      this.retrieveByCode()
-    }
+  components: {
+    searchField
   },
   methods: {
+    onSelect(data) {
+      this.selectedFeature = data
+      this.isEmpty = false
+    },
+    onSelectAdd(data) {
+      this.selectedAddOns = data
+      this.isEmpty = false
+    },
     create(){
-      if(this.code === null || this.description === null || this.start_date === null || this.end_date === null ||
-      this.title === null || this.room_type === null || this.type === null || this.value === null || this.status === null
+      if(this.description === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.value === null || this.status === null || this.type === null
       ){
         this.errorMessage = 'All fields are required'
         return
-      }else if(this.value <= 0 || this.title <= 0 || this.room_type <= 0){
+      }else if(this.regular_price <= 0 || this.non_price <= 0){
         this.errorMessage = 'Value should be greater than 0'
         return
       }
       let parameter = {
         account_id: this.user.userID,
-        code: this.code,
-        description: this.description,
-        start_date: this.start_date,
-        end_date: this.end_date,
         title: this.title,
+        description: this.description,
+        status: this.status,
+        price: this.regular_price,
+        // not added sa db
+        selectedFeature: this.selectedFeature,
+        selectedAddOns: this.selectedAddOns,
+        price_terms: this.price_terms,
         room_type: this.room_type,
-        type: this.type,
-        value: this.value,
-        status: this.status
+        non_price: this.non_price,
+        value: this.value
       }
-      if(this.data !== null){
-        parameter['id'] = this.data.id
-        this.APIRequest('coupons/update', parameter).then(response => {
-          if(response.data !== null){
-            this.$router.push('/coupons')
-          }
-        })
-      }else{
-        this.APIRequest('coupons/create', parameter).then(response => {
-          if(response.data !== null){
-            this.$router.push('/coupons')
-          }
-        })
-      }
-    },
-    retrieveByCode(){
-      let couponCode = this.$route.params.code
-      let parameters = {
-        condition: [{
-          column: 'code', value: couponCode, clause: '='
-        }],
-        account_id: this.user.userID
-      }
-      this.APIRequest('coupons/retrieve_coupon', parameters).then(response => {
-        console.log('============', response)
-        if(response.data.length > 0){
-          this.data = response.data[0]
-          this.code = this.data.code
-          this.description = this.data.description
-          this.start_date = this.data.start_date
-          this.end_date = this.data.end_date
-          this.title = this.data.title
-          this.room_type = this.data.room_type
-          this.type = this.data.type
-          this.value = this.data.value
-          this.status = this.data.status
-        }else{
-          this.data = null
+      this.APIRequest('rooms/create', parameter).then(response => {
+        if(response.data !== null){
+          this.$router.push('/rooms')
         }
       })
     }
