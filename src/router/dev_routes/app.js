@@ -120,6 +120,13 @@ export default{
       tokenRequired: true
     }
   }, {
+    path: '/add-rooms/:code?',
+    name: 'add-rooms',
+    component: resolve => require(['modules/room/AddRoom.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
     path: '/settings',
     name: 'settings',
     component: resolve => require(['modules/settings/List.vue'], resolve),

@@ -71,5 +71,33 @@ export default {
       description: 'Add or edit checkout and room add-ons',
       route: 'add_on_setttings'
     }
+  ],
+  feature: [
+    {
+      id: 1,
+      room: '1 queen bed'
+    },
+    {
+      id: 2,
+      room: 'In-room safety'
+    },
+    {
+      id: 3,
+      room: '1 master bed'
+    }
+  ],
+  addOns: [
+    {
+      id: 1,
+      room: '1 queen bed Add'
+    },
+    {
+      id: 2,
+      room: 'In-room safety Add'
+    },
+    {
+      id: 3,
+      room: '1 master bed Add'
+    }
   ]
 }
