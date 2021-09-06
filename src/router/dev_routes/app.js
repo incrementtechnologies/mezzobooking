@@ -161,6 +161,20 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/features',
+    name: 'features',
+    component: resolve => require(['modules/settings/settingPages/Features.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/add-features',
+    name: 'add_features',
+    component: resolve => require(['modules/settings/settingPages/AddRoomFeatures.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

@@ -211,7 +211,7 @@
 /*-------------- Large Screens for Desktop --------------*/
 @media (min-width: 1200px){
   .main-sidebar{
-    width:18%;
+    width:20%;
     float: left;
   }
   .sidebar-collapse{
@@ -222,9 +222,9 @@
     display: block;
   }
   .content-holder{
-    width: 60%;
+    width: 50%;
     margin: 60px 0px 0px 0px;
-    margin-right: 15%;
+    margin-right: 18%;
     float: right; /*- changed float left to right -*/
   }
   /*  Change with Menu Toggled */
