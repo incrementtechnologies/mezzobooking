@@ -139,6 +139,18 @@
                 </div>
             </div>
         </div>
+        <div class="mt-4">
+          <label>Images</label>
+          <imageupload></imageupload>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-8">
+              <button class="btn btn-danger footerBtn">Delete</button>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-secondary footerBtn">Save</button>
+            </div>
+        </div>
       </div>
   </div>
 </template>
@@ -146,6 +158,7 @@
 <script>
 import AUTH from 'src/services/auth'
 import searchField from 'src/modules/generic/searchField.vue'
+import imageupload from 'src/modules/generic/ImageUpload.vue'
 import COMMON from 'src/common.js'
 export default {
   data(){
@@ -172,7 +185,8 @@ export default {
     }
   },
   components: {
-    searchField
+    searchField,
+    imageupload
   },
   methods: {
     onSelect(data) {
