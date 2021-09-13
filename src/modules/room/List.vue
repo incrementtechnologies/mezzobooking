@@ -14,26 +14,29 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
-    <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
+    <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button> -->
+    <div v-if="data !== null && data.length > 0" v-for="(item, index) in data" :key="index">
+      <RoomCard :list="item" :actionBtn="true"></RoomCard>
+    </div>
+    <!-- <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
           <td>
-            <b><span style="font-size: 14px">{{item.email}}-{{item.status}}</span></b><br/>
-            <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
+            <b><span style="font-size: 14px">{{item.created_at}}-{{item.status}}</span></b><br/>
+            <span style="font-size: 12px">{{item.title}}-{{item.description}}</span>
           </td>
           <td>
-            <div style="text-align:center"><b>Adults</b> <br/>{{item.details.adults}}</div>
+            <div style="text-align:center"><b>Adults</b> <br/>{{item.description}}</div>
           </td>
           <td>
-            <div style="text-align:center"><b>Children</b> <br/>{{item.details.children}}</div>
+            <div style="text-align:center"><b>Children</b> <br/>{{item.description}}</div>
           </td>
           <td style="padding: 20px 0;">
             <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.price}}</div>
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Rooms!'" :action="'No activity at the moment.'"></empty>
     <confirmation
     :title="'Confirmation Modal'"
@@ -47,13 +50,12 @@
 </template>
 <script>
 import AUTH from 'src/services/auth'
-import moment from 'moment'
+import RoomCard from 'src/modules/generic/RoomCard.vue'
 import COMMON from 'src/common.js'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
-import { ExportToCsv } from 'export-to-csv'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
   },
   data() {
     return {
@@ -126,7 +128,8 @@ export default {
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
     'show-booking': require('modules/booking/ReserveeInformation.vue'),
-    Pager
+    Pager,
+    RoomCard
   },
   methods: {
     retrieve(sort = null, filter = null, flag = null){
@@ -147,23 +150,14 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
+        account_id: this.user.userID,
         sort: sort
       }
       $('#loading').css({'display': 'block'})
-      console.log(flag)
-      this.APIRequest('reservations/retrieve_bookings', parameter).then(response => {
+      this.APIRequest('rooms/retrieve', parameter).then(response => {
+        console.log('[response]', response)
         $('#loading').css({'display': 'none'})
-        if(flag === true) {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-            this.data.push(element)
-          })
-        } else {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-          })
-          this.data = response.data
-        }
+        this.data = response.data
       })
     },
     update(){
@@ -197,41 +191,6 @@ export default {
     },
     redirect(){
       this.$router.push('/booking-details')
-    },
-    exportData(){
-      let options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: true,
-        title: 'Trackr',
-        useTextFile: false,
-        useBom: true,
-        // useKeysAsHeaders: true,
-        filename: COMMON.APP_NAME,
-        headers: ['Name', 'Check_in', 'Check_out', 'No. of adults', 'No. of children', 'status', 'Amount']
-      }
-      var exportData = []
-      if(this.data.length > 0){
-        for (let index = 0; index < this.data.length; index++) {
-          const item = this.data[index]
-          let obj = {
-            name: item.email,
-            check_in: item.check_in,
-            check_out: item.check_out,
-            no_of_adults: item.details.adults,
-            no_of_children: item.details.children,
-            status: item.status,
-            amount: item.price
-          }
-          exportData.push(obj)
-        }
-      }
-      if(exportData.length > 0){
-        var csvExporter = new ExportToCsv(options)
-        csvExporter.generateCsv(exportData)
-      }
     }
   }
 }
