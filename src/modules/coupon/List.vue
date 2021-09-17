@@ -28,7 +28,7 @@
             <div style="text-align:center"><b>End Date</b> <br/>{{item.end_date}}</div>
           </td>
           <td style="width: 200px">
-            <div style="text-align:center"><b>Limit</b> <br/>{{item.limit_customer}}</div>
+            <div style="text-align:center"><b>Limit</b> <br/>{{item.limit}}</div>
           </td>
           <td style="padding-left: 0; padding-right: 0; width: 200px">
             <div class="row">

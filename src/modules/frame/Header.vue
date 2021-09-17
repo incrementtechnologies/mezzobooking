@@ -772,48 +772,48 @@ export default {
     display(){
     },
     initPusher(){
-      console.log('hi')
-      if(CONFIG.PUSHER.flag === 'pusher'){
-        window.Echo = new Echo({
-          broadcaster: 'pusher',
-          key: CONFIG.PUSHER.key,
-          cluster: 'ap1',
-          encrypted: true
-        })
-      }else{
-        window.Echo = new Echo({
-          broadcaster: 'pusher',
-          key: CONFIG.PUSHER.key,
-          wsHost: CONFIG.PUSHER.wsHost,
-          wsPort: CONFIG.PUSHER.wsPort,
-          disableStats: true,
-          enabledTransports: ['ws', 'wss']
-        })
-      }
-      window.Echo.channel(COMMON.pusher.channel)
-      .listen('call', e => {
-        console.log(e)
-      })
-      .listen(COMMON.pusher.notifications, e => {
-        AUTH.addNotification(e.data)
-      })
-      .listen(COMMON.pusher.messages, e => {
-        AUTH.addMessage(e.data)
-      })
-      .listen(COMMON.pusher.messageGroup, e => {
-        if(parseInt(e.data.id) === AUTH.messenger.messengerGroupId){
-          console.log('group', e.data)
-          AUTH.messenger.group.status = parseInt(e.data.status)
-          AUTH.messenger.group.validations = e.data.validations
-          AUTH.messenger.group.rating = e.data.rating
-          AUTH.messenger.group.created_at_human = e.data.created_at_human
-          AUTH.playNotificationSound()
-          if(e.data.message_update === true){
-            // update messages
-            this.retrieveMessages(parseInt(e.data.id))
-          }
-        }
-      })
+      // console.log('hi')
+      // if(CONFIG.PUSHER.flag === 'pusher'){
+      //   window.Echo = new Echo({
+      //     broadcaster: 'pusher',
+      //     key: CONFIG.PUSHER.key,
+      //     cluster: 'ap1',
+      //     encrypted: true
+      //   })
+      // }else{
+      //   window.Echo = new Echo({
+      //     broadcaster: 'pusher',
+      //     key: CONFIG.PUSHER.key,
+      //     wsHost: CONFIG.PUSHER.wsHost,
+      //     wsPort: CONFIG.PUSHER.wsPort,
+      //     disableStats: true,
+      //     enabledTransports: ['ws', 'wss']
+      //   })
+      // }
+      // window.Echo.channel(COMMON.pusher.channel)
+      // .listen('call', e => {
+      //   console.log(e)
+      // })
+      // .listen(COMMON.pusher.notifications, e => {
+      //   AUTH.addNotification(e.data)
+      // })
+      // .listen(COMMON.pusher.messages, e => {
+      //   AUTH.addMessage(e.data)
+      // })
+      // .listen(COMMON.pusher.messageGroup, e => {
+      //   if(parseInt(e.data.id) === AUTH.messenger.messengerGroupId){
+      //     console.log('group', e.data)
+      //     AUTH.messenger.group.status = parseInt(e.data.status)
+      //     AUTH.messenger.group.validations = e.data.validations
+      //     AUTH.messenger.group.rating = e.data.rating
+      //     AUTH.messenger.group.created_at_human = e.data.created_at_human
+      //     AUTH.playNotificationSound()
+      //     if(e.data.message_update === true){
+      //       // update messages
+      //       this.retrieveMessages(parseInt(e.data.id))
+      //     }
+      //   }
+      // })
     },
     retrieveMessages(id){
       let parameter = {

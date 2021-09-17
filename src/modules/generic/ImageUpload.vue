@@ -1,7 +1,7 @@
 <template>
   <div class="row ml-1">
-      <div class="column" v-for="(image, idx) in images" :key="idx">
-        <img :src="image" class="image">
+      <div class="column" v-for="(image, idx) in features" :key="idx">
+        <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
         <!-- <div class="removeIcon">
           <i class="fa fa-close removeImage"></i>
         </div> -->
@@ -20,6 +20,7 @@ import AUTH from 'src/services/auth'
 import axios from 'axios'
 import CONFIG from 'src/config.js'
 export default {
+  props: ['features'],
   data(){
     return {
       imageError: null,
@@ -60,9 +61,12 @@ export default {
       formData.append('account_id', this.user.userID)
       formData.append('payload', 'room_type')
       $('#loading').css({'display': 'block'})
-      axios.post(this.config.BACKEND_URL + '/images/upload_mezzo?token=' + AUTH.tokenData.token, formData).then(response => {
+      axios.post(this.config.BACKEND_URL + '/images/upload?token=' + AUTH.tokenData.token, formData).then(response => {
         $('#loading').css({'display': 'none'})
-        this.images.push(URL.createObjectURL(this.image))
+        let temp = {
+          url: URL.createObjectURL(this.image)
+        }
+        this.features.push(temp)
         if(response.data !== null){
           this.$emit('setImage', response.data)
         }

@@ -4,19 +4,19 @@
             <div class="card" style="min-height: 150px">
                 <div class="card-horizontal">
                     <div class="img-square-wrapper">
-                        <img class="" style="min-height: 150px; width:150px" :src="data.payload_value.images !== undefined ? config.BACKEND_URL + data.payload_value.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
+                        <img class="" style="min-height: 150px; width:150px" :src="data.image !== null ? config.BACKEND_URL + data.image : 'http://via.placeholder.com/300x180'" alt="Card image cap">
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
                             <span style="float:right">
                                 <i class="fa fa-pencil ml-2 actionBtn" @click="$router.push('/add-room-types/'+ data.id)"></i>
-                                <i class="fa fa-trash ml-2 actionBtn"></i>
+                                <i class="fa fa-trash ml-2 actionBtn" @click="remove(data.id)"></i>
                             </span>
-                            <span><b  style="font-size:24px">{{data.category}}</b><br>
+                            <span><b  style="font-size:24px">{{data.payload_value}}</b><br>
                                 Date Created: {{data.created_at}}
                             </span>
                         </div>
-                        <p class="card-text">{{data.payload_value.description}}</p>
+                        <p class="card-text">{{data.category}}</p>
                     </div>
                 </div>
             </div>
@@ -31,6 +31,11 @@ export default {
   data(){
     return {
       config: CONFIG
+    }
+  },
+  methods: {
+    remove(id){
+      this.$parent.delete(id)
     }
   }
 }

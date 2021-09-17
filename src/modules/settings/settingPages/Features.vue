@@ -14,11 +14,11 @@
       v-if="data !== null"
     /></div>
     <div>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add</button>
-      <input type="text" class="form-control" placeholder="Type feature here">
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;"  @click="create()">Add</button>
+      <input type="text" v-model="title" class="form-control" placeholder="Type feature here">
     </div>
     <table class="table table-responsive">
-    <div class="row">
+    <div class="row" v-for="(feature, idx) in data" :key="idx">
         <div class="col-12 mt-3">
             <div class="card" style="min-height: 106px">
                 <div class="card-horizontal">
@@ -28,8 +28,8 @@
                                 <i class="fa fa-pencil ml-2 actionBtn" @click="$router.push('/add-room-types')"></i>
                                 <i class="fa fa-trash ml-2 actionBtn"></i>
                             </span>
-                            <span><b  style="font-size:24px">1 King Bed</b><br>
-                                Date Created: 2021-09-02 06:10:02
+                            <span><b  style="font-size:24px">{{feature.payload_value}}</b><br>
+                                Date Created: {{feature.created_at}}
                             </span>
                         </div>
                     </div>
@@ -46,6 +46,9 @@ import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 import COMMON from 'src/common.js'
 import AUTH from 'src/services/auth'
 export default {
+  mounted(){
+    this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
+  },
   data(){
     return {
       numPages: null,
@@ -58,47 +61,29 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
-          payload: 'email',
+          title: 'Title Ascending',
+          payload: 'payload_value',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Email Descending',
-          payload: 'email',
-          payload_value: 'desc',
-          type: 'text'
-        }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Ascending',
-          payload: 'check_out',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Descending',
-          payload: 'check_out',
+          title: 'Title Descending',
+          payload: 'payload_value',
           payload_value: 'desc',
           type: 'date'
         }, {
-          title: 'Status Ascending',
-          payload: 'status',
+          title: 'Created-At Ascending',
+          payload: 'create-at',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Status Descending',
-          payload: 'status',
+          title: 'Created-At Descending',
+          payload: 'created_at',
           payload_value: 'desc',
           type: 'text'
         }]
-      }]
+      }],
+      title: null,
+      data: []
     }
   },
   components: {
@@ -107,6 +92,55 @@ export default {
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
     'show-booking': require('modules/booking/ReserveeInformation.vue'),
     Pager
+  },
+  methods: {
+    create(){
+      let parameter = {
+        account_id: this.user.userID,
+        payload: 'feature',
+        category: null,
+        payload_value: this.title,
+        status: 'create'
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('payloads/create_with_images', parameter, response => {
+        $('#loading').css({'display': 'none'})
+        this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
+      })
+    },
+    retrieve(sort = null, filter = null, flag = null){
+      if(flag === true) {
+        this.offset += this.limit
+      }
+      if(filter !== null){
+        this.currentFilter = filter
+      }
+      if(sort !== null){
+        this.currentSort = sort
+      }
+      let parameter = {
+        condition: [{
+          value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
+          column: this.currentFilter.column,
+          clause: 'like'
+        }],
+        limit: flag ? this.limit : this.offset + this.limit,
+        offset: flag ? this.offset : 0,
+        sort: sort,
+        payload: 'feature'
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('payloads/retrieve_with_images', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0){
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          this.data = response.data
+        }else{
+          this.data = []
+          this.numPages = null
+        }
+      })
+    }
   }
 }
 </script>
