@@ -28,9 +28,10 @@
       v-if="data !== null"
     /></div>
     <div>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add</button>
-      <input type="text" class="form-control" placeholder="Type defaul here">
-      <input type="text" class="form-control addOns" placeholder="Type your add-ons here">
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="create()">Add</button>
+      <!-- <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add</button> -->
+      <input type="number" class="form-control" placeholder="Type default price" v-model="price">
+      <input type="text" class="form-control addOns" placeholder="Type your add-ons here" v-model="addOns">
     </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data" style="height:102px;">
@@ -48,7 +49,7 @@
                   <span><i class="fa fa-trash"></i></span>
                 </div>
                 <div class="box mr-1">
-                  <p class="box-title">Total Price</p>
+                  <p class="box-title">Default Price</p>
                   <span><b>1,999</b></span>
                 </div>
               </div>
@@ -59,13 +60,14 @@
     </table>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
-    <confirmation
-    :title="'Confirmation Modal'"
-    :message="'Are you sure you want to delete ?'"
-    ref="confirms"
-    @onConfirm="remove()"
-    >
-    </confirmation>
+    <Confirmation
+      ref="confirm"
+      :message="'Are you sure do you want to delete this Add?'"
+      :title="'Confirmation'"
+      @onConfirm="e => {
+        remove(e)
+      }"
+    ></Confirmation>
     <show-booking ref="booking"/>
   </div>
 </template>
@@ -73,8 +75,7 @@
 import AUTH from 'src/services/auth'
 import moment from 'moment'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
-import { ExportToCsv } from 'export-to-csv'
-import COMMON from 'src/common.js'
+import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -142,7 +143,10 @@ export default {
       reservationStatus: false,
       click: false,
       numPages: null,
-      activePage: 1
+      activePage: 1,
+      addOns: null,
+      price: 0,
+      errorMessage: null
     }
   },
   components: {
@@ -150,7 +154,8 @@ export default {
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
     'show-booking': require('modules/booking/ReserveeInformation.vue'),
-    Pager
+    Pager,
+    Confirmation
   },
   methods: {
     retrieve(sort = null, filter = null, flag = null){
@@ -168,6 +173,11 @@ export default {
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
           column: this.currentFilter.column,
           clause: 'like'
+        },
+        {
+          value: this.user.userID,
+          column: 'account_id',
+          clause: 'like'
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
@@ -175,7 +185,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('customers/retrieve', parameter).then(response => {
+      this.APIRequest('add-on/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {
@@ -190,70 +200,59 @@ export default {
         }
       })
     },
+    showUpdate(item){
+      this.item = item
+      this.addOns = item.payload_value
+      this.canUpdate = true
+    },
     update(){
       let parameter = {
         id: this.editId,
         status: this.status
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('reservations/update', parameter).then(response => {
+      this.APIRequest('add-on/update', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
-          $('#editBooking').modal('hide')
-          this.APIRequest('mezzo/update', {id: this.synqt, status: this.status}).then(response => {
-            console.log(response)
-          })
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
       })
+    },
+    showDeleteConfirmation(item){
+      this.$refs.confirm.show(item.id)
     },
     remove(){
       let parameter = {
         id: this.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('reservations/delete', parameter).then(response => {
+      this.APIRequest('add-on/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
       })
     },
-    redirect(){
-    },
-    exportData(){
-      let options = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: true,
-        title: 'Trackr',
-        useTextFile: false,
-        useBom: true,
-        // useKeysAsHeaders: true,
-        filename: COMMON.APP_NAME,
-        headers: ['Customer Id', 'Name', 'Email', 'Phone', 'Total Spent', 'Total Bookings']
+    create(){
+      if(this.addOns == null){
+        this.errorMessage = 'All fields are required'
+        return
+      }else if(this.price <= 0){
+        this.errorMessage = 'Value should be greater than 0'
+        return
       }
-      var exportData = []
-      if(this.data.length > 0){
-        for (let index = 0; index < this.data.length; index++) {
-          const item = this.data[index]
-          let obj = {
-            customer_id: item.id,
-            name: item.name !== ' ' ? item.name : item.username,
-            email: item.email,
-            phone: item.phone !== null ? item.phone : 'N/A',
-            total_spent: item.total_spent,
-            total_bookings: item.total_bookings
-          }
-          exportData.push(obj)
+      let parameter = {
+        account_id: this.user.userID,
+        price: this.price,
+        addOns: this.addOns
+      }
+      this.APIRequest('add-on/create', parameter).then(response => {
+        if(response.data !== null){
+          this.$router.push('/add-ons')
         }
-      }
-      if(exportData.length > 0){
-        var csvExporter = new ExportToCsv(options)
-        csvExporter.generateCsv(exportData)
-      }
+      })
+    },
+    redirect(){
     }
   }
 }
