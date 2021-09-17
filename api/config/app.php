@@ -183,6 +183,7 @@ return [
         Increment\Common\Payload\PayloadServiceProvider::class,
         Increment\Hotel\Reservation\ReservationServiceProvider::class,
         Increment\Hotel\Room\RoomServiceProvider::class,
+        Increment\Hotel\AddOn\AddOnServiceProvider::class,
         /*
          * Application Service Providers...
          */
