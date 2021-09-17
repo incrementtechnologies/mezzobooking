@@ -2,9 +2,9 @@
   <div class="row ml-1">
       <div class="column" v-for="(image, idx) in features" :key="idx">
         <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
-        <!-- <div class="removeIcon">
-          <i class="fa fa-close removeImage"></i>
-        </div> -->
+        <div class="removeIcon">
+          <i class="fa fa-close removeImage" @click="removeImage(image)"></i>
+        </div>
       </div>
       <div class="column">    
         <div class="addImage" @click="clickAddImage()">
@@ -71,6 +71,13 @@ export default {
           this.$emit('setImage', response.data)
         }
       })
+    },
+    removeImage(data){
+      console.log(this.features.indexOf(data))
+      this.features.splice(this.features.indexOf(data), 1)
+      if(data.id !== undefined){
+        this.$parent.removeImage(data.id)
+      }
     }
   }
 }
@@ -107,8 +114,8 @@ export default {
 }
 .removeIcon{
   position: absolute;
-  left: 36.7%;
-  bottom: 41%;
+  left: 44%;
+  top: 105%;
   background-color: red;
   padding: 3px;
   // height: 25px;
