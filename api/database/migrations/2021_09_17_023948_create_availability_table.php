@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableCoupon extends Migration
+class CreateAvailabilityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,13 @@ class CreateTableCoupon extends Migration
      */
     public function up()
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::create('availabilities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('account_id');
-            $table->string('code');
-            $table->string('currency');
-            $table->string('country');
-            $table->string('locality');
-            $table->string('type');
-            $table->double('amount');
-            $table->bigInteger('limit');
+            $table->string('payload');
+            $table->string('payload_value');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->string('payload')->nullable();
-            $table->string('payload_value')->nullable();
+            $table->bigInteger('limit');
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
@@ -40,6 +33,6 @@ class CreateTableCoupon extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coupons');
+        Schema::dropIfExists('availabilities');
     }
 }
