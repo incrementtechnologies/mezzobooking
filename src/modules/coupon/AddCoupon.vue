@@ -44,7 +44,7 @@
             <div class="col-md-6">
                 <label>Limit Customers</label>
                 <div class="input-group">
-                    <input v-model="limit_customer" type="number" class="form-control-custom form-control">
+                    <input v-model="limit" type="number" class="form-control-custom form-control">
                 </div>
             </div>
             <div class="col-md-6">
@@ -58,8 +58,8 @@
             <div class="col-md-6">
                 <label>Type</label>
                 <div class="input-group">
-                    <input v-model="value"  type="number" class="form-control-custom form-control">
-                    <select v-model="type" class="form-control" style="width:102px; height:60px">
+                    <input v-model="amount"  type="number" class="form-control-custom form-control">
+                    <select v-model="currency" class="form-control" style="width:102px; height:60px">
                         <option value="PHP">PHP</option>
                     </select>
                 </div>
@@ -94,10 +94,10 @@ export default {
       description: null,
       start_date: null,
       end_date: null,
-      limit_customer: null,
+      limit: null,
       limit_per_customer: null,
-      type: null,
-      value: null,
+      currency: null,
+      amount: null,
       status: null,
       errorMessage: null
     }
@@ -110,11 +110,11 @@ export default {
   methods: {
     create(){
       if(this.code === null || this.description === null || this.start_date === null || this.end_date === null ||
-      this.limit_customer === null || this.limit_per_customer === null || this.type === null || this.value === null || this.status === null
+      this.limit === null || this.limit_per_customer === null || this.currency === null || this.amount === null || this.status === null
       ){
         this.errorMessage = 'All fields are required'
         return
-      }else if(this.value <= 0 || this.limit_customer <= 0 || this.limit_per_customer <= 0){
+      }else if(this.value <= 0 || this.limit <= 0 || this.limit_per_customer <= 0){
         this.errorMessage = 'Value should be greater than 0'
         return
       }
@@ -124,10 +124,10 @@ export default {
         description: this.description,
         start_date: this.start_date,
         end_date: this.end_date,
-        limit_customer: this.limit_customer,
+        limit: this.limit,
         limit_per_customer: this.limit_per_customer,
-        type: this.type,
-        value: this.value,
+        currency: this.currency,
+        amount: this.amount,
         status: this.status
       }
       if(this.data !== null){
@@ -161,7 +161,7 @@ export default {
           this.description = this.data.description
           this.start_date = this.data.start_date
           this.end_date = this.data.end_date
-          this.limit_customer = this.data.limit_customer
+          this.limit = this.data.limit
           this.limit_per_customer = this.data.limit_per_customer
           this.type = this.data.type
           this.value = this.data.value
