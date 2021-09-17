@@ -17,12 +17,13 @@ class CreateTableCoupon extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('account_id');
             $table->string('code');
+            $table->string('description');
             $table->string('currency');
-            $table->string('country');
-            $table->string('locality');
-            $table->string('type');
+            $table->string('country')->nullable();
+            $table->string('locality')->nullable();
             $table->double('amount');
             $table->bigInteger('limit');
+            $table->bigInteger('limit_per_customer');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('payload')->nullable();

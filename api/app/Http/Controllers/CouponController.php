@@ -45,12 +45,14 @@ class CouponController extends APIController
         $res = Coupon::where('id', '=', $data['id'])->update(array(
             'code' => $data['code'],
             'description' => $data['description'],
+            'currency' => $data['currency'],
+            'amount' => $data['amount'],
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
-            'limit_customer' => $data['limit_customer'],
+            'limit' => $data['limit'],
             'limit_per_customer' => $data['limit_per_customer'],
-            'type' => $data['type'],
-            'value' => $data['value'],
+            'payload' => $data['payload'],
+            'payload_value' => $data['payload_value'],
             'status' => $data['status'],
             'updated_at' => Carbon::now(),
         ));
