@@ -25,8 +25,8 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <span style="float:right">
-                                <i class="fa fa-pencil ml-2 actionBtn" @click="$router.push('/add-room-types')"></i>
-                                <i class="fa fa-trash ml-2 actionBtn"></i>
+                                <i class="fa fa-pencil ml-2 actionBtn" @click="showUpdate(item)"></i>
+                                <i class="fa fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(item)"></i>
                             </span>
                             <span><b  style="font-size:24px">{{feature.payload_value}}</b><br>
                                 Date Created: {{feature.created_at}}
@@ -38,13 +38,22 @@
         </div>
     </div>
     </table>
+    <Confirmation
+      ref="confirm"
+      :message="'Are you sure do you want to delete this feature?'"
+      :title="'Confirmation'"
+      @onConfirm="e => {
+        remove(e)
+      }"
+    ></Confirmation>
   </div>
 </template>
 
 <script>
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
-import COMMON from 'src/common.js'
+import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 import AUTH from 'src/services/auth'
+import moment from 'moment'
 export default {
   mounted(){
     this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
@@ -58,6 +67,7 @@ export default {
       currentFilter: null,
       currentSort: null,
       user: AUTH.user,
+      feature: null,
       category: [{
         title: 'Sort By',
         sorting: [{

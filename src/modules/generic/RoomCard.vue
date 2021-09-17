@@ -8,11 +8,14 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-4">
+                          <!-- //lacking of room_type -->
                           <span><b>Junior Suite</b></span>
-                          <span style="float:right"><b>P2,000/Night</b><i class="fa fa-pencil ml-2"></i></span>
+                          <!-- //lacking of currency and price terms -->
+                          <span style="float:right"><b>PHP{{list.price !== null ? list.price : 'No indicated price'}}/Night</b><i class="fa fa-pencil ml-2"></i></span>
                         </div>
-                        <p class="card-text">For a more luxurious experience, our 30 sqm Junior Suite offers a posh set-up, allowing a relaxing bathing experience in the bath tub to cap off the busy day.</p>
+                        <p class="card-text">{{list.description !== null ? list.description : 'No description'}}</p>
                         <div class="row">
+                          <!-- // lacking selectedFeature -->
                           <div class="col-md-6">
                             <span><i class="fa fa-check"></i></span>
                             <span>1 Queen Bed</span>
@@ -23,19 +26,20 @@
                           </div>
                         </div>
                         <div class="row">
+                          <!-- // lacking of addOns -->
                           <div class="col-md-6">
                             <span><i class="fa fa-check"></i></span>
                             <span>Bath Tub</span>
                           </div>
                           <div class="col-md-6">
                             <span><i class="fa fa-check"></i></span>
-                            <span>Complimentary high-speed internet access</span>
+                            <span>Comfort Room</span>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-6">
                             <span><i class="fa fa-check"></i></span>
-                            <span>Lounge Sofa</span>
+                            <span>High-speed internet access</span>
                           </div>
                         </div>
                         <div class="mt-3" v-if="actionBtn===true">
@@ -51,7 +55,7 @@
 
 <script>
 export default {
-  props: ['actionBtn']
+  props: ['actionBtn', 'list']
 }
 </script>
 

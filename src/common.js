@@ -8,7 +8,7 @@ export default {
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Coupons', icon: 'fas fa-gift', path: 'coupons', flag: false, subMenu: null},
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Customers', icon: 'fas fa-address-book', path: 'customers', flag: false, subMenu: null},
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Accounts', icon: 'fa fa-users', path: 'accounts', flag: false, subMenu: null},
-    {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Setting', icon: 'fa fa-cog', path: 'settings', flag: false, subMenu: null},
+    {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Settings', icon: 'fa fa-cog', path: 'settings', flag: false, subMenu: null},
     {accountType: 'ADMIN', showOnAdmin: true, accountStatus: 'ADMIN', description: 'Logout', icon: 'fas fa-sign-out-alt', path: 'logout', flag: false, subMenu: null}
 
   ],
