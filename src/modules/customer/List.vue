@@ -59,7 +59,7 @@ import { ExportToCsv } from 'export-to-csv'
 import COMMON from 'src/common.js'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'email': 'asc'}, {column: 'email', value: ''}, false)
   },
   data() {
     return {
@@ -157,7 +157,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('customers/retrieve', parameter).then(response => {
+      this.APIRequest('accounts/retrieve_accounts_mezzo', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {

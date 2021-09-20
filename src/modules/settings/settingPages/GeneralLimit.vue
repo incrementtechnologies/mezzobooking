@@ -21,9 +21,9 @@
           <td>
             <div class="row" style="margin-left: 2%;padding-right: 2%">
               <div class="col-md-6" style="padding: 20px 0px">
-                <b><span style="font-size: 12px">Cutomer ID: {{item.id}}</span></b><br/>
-                <span style="font-size: 24px; font-weight: bold">{{item.name !== " " ? item.name : item.username}}</span><br/>
-                <span style="font-size: 12px">{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
+                <span style="font-size: 12px">{{item.start_date}} - {{item.end_date}}</span><br/>
+                <span style="font-size: 24px; font-weight: bold">{{item.limit}} available only</span><br/>
+                <span style="font-size: 12px">{{item.payload_value}}</span>
               </div>
             </div>
           </td>
@@ -50,7 +50,7 @@ import { ExportToCsv } from 'export-to-csv'
 import COMMON from 'src/common.js'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'limit': 'asc'}, {column: 'limit', value: ''}, false)
   },
   data() {
     return {
@@ -65,43 +65,43 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
-          payload: 'email',
+          title: 'Limit Ascending',
+          payload: 'limit',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Email Descending',
-          payload: 'email',
+          title: 'Limit Descending',
+          payload: 'limit',
           payload_value: 'desc',
           type: 'text'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
+          title: 'Start Date Ascending',
+          payload: 'start_date',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
+          title: 'Start Date Ascending',
+          payload: 'start_date',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'CheckOut Ascending',
-          payload: 'check_out',
+          title: 'End Date Ascending',
+          payload: 'end_date',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'CheckOut Descending',
-          payload: 'check_out',
+          title: 'End Date Descending',
+          payload: 'end_date',
           payload_value: 'desc',
           type: 'date'
         }, {
-          title: 'Status Ascending',
-          payload: 'status',
+          title: 'Room Type Ascending',
+          payload: 'type',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Status Descending',
-          payload: 'status',
+          title: 'Room Type Descending',
+          payload: 'type',
           payload_value: 'desc',
           type: 'text'
         }]
@@ -148,7 +148,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('customers/retrieve', parameter).then(response => {
+      this.APIRequest('availabilities/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {
@@ -201,24 +201,22 @@ export default {
         decimalSeparator: '.',
         showLabels: true,
         showTitle: true,
-        title: 'Trackr',
+        title: 'Limit',
         useTextFile: false,
         useBom: true,
         // useKeysAsHeaders: true,
         filename: COMMON.APP_NAME,
-        headers: ['Customer Id', 'Name', 'Email', 'Phone', 'Total Spent', 'Total Bookings']
+        headers: ['Room Type', 'Limit', 'Start Date', 'End Date']
       }
       var exportData = []
       if(this.data.length > 0){
         for (let index = 0; index < this.data.length; index++) {
           const item = this.data[index]
           let obj = {
-            customer_id: item.id,
-            name: item.name !== ' ' ? item.name : item.username,
-            email: item.email,
-            phone: item.phone !== null ? item.phone : 'N/A',
-            total_spent: item.total_spent,
-            total_bookings: item.total_bookings
+            room_type: item.payload_value,
+            limit: item.limit,
+            start_date: item.start_date,
+            end_date: item.end_date
           }
           exportData.push(obj)
         }
