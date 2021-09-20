@@ -182,6 +182,20 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/add-limits',
+    name: 'add_limits',
+    component: resolve => require(['modules/settings/settingPages/AddGeneralLimit.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/set-availability',
+    name: 'set_availability',
+    component: resolve => require(['modules/room/SetAvailability.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

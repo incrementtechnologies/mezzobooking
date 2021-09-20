@@ -55,6 +55,7 @@ export default {
         this.image = null
         return
       }
+      console.log('------------', this.image)
       let formData = new FormData()
       formData.append('file', this.image)
       formData.append('file_url', this.image.name.replace(' ', '_'))

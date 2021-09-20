@@ -39,7 +39,6 @@
     :title="'Confirmation Modal'"
     :message="'Are you sure you want to delete ?'"
     ref="confirms"
-    @onConfirm="remove()"
     >
     </confirmation>
     <show-booking ref="booking"/>

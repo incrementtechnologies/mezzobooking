@@ -1,6 +1,5 @@
 <template>
   <div style="margin:56px">
-      <div style="width: 70%; padding: 30px; margin-left:auto; margin-right:auto;">
           <span>
               <span @click="$router.push('/coupons')" class="backBtn">
                   <i class="fa fa-chevron-left"></i>
@@ -15,7 +14,7 @@
           </span>
           <span style="float:right">
               <span>
-                  <b class="mr-5 actionBtn">Set Schedules & Limits</b>
+                  <b class="mr-5 actionBtn" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
               </span>
           </span>
         <div class="row mt-4">
@@ -151,7 +150,6 @@
               <button class="btn btn-secondary footerBtn">Save</button>
             </div>
         </div>
-      </div>
   </div>
 </template>
 
