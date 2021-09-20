@@ -28,29 +28,29 @@
       v-if="data !== null"
     /></div>
     <div>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="create()">Add</button>
-      <!-- <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add</button> -->
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-if="canUpdate === false" @click="create()">Add</button>
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-else @click="create()">Update</button>
       <input type="number" class="form-control" placeholder="Type default price" v-model="price">
       <input type="text" class="form-control addOns" placeholder="Type your add-ons here" v-model="addOns">
     </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data" style="height:102px;">
-        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
+        <tr v-for="(item, index) in data" :key="index" class="table-row">
           <td style="padding:0px !important">
             <div class="row" style="margin-left: 2%;padding-right: 2%">
               <div class="col-md-6" style="padding: 20px 0px">
-                <b><span style="font-size: 12px">Cutomer ID: {{item.id}}</span></b><br/>
-                <span style="font-size: 24px; font-weight: bold">{{item.name !== " " ? item.name : item.username}}</span><br/>
-                <span style="font-size: 12px">{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
+                <span style="font-size: 24px; font-weight: bold">{{item.title}}</span><br/>
+                <span style="font-size: 12px">Date Created: {{item.created_at}}</span>
+                <br><br>
               </div>
               <div class="col-md-6 column">
                 <div class="actionBtn ml-2">
-                  <i class="fa fa-pencil"></i>
-                  <span><i class="fa fa-trash"></i></span>
+                  <i class="fa fa-pencil" @click="showUpdate(item)"></i>
+                  <span><i class="fa fa-trash"  @click="showDeleteConfirmation(item)"></i></span>
                 </div>
                 <div class="box mr-1">
                   <p class="box-title">Default Price</p>
-                  <span><b>1,999</b></span>
+                  <span><b>{{item.currency}} {{item.price}}</b></span>
                 </div>
               </div>
             </div>
@@ -58,24 +58,28 @@
         </tr>
       </tbody>
     </table>
-    <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
-    <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data === null || data.length === 0" :title="'Empty Add-Ons!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       ref="confirm"
-      :message="'Are you sure do you want to delete this Add?'"
+      :message="'Are you sure do you want to delete this Add-on?'"
       :title="'Confirmation'"
       @onConfirm="e => {
         remove(e)
       }"
     ></Confirmation>
+    <errorModal
+    ref="errorModal"
+    :title="'Error Message'"
+    :message="title"
+    />
     <show-booking ref="booking"/>
   </div>
 </template>
 <script>
 import AUTH from 'src/services/auth'
-import moment from 'moment'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
+import errorModal from 'src/components/increment/generic/Modal/Alert.vue'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -146,7 +150,10 @@ export default {
       activePage: 1,
       addOns: null,
       price: 0,
-      errorMessage: null
+      item: null,
+      canUpdate: false,
+      validated: false,
+      title: null
     }
   },
   components: {
@@ -154,6 +161,7 @@ export default {
     'empty': require('components/increment/generic/empty/Empty.vue'),
     'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
     'show-booking': require('modules/booking/ReserveeInformation.vue'),
+    errorModal,
     Pager,
     Confirmation
   },
@@ -184,76 +192,110 @@ export default {
         sort: sort
       }
       $('#loading').css({'display': 'block'})
-      console.log(flag)
       this.APIRequest('add-on/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
-        if(flag === true) {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-            this.data.push(element)
-          })
-        } else {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-          })
+        if(response.data.length > 0){
           this.data = response.data
+        }else{
+          this.data = []
         }
       })
     },
     showUpdate(item){
       this.item = item
-      this.addOns = item.payload_value
+      this.price = item.price
+      this.addOns = item.title
       this.canUpdate = true
-    },
-    update(){
-      let parameter = {
-        id: this.editId,
-        status: this.status
-      }
-      $('#loading').css({'display': 'block'})
-      this.APIRequest('add-on/update', parameter).then(response => {
-        $('#loading').css({'display': 'none'})
-        if(response.data !== null){
-          this.retrieve(this.currentSort, this.currentFilter, false)
-        }
-      })
     },
     showDeleteConfirmation(item){
       this.$refs.confirm.show(item.id)
+      this.canUpdate = false
+      this.price = 0
+      this.addOns = null
     },
-    remove(){
+    remove(item){
       let parameter = {
-        id: this.id
+        id: item.id
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('add-on/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
-        if(response.data !== null){
+        if(response.data > 0){
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
       })
     },
     create(){
-      if(this.addOns == null){
-        this.errorMessage = 'All fields are required'
-        return
-      }else if(this.price <= 0){
-        this.errorMessage = 'Value should be greater than 0'
-        return
-      }
-      let parameter = {
-        account_id: this.user.userID,
-        price: this.price,
-        addOns: this.addOns
-      }
-      this.APIRequest('add-on/create', parameter).then(response => {
-        if(response.data !== null){
-          this.$router.push('/add-ons')
+      if(this.validation() === true){
+        if(this.canUpdate === false){
+          let parameter = {
+            account_id: this.user.userID,
+            price: this.price,
+            title: this.addOns,
+            merchant_id: 1,
+            url: 'test',
+            currency: 'PHP'
+          }
+          this.APIRequest('add-on/create', parameter).then(response => {
+            if(response.data > 0){
+              this.title = null
+              this.price = 0
+              this.addOns = null
+              this.canUpdate = false
+              this.retrieve(this.currentSort, this.currentFilter, false)
+            }
+          })
+        }else{
+          let parameter = {
+            id: this.item.id,
+            price: this.price,
+            title: this.addOns,
+            merchant_id: 1,
+            url: 'test',
+            currency: 'PHP'
+          }
+          $('#loading').css({'display': 'block'})
+          this.APIRequest('add-on/update', parameter).then(response => {
+            $('#loading').css({'display': 'none'})
+            if(response.data === true){
+              this.canUpdate = false
+              this.addOns = null
+              this.title = null
+              this.price = 0
+              this.retrieve(this.currentSort, this.currentFilter, false)
+            }
+          })
         }
-      })
+      }else{
+        this.$refs.errorModal.show()
+      }
     },
-    redirect(){
+    validation(){
+      if(this.addOns !== null && this.addOns !== '' && this.addOns !== undefined){
+        this.validated = true
+        this.title = 'Please input your desired add-ons.'
+        return this.validated
+      }else if(this.price > 0){
+        this.title = 'Please input your desired price.'
+        this.validated = true
+        return this.validated
+      }else{
+        this.validated = false
+        return this.validated
+      }
+
     }
+    // retrieveMerchants(){
+    //   let parameter = {
+    //     condition: [{
+    //       value: 1,
+    //       column: 'account_id',
+    //       clause: '='
+    //     }]
+    //   }
+    //   this.APIRequest('merchants/retrieve_all', parameter).then(response => {
+    //   })
+    // }
   }
 }
 $(function () {

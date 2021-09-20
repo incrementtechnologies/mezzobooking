@@ -14,10 +14,11 @@
       v-if="data !== null"
     /></div>
     <div>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;"  @click="create()">Add</button>
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-if="canUpdate === false" @click="create()">Add</button>
+      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-else @click="create()">Update</button>
       <input type="text" v-model="title" class="form-control" placeholder="Type feature here">
     </div>
-    <table class="table table-responsive">
+    <table class="table table-responsive" v-if="data.length > 0">
     <div class="row" v-for="(feature, idx) in data" :key="idx">
         <div class="col-12 mt-3">
             <div class="card" style="min-height: 106px">
@@ -25,8 +26,8 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <span style="float:right">
-                                <i class="fa fa-pencil ml-2 actionBtn" @click="showUpdate(item)"></i>
-                                <i class="fa fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(item)"></i>
+                                <i class="fa fa-pencil ml-2 actionBtn" @click="showUpdate(feature)"></i>
+                                <i class="fa fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(feature)"></i>
                             </span>
                             <span><b  style="font-size:24px">{{feature.payload_value}}</b><br>
                                 Date Created: {{feature.created_at}}
@@ -38,6 +39,7 @@
         </div>
     </div>
     </table>
+    <empty v-if="data === null || data.length === 0" :title="'Empty Features!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       ref="confirm"
       :message="'Are you sure do you want to delete this feature?'"
@@ -46,6 +48,11 @@
         remove(e)
       }"
     ></Confirmation>
+    <errorModal
+    ref="errorModal"
+    :title="'Error Message'"
+    :message="'Please input feature.'"
+    />
   </div>
 </template>
 
@@ -53,7 +60,7 @@
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 import AUTH from 'src/services/auth'
-import moment from 'moment'
+import errorModal from 'src/components/increment/generic/Modal/Alert.vue'
 export default {
   mounted(){
     this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
@@ -93,29 +100,88 @@ export default {
         }]
       }],
       title: null,
-      data: []
+      data: [],
+      validated: false,
+      canUpdate: false,
+      item: null
     }
   },
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
-    'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
+    Confirmation,
+    errorModal,
     'show-booking': require('modules/booking/ReserveeInformation.vue'),
     Pager
   },
   methods: {
+    validation(){
+      if(this.title !== null && this.title !== '' && this.title !== undefined){
+        this.validated = true
+        return this.validated
+      }else{
+        this.validated = false
+        return this.validated
+      }
+    },
     create(){
+      if(this.validation() === true){
+        if(this.canUpdate === false){
+          let parameter = {
+            account_id: this.user.userID,
+            payload: 'feature',
+            category: null,
+            payload_value: this.title,
+            status: 'create'
+          }
+          $('#loading').css({'display': 'block'})
+          this.APIRequest('payloads/create_with_images', parameter, response => {
+            $('#loading').css({'display': 'none'})
+            if(response.data.length > 0){
+              this.title = null
+              this.canUpdate = false
+              this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
+            }
+          })
+        }else{
+          let parameter = {
+            id: this.item.id,
+            payload_value: this.title
+          }
+          $('#loading').css({'display': 'block'})
+          this.APIRequest('payloads/update', parameter).then(response => {
+            $('#loading').css({'display': 'none'})
+            if(response.data === true){
+              this.canUpdate = false
+              this.title = null
+              this.retrieve(this.currentSort, this.currentFilter, false)
+            }
+          })
+        }
+      }else{
+        this.$refs.errorModal.show()
+      }
+    },
+    showUpdate(item){
+      this.item = item
+      this.title = item.payload_value
+      this.canUpdate = true
+    },
+    showDeleteConfirmation(item){
+      this.$refs.confirm.show(item.id)
+      this.canUpdate = false
+      this.title = null
+    },
+    remove(item){
       let parameter = {
-        account_id: this.user.userID,
-        payload: 'feature',
-        category: null,
-        payload_value: this.title,
-        status: 'create'
+        id: item.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/create_with_images', parameter, response => {
+      this.APIRequest('payloads/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
-        this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
+        if(response.data !== null){
+          this.retrieve(this.currentSort, this.currentFilter, false)
+        }
       })
     },
     retrieve(sort = null, filter = null, flag = null){
