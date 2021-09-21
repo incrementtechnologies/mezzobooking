@@ -1,9 +1,13 @@
 <template>
   <div class="row ml-1">
       <div class="column" v-for="(image, idx) in features" :key="idx">
-        <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
-        <div class="removeIcon">
-          <i class="fa fa-close removeImage" @click="removeImage(image)"></i>
+        <div class="container">
+          <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
+          <div class="overlay">
+            <label class="removeIcon">
+              <i class="fa fa-close removeImage" @click="removeImage(image)"></i>
+            </label>
+          </div>
         </div>
       </div>
       <div class="column">    
@@ -96,7 +100,7 @@ export default {
     color: #CCCCCC;
     padding: 60px 70px 
 }
-.addImage:hover, .removeIcon:hover{
+.addImage:hover{
     background-color: $secondary;
 }
 .addImage:active{
@@ -106,22 +110,42 @@ export default {
     height: 191px;
     width: 191px;
 }
-.image:hover{
-  display: block !important;
-}
 .removeImage{
   padding: 4px;
-  color: white;
+  // color: white;
 }
-.removeIcon{
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+  background: white;
+}
+
+.overlay {
   position: absolute;
-  left: 44%;
-  top: 105%;
-  background-color: red;
-  padding: 3px;
-  // height: 25px;
-  border-radius: 50px;
-  // display: none;
+  top: 0;
+  bottom: 0;
+  left: 90%;
+  right: 0;
+  height: 10%;
+  width: 20%;
+  opacity: 0;
+  transition: .3s ease;
+  // background-color: red;
+}
+
+.removeIcon{
+  color: red;
+  font-size: 30px;
+  height: 25px;
+  position: absolute;
+  top: 0%;
+  right: 30%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(50%, -50%);
+  text-align: center
 }
 .removeIcon:hover{
   cursor: pointer;

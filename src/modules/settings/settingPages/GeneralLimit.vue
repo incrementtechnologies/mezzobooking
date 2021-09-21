@@ -31,7 +31,7 @@
       </tbody>
     </table>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
-    <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data === null || data.length === 0" :title="'Empty General Limits!'" :action="'No activity at the moment.'"></empty>
     <confirmation
     :title="'Confirmation Modal'"
     :message="'Are you sure you want to delete ?'"

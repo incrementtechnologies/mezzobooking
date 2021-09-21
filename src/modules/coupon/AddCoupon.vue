@@ -1,6 +1,6 @@
 <template>
   <div style="margin:56px">
-      <div style="width: 70%; padding: 30px; margin-left:auto; margin-right:auto;">
+      <div>
           <span>
               <span @click="$router.push('/coupons')" class="backBtn">
                   <i class="fa fa-chevron-left"></i>
@@ -76,8 +76,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-4">
-            <button class="btn btn-danger footerBtn">Delete</button>
+        <div class="mt-4" v-if="data !== null">
+            <button class="btn btn-danger footerBtn" @click="remove">Delete</button>
         </div>
       </div>
   </div>
@@ -169,6 +169,16 @@ export default {
         }else{
           this.data = null
         }
+      })
+    },
+    remove(){
+      let parameter = {
+        id: this.data.id
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('reservations/delete', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        this.$router.push('/coupons')
       })
     }
   }

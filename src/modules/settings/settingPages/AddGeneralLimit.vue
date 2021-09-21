@@ -17,8 +17,8 @@
           <div class="col-md-6">
             <label>Room Type</label>
             <div class="input-group">
-              <select v-model="type" class="form-control-custom form-control">
-                <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
+              <select @change="getSelectedType" class="form-control-custom form-control">
+                <option v-for="(type, idx) in types" :key="idx" :value="type.id" :selected="$route.params.id !== undefined && parseInt($route.params.id) === parseInt(type.id) ? true : false">{{type.payload_value}}</option>
               </select>
             </div>
           </div>
@@ -51,6 +51,7 @@ import AUTH from 'src/services/auth'
 export default {
   mounted() {
     this.retrieveType()
+    this.type = this.$route.params.id !== undefined ? this.$route.params.id : null
   },
   data: () => ({
     types: [],
@@ -75,6 +76,9 @@ export default {
       this.APIRequest('payloads/retrieve', parameter, response => {
         this.types = response.data
       })
+    },
+    getSelectedType(event){
+      this.type = event.target.value
     },
     create(){
       let parameter = {

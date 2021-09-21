@@ -9,7 +9,7 @@
           </span>
           <span style="float:right">
               <span>
-                <b class="mr-5 actionBtn">Set Schedules & Limits</b>
+                <b class="mr-5 actionBtn" @click="$route.params.id !== undefined ? $router.push('/add-limits/' + $route.params.id) : $router.push('/add-limits')">Set Schedules & Limits</b>
                 <b class="mr-5 actionBtn">Go to Bookings</b>
                 <b class="actionBtn" @click="saveType()">Save</b>
               </span>
