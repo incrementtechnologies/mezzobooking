@@ -179,3 +179,10 @@ Route::post($route.'create', $controller.'create');
 Route::post($route.'retrieve', $controller.'retrieve');
 Route::post($route.'update', $controller.'update');
 Route::post($route.'delete', $controller.'delete');
+
+
+//Room Controller
+$route = env('PACKAGE_ROUTE', '').'/dashboards/';
+$controller = 'DashboardController@';
+Route::post($route.'create', $controller.'create');
+Route::post($route.'retrieve', $controller.'retrieve');

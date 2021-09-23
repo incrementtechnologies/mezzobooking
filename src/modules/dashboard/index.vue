@@ -9,25 +9,25 @@
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column first">
         <p class="title">Total Sales</p>
-        <p style="color: white; margin: 0;"><b>PHP 123, 456.35</b></p>
+        <p style="color: white; margin: 0;"><b>PHP {{data.total_sales}}</b></p>
       </div>
       <div class="column second">
         <p class="title">Reservations</p>
-        <p style="color: white; margin: 0;"><b>PHP 123, 456.35</b></p>
+        <p style="color: white; margin: 0;"><b>{{data.previous}}</b></p>
       </div>
       <div class="column third">
         <p class="title">Total Bookings</p>
-        <p style="color: white; margin: 0;"><b>PHP 123, 456.35</b></p>
+        <p style="color: white; margin: 0;"><b>{{data.upcomming}}</b></p>
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column fourth">
         <p class="title">Average Bookings</p>
-        <p style="color: white; margin: 0;"><b>PHP 123, 456.35</b></p>
+        <p style="color: white; margin: 0;"><b>{{data.average_bookings}}</b></p>
       </div>
       <div class="column fifth">
         <p class="title">Average Revenue</p>
-        <p style="color: white; margin: 0;"><b>PHP 123, 456.35</b></p>
+        <p style="color: white; margin: 0;"><b>PHP {{data.average_revenue}}</b></p>
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
@@ -97,7 +97,9 @@ import { DataSource, DataSourceInstaller } from '@progress/kendo-datasource-vue-
 Vue.use(ChartInstaller)
 Vue.use(DataSourceInstaller)
 export default{
-  mounted(){},
+  mounted(){
+    this.retrieve()
+  },
   data(){
     return {
       user: AUTH.user,
@@ -123,7 +125,7 @@ export default{
           format: `${0}`
         }
       }],
-      bookings: []
+      data: []
     }
   },
   components: {
@@ -131,7 +133,16 @@ export default{
     Chart,
     DataSource
   },
-  methods: {}
+  methods: {
+    retrieve(){
+      let parameter = {}
+      this.APIRequest('dashboards/retrieve', parameter, response => {
+        if(response.data !== null){
+          this.data = response.data
+        }
+      })
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
