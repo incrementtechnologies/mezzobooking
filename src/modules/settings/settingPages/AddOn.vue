@@ -159,7 +159,6 @@ export default {
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
-    'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
     'show-booking': require('modules/booking/ReserveeInformation.vue'),
     errorModal,
     Pager,
