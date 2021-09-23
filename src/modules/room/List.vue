@@ -154,7 +154,7 @@ export default {
         sort: sort
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('rooms/retrieve', parameter).then(response => {
+      this.APIRequest('room/retrieve', parameter).then(response => {
         console.log('[response]', response)
         $('#loading').css({'display': 'none'})
         this.data = response.data
