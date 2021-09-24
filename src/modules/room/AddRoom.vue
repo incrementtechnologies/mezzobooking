@@ -1,155 +1,155 @@
 <template>
   <div style="margin:56px">
     <span>
-        <span @click="$router.push('/rooms')" class="backBtn">
-            <i class="fa fa-chevron-left"></i>
-            Back
-        </span>
+      <span @click="$router.push('/rooms')" class="backBtn">
+        <i class="fa fa-chevron-left"></i>
+        Back
+      </span>
     </span>
     <span style="float:right">
-        <span>
-            <b class="mr-5 actionBtn" @click="$router.push('/bookings')">Go to Bookings</b>
-            <b class="actionBtn" @click="create()">Save</b>
-        </span>
+      <span>
+        <b class="mr-5 actionBtn" @click="$router.push('/bookings')">Go to Bookings</b>
+        <b class="actionBtn" @click="create()">Save</b>
+      </span>
     </span>
     <span style="float:right">
-        <span>
-            <b class="mr-5 actionBtn" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
-        </span>
+      <span>
+        <b class="mr-5 actionBtn" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
+      </span>
     </span>
     <div class="row mt-4">
-        <div class="col-md-6">
-            <label>Title</label>
-            <div class="input-group">
-                <input v-model="title" type="text" class="form-control-custom form-control">
-            </div>
+      <div class="col-md-6">
+        <label>Title</label>
+        <div class="input-group">
+          <input v-model="title" type="text" class="form-control-custom form-control">
         </div>
-        <div class="col-md-6">
-            <label>Room Type</label>
-            <div class="input-group">
-              <select v-model="room_type" class="form-control-custom form-control">
-                <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
-              </select>
-            </div>
+      </div>
+      <div class="col-md-6">
+        <label>Room Type</label>
+        <div class="input-group">
+          <select v-model="room_type" class="form-control-custom form-control">
+            <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
+          </select>
         </div>
+      </div>
     </div>
     <div class="mt-4">
-        <label>Description</label>
-        <textarea 
-        :class="description == '' ? 'form-control mb-0' : 'form-control'" 
-        placeholder="Add description here" 
-        rows="10" 
-        :style="{
-          ...description == '' ? {border: '1px solid red !important'} : '',
-        }"
-        v-model="description"
+      <label>Description</label>
+      <textarea 
+      :class="description == '' ? 'form-control mb-0' : 'form-control'" 
+      placeholder="Add description here" 
+      rows="10" 
+      :style="{
+        ...description == '' ? {border: '1px solid red !important'} : '',
+      }"
+      v-model="description"
       >
       </textarea>
     </div>
     <div class="mt-4">
-        <label>Features</label>
-        <searchField
-        :test="'payload'"
-        :placeholder="'Select Features'"
-        :items="feature"
-        :styles="{
-          background: 'none',
-          color: '#84868B !important',
-          width: '100% !important',
-          borderRadius: '5px !important',
-          border: 'none',
-          border: !this.isValid && selectedFeature.length === 0 ? '1px solid red !important' : 'none',
-          marginBottom: !this.isValid && selectedFeature.length === 0 ? '0px' : '35px'
-        }"
-        :dropdownItemStyles="{
-          borderRadius: '5px',
-          overflow: 'hidden',
-          width: 'calc(100% - 30px)'
-        }"
-        :class="!this.isValid && selectedFeature.length === 0 ? 'multiselect__tags1' : 'none'"
-        :selectedIndex="selectedIndex"
-        @onSelect="onSelect"
-        v-if="!isClearing"
-        ref="searchField"
+      <label>Features</label>
+      <searchField
+      :test="'payload'"
+      :placeholder="'Select Features'"
+      :items="feature"
+      :styles="{
+        background: 'none',
+        color: '#84868B !important',
+        width: '100% !important',
+        borderRadius: '5px !important',
+        border: 'none',
+        border: !this.isValid && selectedFeature.length === 0 ? '1px solid red !important' : 'none',
+        marginBottom: !this.isValid && selectedFeature.length === 0 ? '0px' : '35px'
+      }"
+      :dropdownItemStyles="{
+        borderRadius: '5px',
+        overflow: 'hidden',
+        width: 'calc(100% - 30px)'
+      }"
+      :class="!this.isValid && selectedFeature.length === 0 ? 'multiselect__tags1' : 'none'"
+      :selectedIndex="selectedIndex"
+      @onSelect="onSelect"
+      v-if="!isClearing"
+      ref="searchField"
       />
     </div>
     <div class="mt-4">
-        <label>Add-ons</label>
-        <searchField
-        :test="'title'"
-        :placeholder="'Select Add-ons'"
-        :items="addOns"
-        :styles="{
-          background: 'none',
-          color: '#84868B !important',
-          width: '100% !important',
-          borderRadius: '5px !important',
-          border: 'none',
-          border: !this.isValid && selectedAddOns.length === 0 ? '1px solid red !important' : 'none',
-          marginBottom: !this.isValid && selectedAddOns.length === 0 ? '0px' : '35px'
-        }"
-        :dropdownItemStyles="{
-          borderRadius: '5px',
-          overflow: 'hidden',
-          width: 'calc(100% - 30px)'
-        }"
-        :class="!this.isValid && selectedAddOns.length === 0 ? 'multiselect__tags1' : 'none'"
-        :selectedIndex="selectedIndex"
-        @onSelectAdd="onSelectAdd"
-        v-if="!isClearing"
-        ref="searchField"
+      <label>Add-ons</label>
+      <searchField
+      :test="'title'"
+      :placeholder="'Select Add-ons'"
+      :items="addOns"
+      :styles="{
+        background: 'none',
+        color: '#84868B !important',
+        width: '100% !important',
+        borderRadius: '5px !important',
+        border: 'none',
+        border: !this.isValid && selectedAddOns.length === 0 ? '1px solid red !important' : 'none',
+        marginBottom: !this.isValid && selectedAddOns.length === 0 ? '0px' : '35px'
+      }"
+      :dropdownItemStyles="{
+        borderRadius: '5px',
+        overflow: 'hidden',
+        width: 'calc(100% - 30px)'
+      }"
+      :class="!this.isValid && selectedAddOns.length === 0 ? 'multiselect__tags1' : 'none'"
+      :selectedIndex="selectedIndex"
+      @onSelectAdd="onSelectAdd"
+      v-if="!isClearing"
+      ref="searchField"
       />
     </div>
     <div class="row mt-4">
-        <div class="col-md-6">
-            <label>Regular Price</label>
-            <div class="input-group">
-                <input v-model="regular_price"  type="number" class="form-control-custom form-control">
-                <select v-model="type" class="form-control" style="width:102px; height:60px">
-                    <option value="PHP">PHP</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <label>Price Terms</label>
-            <div class="input-group">
-                <select v-model="price_terms" type="text" class="form-control-custom form-control">
-                    <option value="pending">Per Night</option>
-                    <option value="completed">Per Day</option>
-                </select>
-            </div>
-        </div>
+      <div class="col-md-6">
+          <label>Regular Price</label>
+          <div class="input-group">
+            <input v-model="regular_price"  type="number" class="form-control-custom form-control">
+            <select v-model="type" class="form-control" style="width:102px; height:60px">
+              <option value="PHP">PHP</option>
+            </select>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <label>Price Terms</label>
+          <div class="input-group">
+            <select v-model="price_terms" type="text" class="form-control-custom form-control">
+              <option value="pending">Per Night</option>
+              <option value="completed">Per Day</option>
+            </select>
+          </div>
+      </div>
     </div>
     <div class="row mt-4">
-        <div class="col-md-6">
-            <label>Non-Refundable Price</label>
-            <div class="input-group">
-                <input v-model="non_price"  type="number" class="form-control-custom form-control">
-                <select v-model="type" class="form-control" style="width:102px; height:60px">
-                    <option value="PHP">PHP</option>
-                </select>
-            </div>
+      <div class="col-md-6">
+        <label>Non-Refundable Price</label>
+        <div class="input-group">
+          <input v-model="non_price"  type="number" class="form-control-custom form-control">
+          <select v-model="type" class="form-control" style="width:102px; height:60px">
+              <option value="PHP">PHP</option>
+          </select>
         </div>
-        <div class="col-md-6">
-            <label>Status</label>
-            <div class="input-group">
-                <select v-model="status" type="text" class="form-control-custom form-control">
-                    <option value="pending">Publish</option>
-                </select>
-            </div>
+      </div>
+      <div class="col-md-6">
+        <label>Status</label>
+        <div class="input-group">
+          <select v-model="status" type="text" class="form-control-custom form-control">
+            <option value="pending">Publish</option>
+          </select>
         </div>
+      </div>
     </div>
     <div class="mt-4">
       <label>Images</label>
       <imageupload :features="images" @setImage="getImage($event)"></imageupload>
     </div>
     <div class="row mt-4">
-        <div class="col-md-9">
-          <button class="btn btn-danger footerBtn" @click="showDeleteConfirmation()">Delete</button>
-        </div>
-        <div class="col-md-2" style="margin-left: 4%">
-          <button class="btn btn-secondary footerBtn" @click="create()">Save</button>
-        </div>
+      <div class="col-md-9">
+        <button class="btn btn-danger footerBtn" @click="showDeleteConfirmation()">Delete</button>
+      </div>
+      <div class="col-md-2" style="margin-left: 4%">
+        <button class="btn btn-secondary footerBtn" @click="create()">Save</button>
+      </div>
     </div>
     <Confirmation
       ref="confirm"
@@ -178,7 +178,6 @@ export default {
     this.retrieveType()
     this.retrieveFeature()
     this.retrieveAddOns()
-    console.log('[user]', this.user)
   },
   data(){
     return {
@@ -319,7 +318,6 @@ export default {
       this.APIRequest('room/create', parameter).then(response => {
         console.log('[response in rooms]', response)
         if(response.data > 0){
-          
           this.$router.push('/rooms')
         }
       })
