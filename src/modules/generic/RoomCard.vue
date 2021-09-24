@@ -9,7 +9,7 @@
           <div class="card-body">
             <div class="mb-4">
               <!-- //lacking of room_type -->
-              <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%">sample</b></span>
+              <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%; font-size: 10px; padding: 3px;">{{list.category.payload_value}}</b></span>
               <!-- //lacking of currency and price terms -->
               <span style="float:right"><b>PHP{{list.price !== null ? list.price : 'No indicated price'}}/Night</b><i class="fa fa-pencil ml-2"></i></span>
             </div>

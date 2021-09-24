@@ -114,8 +114,8 @@
           <label>Price Terms</label>
           <div class="input-group">
             <select v-model="price_terms" type="text" class="form-control-custom form-control">
-              <option value="pending">Per Night</option>
-              <option value="completed">Per Day</option>
+              <option value="NIGHT">Per Night</option>
+              <option value="DAY">Per Day</option>
             </select>
           </div>
       </div>
@@ -299,13 +299,13 @@ export default {
       //   return
       // }
       // save to room
-      let parameter = {
+      let roomParameter = {
         code: this.user.code,
         account_id: this.user.userID,
         title: this.title,
         category: this.room_type,
         description: this.description,
-        additional_info: JSON.stringify(this.selectedAddOns),
+        additional_info: JSON.stringify({add_ons: this.selectedAddOns}, {features: this.selectedFeature}),
         status: this.status
         // not added sa db
         // price: this.regular_price,
@@ -314,11 +314,22 @@ export default {
         // non_price: this.non_price,
         // value: this.value
       }
-      console.log('[rooms]', parameter)
-      this.APIRequest('room/create', parameter).then(response => {
+      console.log('[rooms]', roomParameter)
+      this.APIRequest('room/create', roomParameter).then(response => {
         console.log('[response in rooms]', response)
         if(response.data > 0){
-          this.$router.push('/rooms')
+          let pricingParameter = {
+            account_id: this.user.userID,
+            room_id: response.data,
+            regular: this.regular_price,
+            refundable: this.non_price,
+            currency: this.type,
+            label: this.price_terms
+          }
+          this.APIRequest('pricings/create', pricingParameter).then(response => {
+            console.log('[pricing]', response)
+          })
+          // this.$router.push('/rooms')
         }
       })
     }
