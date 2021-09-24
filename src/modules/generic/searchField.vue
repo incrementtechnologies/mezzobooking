@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Multiselect style="width:100%" v-if="(test === 'payload')" v-model="value" tag-placeholder="Search Tag" :placeholder="placeholder" :searchable="false" :close-on-select="false" :clear-on-select="false" label="payload_value" track-by="id" :options="items" :multiple="true" @input="returnFeature()"></Multiselect>
+    <Multiselect style="width:100%" v-if="(test === 'payload')" v-model="value" tag-placeholder="Search Tag" :placeholder="placeholder" :searchable="false" :close-on-select="false" :clear-on-select="false" label="payload_value" track-by="id" :options="items" :multiple="isMultiple" @input="returnFeature()"></Multiselect>
     <Multiselect style="width:100%" v-else v-model="value" tag-placeholder="Search Tag" :placeholder="placeholder" :searchable="false" :close-on-select="false" :clear-on-select="false" label="title" track-by="id" :options="items" :multiple="true" @input="returnAddOn()"></Multiselect>
   </div>
 </template>
@@ -8,7 +8,7 @@
 <script>
 import Multiselect from 'vue-multiselect'
 export default {
-  props: ['items', 'placeholder', 'styles', 'selectedIndex', 'dropdownItemStyles', 'test'],
+  props: ['items', 'placeholder', 'styles', 'selectedIndex', 'dropdownItemStyles', 'test', 'isMultiple'],
   data() {
     return {
       value: []

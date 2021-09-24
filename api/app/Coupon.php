@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Coupon extends Model
+use App\APIModel;
+class Coupon extends APIModel
 {
     protected $table = 'coupons';
     protected $fillable = [
