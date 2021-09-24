@@ -17,9 +17,11 @@
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row">
-          <td>
-            <b><span style="font-size: 14px">{{item.code}}</span></b><br/>
-            <span style="font-size: 12px">10% OFF</span>
+          <td style="width: 200px">
+            <div style="text-align:center">
+              <b><span style="font-size: 14px">{{item.code}}</span></b><br/>
+              <span style="font-size: 12px">{{item.description}}</span>
+            </div>
           </td>
           <td style="width: 200px">
             <div style="text-align:center"><b>Start Date</b> <br/>{{item.start_date}}</div>
@@ -32,13 +34,13 @@
           </td>
           <td style="padding-left: 0; padding-right: 0; width: 200px">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-7">
                 <div style="text-align:center;horizontal-alignment:center; color:#CBAB58">
                   <span>Revenue</span>
-                  <p style="font-size:16px;font-weight:bold;">PHP {{item.value}}</p>
+                  <p style="font-size:16px;font-weight:bold;">PHP {{item.amount}}</p>
                 </div>
               </div>
-              <div class="col-md-4" style="width: 300px">
+              <div class="col-md-4" style="width: 270px">
                 <i class="fa fa-pencil text-primary" @click="$router.push('/add-coupons/'+ item.code)"></i>
                 <i class="fa fa-trash text-danger"></i>
               </div>

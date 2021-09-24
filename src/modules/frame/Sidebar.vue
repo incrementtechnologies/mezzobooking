@@ -51,9 +51,11 @@
 
       <div class="content-holder" v-bind:class="hide">
         <!-- <system-notification></system-notification> -->
-        <transition >
-          <router-view ></router-view>
-        </transition>
+        <div class="content">
+          <transition >
+            <router-view ></router-view>
+          </transition>
+        </div>
       </div>
     </div>
 </template>
@@ -71,6 +73,15 @@
   z-index: 10000;
 }
 
+.content-holder{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content{
+  width: 55%;
+}
 .sidebar{
   min-height: 100vh;
   overflow-y: auto;
@@ -211,7 +222,7 @@
 /*-------------- Large Screens for Desktop --------------*/
 @media (min-width: 1200px){
   .main-sidebar{
-    width:20%;
+    width:15%;
     float: left;
   }
   .sidebar-collapse{
@@ -222,10 +233,12 @@
     display: block;
   }
   .content-holder{
-    width: 50%;
+    width: 85%;
     margin: 60px 0px 0px 0px;
-    margin-right: 18%;
-    float: right; /*- changed float left to right -*/
+    float: left;
+    margin-left: 15%;
+    // margin-right: 18%;
+    // float: right; /*- changed float left to right -*/
   }
   /*  Change with Menu Toggled */
   .main-sidebar.hidden{
@@ -277,7 +290,7 @@
 /*-------------- Extra Small Screen for Mobile Phones --------------*/
 @media (max-width: 991px){
   .main-sidebar{
-    width: 100%;
+    width: 90%;
     position: fixed;
     top:0;
     left: 0;

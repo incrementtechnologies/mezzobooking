@@ -319,7 +319,6 @@ export default {
       this.APIRequest('room/create', parameter).then(response => {
         console.log('[response in rooms]', response)
         if(response.data > 0){
-          
           this.$router.push('/rooms')
         }
       })
@@ -327,7 +326,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
     .actionBtn{
