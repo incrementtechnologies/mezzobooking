@@ -325,7 +325,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
     .actionBtn{
