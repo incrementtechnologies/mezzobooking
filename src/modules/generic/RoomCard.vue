@@ -20,7 +20,7 @@
             </div>
             <div class="mt-1" v-if="actionBtn===true">
               <button @click="$router.push('/own-bookings/' + list.title)" class="btn btn-primary" style="height: 50px; width:150px">Bookings</button>
-              <button @click="$router.push('/add-rooms/'+ list.id)" class="btn btn-secondary" style="height: 50px; width:150px">Details</button>
+              <button @click="$router.push('/add-rooms/'+ list.id + '/' + list.title)" class="btn btn-secondary" style="height: 50px; width:150px">Details</button>
             </div>
           </div>
         </div>
