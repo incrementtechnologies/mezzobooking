@@ -14,7 +14,7 @@
     </span>
     <span style="float:right">
       <span>
-        <b class="mr-5 actionBtn" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
+        <b class="mr-5 actionBtn" v-if="$route.params.code != null" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
       </span>
     </span>
     <div class="row mt-4">
@@ -35,7 +35,7 @@
     </div>
     <div class="mt-4">
       <label>Description</label>
-      <textarea 
+      <textarea
       :class="description == '' ? 'form-control mb-0' : 'form-control'" 
       placeholder="Add description here" 
       rows="10" 
@@ -141,15 +141,16 @@
     </div>
     <div class="mt-4">
       <label>Images</label>
-      <imageupload :features="images" @setImage="getImage($event)"></imageupload>
+      <imageupload :features="featured" @setImage="getImage($event)"></imageupload>
     </div>
     <div class="row mt-4">
-      <div class="col-md-9">
-        <button class="btn btn-danger footerBtn" @click="showDeleteConfirmation()">Delete</button>
+      <div class="col-md-6">
+        <button class="btn btn-danger footerBtn" v-if="$route.params.code === undefined" @click="$router.push('/rooms')">Cancel</button>
+        <button class="btn btn-danger footerBtn" v-else @click="showDeleteConfirmation()">Delete</button>
       </div>
-      <div class="col-md-2" style="margin-left: 4%">
+      <!-- <div class="col-md-2" style="margin-left: 4%">
         <button class="btn btn-secondary footerBtn" @click="create()">Save</button>
-      </div>
+      </div> -->
     </div>
     <Confirmation
       ref="confirm"
@@ -178,10 +179,14 @@ export default {
     this.retrieveType()
     this.retrieveFeature()
     this.retrieveAddOns()
+    if(this.$route.params.code != null){
+      this.retrieveById(this.$route.params.code)
+    }
   },
   data(){
     return {
       images: [],
+      featured: [],
       data: null,
       user: AUTH.user,
       description: null,
@@ -213,16 +218,26 @@ export default {
     errorModal
   },
   methods: {
-    getImage(e){
-      this.tempImage.push(e)
+    getImage(event){
+      let temp = {
+        url: event.data
+      }
+      this.images.push(temp)
     },
-    // final
     showDeleteConfirmation(){
       // lacking id inside show
       this.$refs.confirm.show()
       this.canUpdate = false
       this.price = 0
       this.addOns = null
+    },
+    retrieveById(id){
+      let parameter = {
+        room_id: id
+      }
+      this.APIRequest('room/retrieve_by_id', parameter).then(response => {
+        console.log('[', response)
+      })
     },
     remove(item){
       let parameter = {
@@ -281,6 +296,9 @@ export default {
     // to be finalized
     onSelect(data) {
       this.selectedFeature = data
+      data.map(el => {
+        this.selectedAddOns.push(el.payload_value)
+      })
       this.isEmpty = false
     },
     onSelectAdd(data) {
@@ -307,16 +325,8 @@ export default {
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns}, {features: this.selectedFeature}),
         status: this.status
-        // not added sa db
-        // price: this.regular_price,
-        // selectedFeature: this.selectedFeature,
-        // price_terms: this.price_terms,
-        // non_price: this.non_price,
-        // value: this.value
       }
-      console.log('[rooms]', roomParameter)
       this.APIRequest('room/create', roomParameter).then(response => {
-        console.log('[response in rooms]', response)
         if(response.data > 0){
           let pricingParameter = {
             account_id: this.user.userID,
@@ -326,10 +336,23 @@ export default {
             currency: this.type,
             label: this.price_terms
           }
+          let imageParameter = {
+            room_id: response.data,
+            url: this.images,
+            status: 'create'
+          }
           this.APIRequest('pricings/create', pricingParameter).then(response => {
-            console.log('[pricing]', response)
+            if(response.data > 0){
+              console.log('Pricing Created Successfully')
+            }else{
+              console.log('[Error in Creating Pricing]')
+            }
           })
-          // this.$router.push('/rooms')
+          this.APIRequest('product_images/create_with_image', imageParameter).then(response => {
+            if(Number(response.data) > 0){
+              this.$router.push('/rooms')
+            }
+          })
         }
       })
     }

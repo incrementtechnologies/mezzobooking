@@ -196,6 +196,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/own-bookings',
+    name: 'own_bookings',
+    component: resolve => require(['modules/booking/ownSummary/List.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
