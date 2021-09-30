@@ -9,12 +9,13 @@
     <span style="float:right">
       <span>
         <b class="mr-5 actionBtn" @click="$router.push('/bookings')">Go to Bookings</b>
-        <b class="actionBtn" @click="create()">Save</b>
+        <b class="actionBtn" v-if="$route.params.code === undefined && $route.params.name === undefined" @click="create()">Save</b>
+        <b class="actionBtn" v-if="$route.params.code !== undefined && $route.params.name === undefined" @click="update()">Update</b>
       </span>
     </span>
     <span style="float:right">
       <span>
-        <b class="mr-5 actionBtn" v-if="$route.params.code != null" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
+        <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code)">Set Schedules & Limits</b>
       </span>
     </span>
     <div class="row mt-4">
@@ -145,8 +146,8 @@
     </div>
     <div class="row mt-4">
       <div class="col-md-6">
-        <button class="btn btn-danger footerBtn" v-if="$route.params.code === undefined" @click="$router.push('/rooms')">Cancel</button>
-        <button class="btn btn-danger footerBtn" v-else @click="showDeleteConfirmation()">Delete</button>
+        <button class="btn btn-danger footerBtn" v-if="$route.params.code === undefined && $route.params.name === undefined" @click="$router.push('/rooms')">Cancel</button>
+        <button class="btn btn-danger footerBtn" v-if="$route.params.code !== undefined && $route.params.name === undefined" @click="showDeleteConfirmation($route.params.code)">Delete</button>
       </div>
       <!-- <div class="col-md-2" style="margin-left: 4%">
         <button class="btn btn-secondary footerBtn" @click="create()">Save</button>
@@ -224,12 +225,8 @@ export default {
       }
       this.images.push(temp)
     },
-    showDeleteConfirmation(){
-      // lacking id inside show
-      this.$refs.confirm.show()
-      this.canUpdate = false
-      this.price = 0
-      this.addOns = null
+    showDeleteConfirmation(id){
+      this.$refs.confirm.show(id)
     },
     retrieveById(id){
       let parameter = {
@@ -239,15 +236,15 @@ export default {
         console.log('[', response)
       })
     },
-    remove(item){
+    remove(id){
       let parameter = {
-        // id: item.id
+        id: id.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('add-on/delete', parameter).then(response => {
+      this.APIRequest('room/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data > 0){
-          this.retrieve(this.currentSort, this.currentFilter, false)
+          this.$router.push('/rooms')
         }
       })
     },
@@ -295,15 +292,14 @@ export default {
     },
     // to be finalized
     onSelect(data) {
-      this.selectedFeature = data
-      data.map(el => {
-        this.selectedAddOns.push(el.payload_value)
+      this.selectedFeature = data.map(el => {
+        return el.payload_value
       })
       this.isEmpty = false
     },
     onSelectAdd(data) {
-      data.map(el => {
-        this.selectedAddOns.push(el.title)
+      this.selectedAddOns = data.map(el => {
+        return el.title
       })
       this.isEmpty = false
     },
@@ -323,9 +319,10 @@ export default {
         title: this.title,
         category: this.room_type,
         description: this.description,
-        additional_info: JSON.stringify({add_ons: this.selectedAddOns}, {features: this.selectedFeature}),
+        additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
       }
+      console.log('[param]', roomParameter)
       this.APIRequest('room/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {

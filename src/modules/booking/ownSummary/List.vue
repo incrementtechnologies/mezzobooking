@@ -3,7 +3,7 @@
     <span>
       <span @click="$router.push('/rooms')" class="backBtn">
         <i class="fa fa-chevron-left"></i>
-        Back / {{$route.params}}
+        Back / {{$route.params.id}}
       </span>
     </span>
     <br>

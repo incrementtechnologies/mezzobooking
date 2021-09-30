@@ -41,6 +41,24 @@
   color: #fff !important;
 }
 
+.multiselect__option--highlight, .multiselect__tag{
+  background-color: #000033 !important;
+}
+
+.multiselect__tag-icon:after{
+  color: #fff !important;
+}
+
+.multiselect__tag-icon{
+  color: #fff !important;
+}
+.multiselect__tag-icon:hover{
+  background-color: #CBAB58 !important
+}
+.multiselect__option--highlight::after{
+  background-color: #CBAB58 !important;
+}
+
 @media (max-width: 991px) {
   .main-sidebar {
     min-height: unset;

@@ -1,7 +1,7 @@
 <template>
     <div style="margin: 56px">
       <span>
-          <span @click="$router.push('/add-rooms')" class="backBtn">
+          <span @click="$router.push('/add-rooms/' + $route.params.id)" class="backBtn">
               <i class="fa fa-chevron-left"></i>
               Back
           </span>
@@ -42,9 +42,9 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <label>Room Type</label>
+            <label>Description</label>
             <div class="input-group">
-                <textarea v-model="type" class="form-control-custom form-control" style="height: 165px !important;"></textarea>
+                <textarea v-model="description" class="form-control-custom form-control" style="height: 165px !important;"></textarea>
             </div>
           </div>
         </div>
@@ -53,9 +53,33 @@
 </template>
 <script>
 export default {
-  data: () => ({
-    isSwitch: false
-  })
+  data(){
+    return {
+      isSwitch: false,
+      description: null,
+      start_date: null,
+      end_date: null
+    }
+  },
+  methods: {
+    create(){
+      //
+      let parameter = {
+        payload: 'room_id',
+        payload_value: this.$route.params.id,
+        start_date: this.start_date,
+        end_date: this.end_date,
+        description: this.description,
+        status: this.isSwitch === true ? 'available' : 'not_available'
+      }
+      this.APIRequest('availabilities/create', parameter).then(response => {
+        console.log('[responseAvail]', response)
+        if(response.data > 0){
+          this.$router.push('/add-rooms/' + this.$route.params.id)
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
