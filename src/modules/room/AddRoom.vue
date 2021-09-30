@@ -9,12 +9,13 @@
     <span style="float:right">
       <span>
         <b class="mr-5 actionBtn" @click="$router.push('/bookings')">Go to Bookings</b>
-        <b class="actionBtn" @click="create()">Save</b>
+        <b class="actionBtn" v-if="$route.params.code === undefined && $route.params.name === undefined" @click="create()">Save</b>
+        <b class="actionBtn" v-if="$route.params.code !== undefined && $route.params.name === undefined" @click="update()">Update</b>
       </span>
     </span>
     <span style="float:right">
       <span>
-        <b class="mr-5 actionBtn" @click="$router.push('/set-availability')">Set Schedules & Limits</b>
+        <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code)">Set Schedules & Limits</b>
       </span>
     </span>
     <div class="row mt-4">
@@ -35,7 +36,7 @@
     </div>
     <div class="mt-4">
       <label>Description</label>
-      <textarea 
+      <textarea
       :class="description == '' ? 'form-control mb-0' : 'form-control'" 
       placeholder="Add description here" 
       rows="10" 
@@ -141,15 +142,16 @@
     </div>
     <div class="mt-4">
       <label>Images</label>
-      <imageupload :features="images" @setImage="getImage($event)"></imageupload>
+      <imageupload :features="featured" @setImage="getImage($event)"></imageupload>
     </div>
     <div class="row mt-4">
-      <div class="col-md-9">
-        <button class="btn btn-danger footerBtn" @click="showDeleteConfirmation()">Delete</button>
+      <div class="col-md-6">
+        <button class="btn btn-danger footerBtn" v-if="$route.params.code === undefined && $route.params.name === undefined" @click="$router.push('/rooms')">Cancel</button>
+        <button class="btn btn-danger footerBtn" v-if="$route.params.code !== undefined && $route.params.name === undefined" @click="showDeleteConfirmation($route.params.code)">Delete</button>
       </div>
-      <div class="col-md-2" style="margin-left: 4%">
+      <!-- <div class="col-md-2" style="margin-left: 4%">
         <button class="btn btn-secondary footerBtn" @click="create()">Save</button>
-      </div>
+      </div> -->
     </div>
     <Confirmation
       ref="confirm"
@@ -178,10 +180,14 @@ export default {
     this.retrieveType()
     this.retrieveFeature()
     this.retrieveAddOns()
+    if(this.$route.params.code != null){
+      this.retrieveById(this.$route.params.code)
+    }
   },
   data(){
     return {
       images: [],
+      featured: [],
       data: null,
       user: AUTH.user,
       description: null,
@@ -213,26 +219,32 @@ export default {
     errorModal
   },
   methods: {
-    getImage(e){
-      this.tempImage.push(e)
+    getImage(event){
+      let temp = {
+        url: event.data
+      }
+      this.images.push(temp)
     },
-    // final
-    showDeleteConfirmation(){
-      // lacking id inside show
-      this.$refs.confirm.show()
-      this.canUpdate = false
-      this.price = 0
-      this.addOns = null
+    showDeleteConfirmation(id){
+      this.$refs.confirm.show(id)
     },
-    remove(item){
+    retrieveById(id){
       let parameter = {
-        // id: item.id
+        room_id: id
+      }
+      this.APIRequest('room/retrieve_by_id', parameter).then(response => {
+        console.log('[', response)
+      })
+    },
+    remove(id){
+      let parameter = {
+        id: id.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('add-on/delete', parameter).then(response => {
+      this.APIRequest('room/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data > 0){
-          this.retrieve(this.currentSort, this.currentFilter, false)
+          this.$router.push('/rooms')
         }
       })
     },
@@ -280,12 +292,14 @@ export default {
     },
     // to be finalized
     onSelect(data) {
-      this.selectedFeature = data
+      this.selectedFeature = data.map(el => {
+        return el.payload_value
+      })
       this.isEmpty = false
     },
     onSelectAdd(data) {
-      data.map(el => {
-        this.selectedAddOns.push(el.title)
+      this.selectedAddOns = data.map(el => {
+        return el.title
       })
       this.isEmpty = false
     },
@@ -305,18 +319,11 @@ export default {
         title: this.title,
         category: this.room_type,
         description: this.description,
-        additional_info: JSON.stringify({add_ons: this.selectedAddOns}, {features: this.selectedFeature}),
+        additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
-        // not added sa db
-        // price: this.regular_price,
-        // selectedFeature: this.selectedFeature,
-        // price_terms: this.price_terms,
-        // non_price: this.non_price,
-        // value: this.value
       }
-      console.log('[rooms]', roomParameter)
+      console.log('[param]', roomParameter)
       this.APIRequest('room/create', roomParameter).then(response => {
-        console.log('[response in rooms]', response)
         if(response.data > 0){
           let pricingParameter = {
             account_id: this.user.userID,
@@ -326,10 +333,23 @@ export default {
             currency: this.type,
             label: this.price_terms
           }
+          let imageParameter = {
+            room_id: response.data,
+            url: this.images,
+            status: 'create'
+          }
           this.APIRequest('pricings/create', pricingParameter).then(response => {
-            console.log('[pricing]', response)
+            if(response.data > 0){
+              console.log('Pricing Created Successfully')
+            }else{
+              console.log('[Error in Creating Pricing]')
+            }
           })
-          // this.$router.push('/rooms')
+          this.APIRequest('product_images/create_with_image', imageParameter).then(response => {
+            if(Number(response.data) > 0){
+              this.$router.push('/rooms')
+            }
+          })
         }
       })
     }

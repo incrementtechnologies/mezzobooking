@@ -120,7 +120,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/add-rooms/:code?',
+    path: '/add-rooms/:code?/:name?',
     name: 'add-rooms',
     component: resolve => require(['modules/room/AddRoom.vue'], resolve),
     meta: {
@@ -190,9 +190,16 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/set-availability',
+    path: '/set-availability/:id?',
     name: 'set_availability',
     component: resolve => require(['modules/room/SetAvailability.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/own-bookings/:id?',
+    name: 'own_bookings',
+    component: resolve => require(['modules/booking/ownSummary/List.vue'], resolve),
     meta: {
       tokenRequired: true
     }
