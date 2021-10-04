@@ -73,7 +73,6 @@ export default {
         status: this.isSwitch === true ? 'available' : 'not_available'
       }
       this.APIRequest('availabilities/create', parameter).then(response => {
-        console.log('[responseAvail]', response)
         if(response.data > 0){
           this.$router.push('/add-rooms/' + this.$route.params.id)
         }
