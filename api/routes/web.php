@@ -163,15 +163,6 @@ $route = env('PACKAGE_ROUTE', '').'/social/';
 $controller = 'SocialController@';
 Route::post($route.'social-user', $controller.'getSocialAuthenticatedUser');
 
-
-//Room Controller
-$route = env('PACKAGE_ROUTE', '').'/rooms/';
-$controller = 'RoomController@';
-Route::post($route.'create', $controller.'create');
-Route::post($route.'retrieve', $controller.'retrieve');
-Route::post($route.'update', $controller.'update');
-Route::post($route.'delete', $controller.'delete');
-
 //Room Controller
 $route = env('PACKAGE_ROUTE', '').'/customers/';
 $controller = 'CustomerController@';
@@ -179,3 +170,10 @@ Route::post($route.'create', $controller.'create');
 Route::post($route.'retrieve', $controller.'retrieve');
 Route::post($route.'update', $controller.'update');
 Route::post($route.'delete', $controller.'delete');
+
+
+//Room Controller
+$route = env('PACKAGE_ROUTE', '').'/dashboards/';
+$controller = 'DashboardController@';
+Route::post($route.'create', $controller.'create');
+Route::post($route.'retrieve', $controller.'retrieve');

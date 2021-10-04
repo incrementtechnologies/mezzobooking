@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import RoomCard from 'src/generic/RoomCard.vue'
+import RoomCard from 'src/modules/generic/RoomCard.vue'
 export default {
   components: {
     RoomCard

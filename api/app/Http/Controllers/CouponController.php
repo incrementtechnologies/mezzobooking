@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Coupon;
+use App\RoomCoupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -10,8 +11,26 @@ class CouponController extends APIController
 {
     public function create(Request $request){
         $data = $request->all();
-        $res = Coupon::create($data);
-        $this->response['data'] = $res;
+        $codeExist = Coupon::where('code', '=', $data['code'])->first();
+        $targets = json_decode($data['selectedType']);
+        $couponId = null;
+        if($codeExist === null){
+            $res = Coupon::create($data);
+            $couponId = $res['id'];
+            for ($i=0; $i <= sizeof($targets)-1; $i++) {
+                $item = $targets[$i];
+                $parameter = array(
+                    'payload' => 'target_room',
+                    'payload_value' => $item->id,
+                    'coupon_id' => $couponId
+                );
+                RoomCoupon::create($parameter);
+            }
+            $this->response['data'] = $res;
+        }else{
+            $this->response['data'] = [];
+            $this->response['error'] = 'Coupon is already existed';
+        }
         return $this->response();
     }
 
@@ -35,7 +54,22 @@ class CouponController extends APIController
         $res = Coupon::where('account_id', '=', $data['account_id'])
             ->where($con[0]['column'], $con[0]['clause'], $con[0]['value'])
             ->where('deleted_at', '=', null)
-            ->get();
+            ->first();
+        $roomCoupons = RoomCoupon::where('coupon_id', '=', $res['id'])->where('deleted_at', '=', null)->get();
+        $targets = array();
+        for ($i=0; $i <= sizeof($roomCoupons)-1 ; $i++) {
+            $item = $roomCoupons[$i];
+            if($item['payload_value'] === 'All'){
+                $temp = array(
+                    'payload_value' => 'All',
+                    'id' => 'All'
+                );
+                array_push($targets, $temp);
+            }else{
+                array_push($targets, app('Increment\Common\Payload\Http\PayloadController')->retrieveByParams($item['payload_value']));
+            }
+        }
+        $res['target'] = $targets;
         $this->response['data'] = $res;
         return $this->response();
     }
@@ -45,16 +79,37 @@ class CouponController extends APIController
         $res = Coupon::where('id', '=', $data['id'])->update(array(
             'code' => $data['code'],
             'description' => $data['description'],
+            'currency' => $data['currency'],
+            'amount' => $data['amount'],
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
-            'limit_customer' => $data['limit_customer'],
+            'limit' => $data['limit'],
             'limit_per_customer' => $data['limit_per_customer'],
-            'type' => $data['type'],
-            'value' => $data['value'],
+            'payload' => $data['payload'],
+            'payload_value' => $data['payload_value'],
             'status' => $data['status'],
             'updated_at' => Carbon::now(),
         ));
-        $this->response['data'] = $res;
+        $exist = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
+        if(sizeOf($exist) > 0) {
+            $targets = json_decode($data['selectedType']);
+            for ($i=0; $i <= sizeof($targets) -1 ; $i++) { 
+                $item = $targets[$i];
+                $existTarget = RoomCoupon::where('payload_value', '=', $item->id)->where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->first();
+                if($existTarget === null){
+                    RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->update(array(
+                        'deleted_at' => Carbon::now()
+                    ));
+                    $parameter = array(
+                        'payload' => 'target_room',
+                        'payload_value' => $item->id,
+                        'coupon_id' => $data['id']
+                    );
+                    RoomCoupon::create($parameter);
+                }
+            }
+        }
+        // $this->response['data'] = $res;
         return $this->response();
     }
 }

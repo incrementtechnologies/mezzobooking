@@ -24,7 +24,7 @@
 
 <script>
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
-import RoomTypeCard from 'src/generic/RoomTypeCard.vue'
+import RoomTypeCard from 'src/modules/generic/RoomTypeCard.vue'
 import AUTH from 'src/services/auth'
 export default {
   components: {
@@ -100,10 +100,11 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        sort: sort
+        sort: sort,
+        payload: 'room_type'
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/retrieve_room_types', parameter).then(response => {
+      this.APIRequest('payloads/retrieve_with_images', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
@@ -112,6 +113,16 @@ export default {
           this.data = []
           this.numPages = null
         }
+      })
+    },
+    delete(data){
+      let parameter = {
+        id: data
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('payloads/delete_with_images', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
       })
     }
   }

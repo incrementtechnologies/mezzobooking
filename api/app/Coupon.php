@@ -3,9 +3,24 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Coupon extends Model
+use App\APIModel;
+class Coupon extends APIModel
 {
     protected $table = 'coupons';
-    protected $fillable = ['account_id', 'code', 'description', 'type', 'value', 'start_date', 'end_date', 'limit_customer', 'limit_per_customer', 'status'];
+    protected $fillable = [
+        'account_id',
+        'code',
+        'description',
+        'currency',
+        'country',
+        'locality',
+        'amount',
+        'limit',
+        'limit_per_customer',
+        'start_date',
+        'end_date',
+        'payload',
+        'payload_value',
+        'status'
+    ];
 }

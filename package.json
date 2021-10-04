@@ -13,7 +13,11 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "axios": "^0.21.3",
+    "@progress/kendo-charts-vue-wrapper": "^2021.2.617",
+    "@progress/kendo-datasource-vue-wrapper": "^2021.2.617",
+    "@progress/kendo-theme-default": "^4.41.0",
+    "@progress/kendo-ui": "^2021.2.616",
+    "axios": "^0.19.0",
     "axios-fileupload": "0.0.1",
     "bootstrap": "^3.4.1",
     "bootstrap-vue": "^2.1.0",
@@ -28,6 +32,7 @@
     "howler": "^2.0.12",
     "jquery": "^3.5.1",
     "laravel-echo": "^1.6.1",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "popper.js": "^1.14.3",
     "pusher-js": "^5.1.1",
@@ -45,6 +50,7 @@
     "vue-directive-tooltip": "^1.4.5",
     "vue-echo": "^1.0.2",
     "vue-google-autocomplete": "^1.1.0",
+    "vue-multiselect": "^2.1.6",
     "vue-observe-visibility": "^0.4.6",
     "vue-paypal-checkout": "^3.2.0",
     "vue-pusher": "^1.0.0",

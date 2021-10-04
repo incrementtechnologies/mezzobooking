@@ -35,8 +35,8 @@
             <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information.cellular_number}}</div>
           </td>
           <td>
-            <div style="text-align:center"><b>Type</b> <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ editTypeIndex !== index ? item.account_type : ''}}
-              <i class="fa fa-pencil text-primary" style="float: right;" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
+            <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}
+              <i class="fa fa-pencil text-primary" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
               <span v-if="editTypeIndex === index">
                 <i class="fa fa-times text-danger" style="float: right;" @click="setEditTypeIndex(index, item)"></i>
                 <i class="fa fa-check text-primary" style="float: right;" @click="updateType(item, index)"></i>
@@ -169,11 +169,15 @@ export default {
           value: filter.value + '%',
           column: filter.column,
           clause: 'like'
+        }, {
+          value: 'ADMIN',
+          column: 'account_type',
+          clause: '='
         }],
         sort: sort
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('accounts/retrieve', parameter).then(response => {
+      this.APIRequest('accounts/retrieve_accounts_admin', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.data = response.data

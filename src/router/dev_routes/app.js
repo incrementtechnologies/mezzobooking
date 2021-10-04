@@ -120,7 +120,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/add-rooms/:code?',
+    path: '/add-rooms/:code?/:name?',
     name: 'add-rooms',
     component: resolve => require(['modules/room/AddRoom.vue'], resolve),
     meta: {
@@ -165,6 +165,41 @@ export default{
     path: '/add-room-types/:id?',
     name: 'add_room_types',
     component: resolve => require(['modules/settings/settingPages/AddRoomType.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/features',
+    name: 'features',
+    component: resolve => require(['modules/settings/settingPages/Features.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/add-ons',
+    name: 'add_ons',
+    component: resolve => require(['modules/settings/settingPages/AddOn.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/add-limits/:id?',
+    name: 'add_limits',
+    component: resolve => require(['modules/settings/settingPages/AddGeneralLimit.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/set-availability/:id?',
+    name: 'set_availability',
+    component: resolve => require(['modules/room/SetAvailability.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/own-bookings/:id?',
+    name: 'own_bookings',
+    component: resolve => require(['modules/booking/ownSummary/List.vue'], resolve),
     meta: {
       tokenRequired: true
     }
