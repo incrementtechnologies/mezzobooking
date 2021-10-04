@@ -71,7 +71,7 @@
       :selectedIndex="selectedIndex"
       @onSelect="onSelect"
       v-if="!isClearing"
-      ref="searchField"
+      ref="searchFieldFeature"
       />
     </div>
     <div class="mt-4">
@@ -209,7 +209,8 @@ export default {
       selectedIndex: null,
       types: [],
       tempImage: [],
-      isUpdate: false
+      isUpdate: false,
+      price_id: null
     }
   },
   components: {
@@ -233,7 +234,21 @@ export default {
         room_id: id
       }
       this.APIRequest('room/retrieve_by_id', parameter).then(response => {
-        console.log('[', response)
+        if(response.data.length > 0){
+          this.description = response.data[0].description
+          this.regular_price = response.data[0].regular
+          this.price_terms = response.data[0].label
+          this.title = response.data[0].title
+          this.room_type = response.data[0].category.id
+          this.type = response.data[0].label
+          this.non_price = response.data[0].refundable
+          this.value = response.data[0].currency
+          this.status = response.data[0].status
+          this.featured = response.data[0].images
+          this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
+          this.$refs.searchFieldFeature.features = Object.values(response.data[0].additional_info)[1]
+          this.price_id = response.data[0].price_id
+        }
       })
     },
     remove(id){
@@ -293,15 +308,67 @@ export default {
     // to be finalized
     onSelect(data) {
       this.selectedFeature = data.map(el => {
-        return el.payload_value
+        return ({payload_value: el.payload_value, id: el.id})
       })
       this.isEmpty = false
     },
     onSelectAdd(data) {
       this.selectedAddOns = data.map(el => {
-        return el.title
+        return ({title: el.title, id: el.id})
       })
       this.isEmpty = false
+    },
+    update(){
+      this.$refs.searchField.returnAddOn()
+      this.selectedAddOns = this.selectedAddOns.map(el => {
+        return ({title: el.title, id: el.id})
+      })
+      this.$refs.searchFieldFeature.returnFeature()
+      this.selectedFeature = this.selectedFeature.map(el => {
+        return ({payload_value: el.payload_value, id: el.id})
+      })
+      let parameter = {
+        id: this.$route.params.code,
+        code: this.user.code,
+        account_id: this.user.userID,
+        title: this.title,
+        category: this.room_type,
+        description: this.description,
+        additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
+        status: this.status
+      }
+      this.APIRequest('room/update', parameter).then(response => {
+        console.log('[responsed]', response)
+        if(response.data === true && this.price_id != null){
+          let pricingParameter = {
+            id: this.price_id,
+            account_id: this.user.userID,
+            room_id: this.$route.params.code,
+            regular: this.regular_price,
+            refundable: this.non_price,
+            currency: this.type,
+            label: this.price_terms
+          }
+          let imageParameter = {
+            room_id: this.$route.params.code,
+            url: this.images,
+            status: 'create'
+          }
+          this.APIRequest('pricings/update', pricingParameter).then(response => {
+            console.log('[responsedd]', response)
+            if(response.data === true){
+              console.log('Pricing Updated Successfully')
+            }else{
+              console.log('[Error in Updating Pricing]')
+            }
+          })
+          this.APIRequest('product_images/update', imageParameter).then(response => {
+            if(Number(response.data) > 0){
+              this.$router.push('/rooms')
+            }
+          })
+        }
+      })
     },
     create(){
       // if(this.description === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.value === null || this.status === null || this.type === null
