@@ -335,11 +335,11 @@ export default {
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
-        status: this.status
+        status: this.status,
+        images: this.images
       }
-      this.APIRequest('room/update', parameter).then(response => {
-        console.log('[responsed]', response)
-        if(response.data === true && this.price_id != null){
+      this.APIRequest('room/update_with_images', parameter).then(response => {
+        if(response.data >= 1 && this.price_id != null){
           let pricingParameter = {
             id: this.price_id,
             account_id: this.user.userID,
@@ -349,25 +349,23 @@ export default {
             currency: this.type,
             label: this.price_terms
           }
-          let imageParameter = {
-            room_id: this.$route.params.code,
-            url: this.images,
-            status: 'create'
-          }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
-            console.log('[responsedd]', response)
             if(response.data === true){
-              console.log('Pricing Updated Successfully')
+              this.$router.push('/rooms')
             }else{
               console.log('[Error in Updating Pricing]')
             }
           })
-          this.APIRequest('product_images/update', imageParameter).then(response => {
-            if(Number(response.data) > 0){
-              this.$router.push('/rooms')
-            }
-          })
         }
+      })
+    },
+    removeImage(data){
+      let parameter = {
+        id: data
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('product_images/delete', parameter, response => {
+        $('#loading').css({'display': 'none'})
       })
     },
     create(){
@@ -389,7 +387,6 @@ export default {
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
       }
-      console.log('[param]', roomParameter)
       this.APIRequest('room/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
@@ -403,7 +400,7 @@ export default {
           let imageParameter = {
             room_id: response.data,
             url: this.images,
-            status: 'create'
+            status: 'room_images'
           }
           this.APIRequest('pricings/create', pricingParameter).then(response => {
             if(response.data > 0){
