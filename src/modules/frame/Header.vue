@@ -471,8 +471,9 @@ body{
 
 
 .logo-brand{
-  width: 50%;
-  height: 50%;
+  width: 30%;
+  height: 30%;
+  padding-top: 4px
 }
 .left-menu-icons .account-type{
   padding: 10px 10px 10px 10px;
@@ -632,10 +633,12 @@ body{
 @media (max-width: 991px){
    .system-header{
       width: 30%;
+      height: 50px
     }
     .header-navbar{
       width: 70%;
       margin-left: 30%;
+      height: 50px
     }
    .header-navbar-nav{
       width: 30%;
