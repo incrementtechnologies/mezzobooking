@@ -25,10 +25,10 @@
               v-if="errorMessage != null"
             >{{errorMessage}}</p>
             <div>
-              <p class="mt-2"><b>Username</b></p>
+              <!-- <p class="mt-2"><b>Username</b></p> -->
               <roundedInput 
                 :type="'text'"
-                :placeholder="'Your username here...'"
+                :placeholder="'Username'"
                 :class="!this.isValid && username == '' ? 'mb-0 ' : ' registrationField'"
                 :styles="{
                   border: !this.isValid && username == '' ? '1px solid red !important' : 'none',
@@ -39,7 +39,7 @@
                 class="mb-0 pb-0 requiredFieldError"
                 v-if="!this.isValid && username == ''"
               >Required Field</p>
-              <p class="mt-2"><b>Email</b></p>
+              <!-- <p class="mt-2"><b>Email</b></p> -->
               <roundedInput 
                 :type="'text'"
                 :placeholder="'Email Address'"
@@ -58,10 +58,10 @@
                 :
                   'Required Field'
               }}</p>
-              <p class="mt-2"><b>Password</b></p>
+              <!-- <p class="mt-2"><b>Password</b></p> -->
               <roundedInput 
                 :type="'password'"
-                :placeholder="'Your password here...'"
+                :placeholder="'Password'"
                 :class="!this.isValid && (password == '' || password != cpassword || passwordRequirements != '') ? 'mb-0 ' : ' registrationField'"
                 :styles="{
                   border: !this.isValid && (password == '' || password != cpassword || passwordRequirements != '') ? '1px solid red !important' : 'none',
@@ -83,10 +83,10 @@
                   :
                   'Required Field'
               }}</p>
-              <p class="mt-2"><b>Confirm Password</b></p>
+              <!-- <p class="mt-2"><b>Confirm Password</b></p> -->
               <roundedInput 
                 :type="'password'"
-                :placeholder="'Retype Password'"
+                :placeholder="'Confirm Password'"
                 :class="!this.isValid && (password == '' || password != cpassword || passwordRequirements != '') ? 'mb-0 ' : ' registrationField'"
                 :styles="{
                   border: !this.isValid && (password == '' || password != cpassword || passwordRequirements != '') ? '1px solid red !important' : 'none',
@@ -120,7 +120,7 @@
               />
             </div>
             <div class="d-flex justify-content-center orSeparatorA">
-              <p style="color: #CBAB58;"><u>Already have an account?</u></p>
+              <p style="color: #CBAB58;"><u>Have an account?</u></p>
             </div>
             <hr>
             <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-end" style="margin-left: 4%">
@@ -239,7 +239,7 @@ export default {
           this.isEmailValid = true
         }
         this.isValid = false
-        this.passwordRequirements = 'Password should be minimum of 8 and maximum of 16 and should contain at least one digit, lower case, upper case and special character.'
+        this.passwordRequirements = 'Password should be minimum of 6 and should contain at least one digit, lower case, upper case and special character.'
         return false
       }
       this.passwordRequirements = ''

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="background-color:#F9F9F9">
+  <div id="app" style="background-color:#F9F9F9; font-family: Avenir,Helvetica,Arial,sans-serif !important">
     <div v-bind:style="(globalVariables.showModal) ? 'overflow-y:hidden; height:'+deviceHeight+'px!important': ''">
       <div v-if="tokenData.token !== null && parseInt(user.userID) > 0 && tokenData.loading === false">
        <system-header></system-header>

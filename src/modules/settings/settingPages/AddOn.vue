@@ -9,8 +9,8 @@
       </span>
       <span style="float:right">
           <span>
-              <b class="mr-5 actionBtn btn1">Room Add-ons</b>
-              <b class="actionBtn btn2">Checkout Add-ons</b>
+              <b :class="active ? 'mr-5 actionBtn btn1' : 'mr-5 actionBtn btn2'" @click="room()">Room Add-ons</b>
+              <b :class="active1 ? 'actionBtn btn2' : 'actionBtn btn1'" @click="room1()">Checkout Add-ons</b>
           </span>
       </span>
     </div>
@@ -28,7 +28,7 @@
       v-if="data !== null"
     /></div>
     <div>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-if="canUpdate === false" @click="create()">Add</button>
+      <button class="btn btn-primary pull-right" style="margin-bottom: 20px; padding-vertical: 4%" v-if="canUpdate === false" @click="create()">Add</button>
       <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-else @click="create()">Update</button>
       <input type="number" class="form-control" placeholder="Type default price" v-model="price">
       <input type="text" class="form-control addOns" placeholder="Type your add-ons here" v-model="addOns">
@@ -153,7 +153,9 @@ export default {
       item: null,
       canUpdate: false,
       validated: false,
-      title: null
+      title: null,
+      active: true,
+      active1: true
     }
   },
   components: {
@@ -165,6 +167,16 @@ export default {
     Confirmation
   },
   methods: {
+    room(){
+      this.active = true
+      this.active1 = true
+      this.retrieve()
+    },
+    room1(){
+      this.active = false
+      this.active1 = false
+      this.retrieve()
+    },
     retrieve(sort = null, filter = null, flag = null){
       if(flag === true) {
         this.offset += this.limit
@@ -185,14 +197,21 @@ export default {
           value: this.user.userID,
           column: 'account_id',
           clause: 'like'
+        },
+        {
+          value: this.active === true ? 'room' : 'checkout',
+          column: 'type',
+          clause: 'like'
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
         sort: sort
       }
+      console.log('[[]fasdf', parameter)
       $('#loading').css({'display': 'block'})
       this.APIRequest('add-on/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
+        console.log('[]', response)
         if(response.data.length > 0){
           this.data = response.data
         }else{
@@ -232,6 +251,7 @@ export default {
             price: this.price,
             title: this.addOns,
             merchant_id: 1,
+            type: this.active === true ? 'room' : 'checkout',
             url: 'test',
             currency: 'PHP'
           }
@@ -325,9 +345,11 @@ $(function () {
   }
   .btn1{
     color: $primary;
+    cursor: pointer;
   }
   .btn2{
     color: $secondary;
+    cursor: pointer;
   }
   .fa-pencil, .fa-trash{
     font-size: 20px !important;

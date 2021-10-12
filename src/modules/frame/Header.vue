@@ -2,8 +2,8 @@
   <div>
     <div class="system-header">
       <a class="navbar-brand" v-on:click="redirect('dashboard')">
-        <img :src="require('src/assets/img/logo_white.png')" class="logo-brand">
-        <label class="navbar-brand hide-on-mobile text-white" v-html="common.APP_NAME_HTML"></label>
+        <img :src="require('src/assets/img/logo.png')" class="logo-brand">
+        <label class="navbar-brand hide-on-mobile text-white" ></label>
       </a>
     </div>
     <nav class="header-navbar">
@@ -197,7 +197,7 @@ body{
 
   .system-header{
     float: left;
-    height: 50px;
+    height: 100px;
     font-size: 24px;
     width: 18%;
     background: $primary;
@@ -207,7 +207,7 @@ body{
   
   .header-navbar{
     background: $primary;
-    height: 50px;
+    height: 100px;
     float: left;
     width: 82%;
     position: fixed;
@@ -471,8 +471,9 @@ body{
 
 
 .logo-brand{
-  width: 25px;
-  height: 25px;
+  width: 30%;
+  height: 30%;
+  padding-top: 4px
 }
 .left-menu-icons .account-type{
   padding: 10px 10px 10px 10px;
@@ -632,10 +633,12 @@ body{
 @media (max-width: 991px){
    .system-header{
       width: 30%;
+      height: 50px
     }
     .header-navbar{
       width: 70%;
       margin-left: 30%;
+      height: 50px
     }
    .header-navbar-nav{
       width: 30%;
