@@ -16,6 +16,7 @@
     <span style="float:right">
       <span>
         <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code)">Set Schedules & Limits</b>
+        <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b>
       </span>
     </span>
     <div class="row mt-4">
@@ -135,7 +136,8 @@
         <label>Status</label>
         <div class="input-group">
           <select v-model="status" type="text" class="form-control-custom form-control">
-            <option value="pending">Publish</option>
+            <option value="pending">Pending</option>
+            <option value="publish">Publish</option>
           </select>
         </div>
       </div>
