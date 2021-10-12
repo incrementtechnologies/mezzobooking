@@ -239,7 +239,7 @@ export default {
           this.isEmailValid = true
         }
         this.isValid = false
-        this.passwordRequirements = 'Password should be minimum of 8 and maximum of 16 and should contain at least one digit, lower case, upper case and special character.'
+        this.passwordRequirements = 'Password should be minimum of 6 and should contain at least one digit, lower case, upper case and special character.'
         return false
       }
       this.passwordRequirements = ''

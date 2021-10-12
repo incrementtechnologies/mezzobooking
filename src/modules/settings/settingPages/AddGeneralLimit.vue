@@ -74,10 +74,14 @@ export default {
         ]
       }
       this.APIRequest('payloads/retrieve', parameter, response => {
-        this.types = response.data
+        if(response.data.length > 0){
+          this.types = response.data
+          this.type = response.data[0].id
+        }
       })
     },
     getSelectedType(event){
+      console.log('==', event.target.value)
       this.type = event.target.value
     },
     create(){
@@ -96,6 +100,7 @@ export default {
       $('#loading').css({'display': 'block'})
       this.APIRequest('availabilities/create', parameter, response => {
         $('#loading').css({'display': 'none'})
+        this.$router.push('/general-limit')
       })
     }
   }
