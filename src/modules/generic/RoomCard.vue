@@ -12,10 +12,12 @@
               <span style="float:right"><b>{{list.currency != null ? list.currency : 'PHP'}}{{list.regular != null ? list.regular : 0}}/{{list.label != null ? list.label : 'No Label'}}</b><i @click="$router.push('/add-rooms/'+ list.id)" class="fa fa-pencil ml-2"></i></span>
             </div>
             <p class="card-text">{{list.description !== null ? list.description : 'No description'}}</p>
-            <div class="row" v-if="list.additional_info.add_ons.length > 0">
-              <div class="col-md-6" v-for="(item, index) in list.additional_info.add_ons" :key="index">
-                <span><i class="fa fa-check"></i></span>
-                <span>{{item}}</span>
+            <div class="row" v-if="Object.values(list.additional_info).length > 0">
+              <div class="col-md-6" v-for="(item, index) in Object.values(list.additional_info)" :key="index">
+                <div v-for="(x, index) in item" :key="index">
+                  <span><i class="fa fa-check"></i></span>
+                  <span>{{x.title || x.payload_value}}</span>
+                </div>
               </div>
             </div>
             <div class="mt-1" v-if="actionBtn===true">
