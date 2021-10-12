@@ -73,7 +73,7 @@
               />
             </div>
             <div class="d-flex justify-content-center orSeparatorB">
-              <p style="color: #CBAB58;"><u>Don't have an account?</u></p>
+              <p style="color: #CBAB58;">Don't have an account?</p>
             </div>
             <hr>
             <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-end" style="margin-left: 4%">
