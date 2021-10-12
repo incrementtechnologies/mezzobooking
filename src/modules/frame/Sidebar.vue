@@ -92,6 +92,7 @@
   padding: 0px;
   margin: 0px;
   min-height: 100vh;
+   padding-top: 20%;
   overflow-y: auto;
 }
 
@@ -298,6 +299,7 @@
     background-color: rgba(0,0,0,0.5);
     margin-top: 50px;
     height: 100vh;
+    padding-top: 20%;
   }
   .content-holder{
     min-height: 10px;
@@ -358,6 +360,7 @@
     background: #fff;
     margin-top: 100px;
     height: 100vh;
+    padding-top: 20%;
   }
 
   .main-sidebar ul{

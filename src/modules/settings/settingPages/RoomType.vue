@@ -48,12 +48,12 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Created_at Ascending',
+          title: 'Created Ascending',
           payload: 'created_at',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'Created_at Descending',
+          title: 'Created Descending',
           payload: 'created_at',
           payload_value: 'desc',
           type: 'date'
@@ -82,7 +82,7 @@ export default {
     }
   },
   methods: {
-    retrieve(sort = null, filter = null, flag = null){
+    retrieve(sort, filter, flag){
       if(flag === true) {
         this.offset += this.limit
       }
@@ -100,7 +100,7 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        sort: sort,
+        sort: sort !== null ? sort : this.currentSort,
         payload: 'room_type'
       }
       $('#loading').css({'display': 'block'})
