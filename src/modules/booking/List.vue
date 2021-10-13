@@ -1,5 +1,6 @@
 <template>
   <div style="margin: 56px;">
+    <p><b>Current Bookings</b></p>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -52,7 +53,7 @@ import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 import { ExportToCsv } from 'export-to-csv'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
   },
   data() {
     return {
@@ -67,15 +68,15 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
-          payload: 'email',
+          title: 'Created Ascending',
+          payload: 'created_at',
           payload_value: 'asc',
-          type: 'text'
+          type: 'date'
         }, {
-          title: 'Email Descending',
-          payload: 'email',
+          title: 'Created Descending',
+          payload: 'created_at',
           payload_value: 'desc',
-          type: 'text'
+          type: 'date'
         }, {
           title: 'CheckIn Ascending',
           payload: 'check_in',
@@ -128,7 +129,7 @@ export default {
     Pager
   },
   methods: {
-    retrieve(sort = null, filter = null, flag = null){
+    retrieve(sort, filter, flag){
       if(flag === true) {
         this.offset += this.limit
       }
@@ -138,6 +139,7 @@ export default {
       if(sort !== null){
         this.currentSort = sort
       }
+      console.log('=========', this.currentSort, sort)
       let parameter = {
         condition: [{
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
@@ -146,7 +148,7 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        sort: sort
+        sort: sort !== null ? sort : this.currentSort
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)

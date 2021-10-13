@@ -184,7 +184,7 @@ export default {
         }
       })
     },
-    retrieve(sort = null, filter = null, flag = null){
+    retrieve(sort, filter, flag){
       if(flag === true) {
         this.offset += this.limit
       }
@@ -202,7 +202,7 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        sort: sort,
+        sort: sort !== null ? sort : this.currentSort,
         payload: 'feature'
       }
       $('#loading').css({'display': 'block'})

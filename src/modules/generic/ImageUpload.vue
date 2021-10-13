@@ -10,10 +10,12 @@
           </div>
         </div>
       </div>
-      <div class="column">    
-        <div class="addImage" @click="clickAddImage()">
-            <input type="file" hidden ref="fileInput" @change="getFile($event)">
-            <i class="fa fa-plus addIcon"></i>
+      <div class="column"> 
+        <div class="container">  
+          <div class="addImage" @click="clickAddImage()">
+              <input type="file" hidden ref="fileInput" @change="getFile($event)">
+              <i class="fa fa-plus addIcon"></i>
+          </div>
         </div>
       </div>
   </div>

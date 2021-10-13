@@ -81,6 +81,7 @@
 
 .content{
   width: 55%;
+  padding-top: 4%
 }
 .sidebar{
   min-height: 100vh;
@@ -92,6 +93,7 @@
   padding: 0px;
   margin: 0px;
   min-height: 100vh;
+   padding-top: 20%;
   overflow-y: auto;
 }
 
@@ -298,6 +300,7 @@
     background-color: rgba(0,0,0,0.5);
     margin-top: 50px;
     height: 100vh;
+    // padding-top: 10%;
   }
   .content-holder{
     min-height: 10px;
@@ -305,6 +308,9 @@
     overflow-y: hidden;
     margin: 60px 2% 0 2%;
     float: left;
+  }
+  .content{
+    width: 100%;
   }
   .main-sidebar ul{
     background: $secondary;
@@ -358,6 +364,7 @@
     background: #fff;
     margin-top: 100px;
     height: 100vh;
+    padding-top: 20%;
   }
 
   .main-sidebar ul{
