@@ -11,7 +11,7 @@
     width: 100%;
     min-height: 400px;
     float: left;
-    padding-top: 3%;
+    /* padding-top: 3%; */
     overflow: hidden;
   }/*-- content-holder --*/
 </style>
