@@ -89,7 +89,7 @@
 
 .menu .header-primary-menu .nav-item{
   float: right;
-  font-size: 15px;
+  font-size: 17px;
   margin-left: 5px;
 }
 
