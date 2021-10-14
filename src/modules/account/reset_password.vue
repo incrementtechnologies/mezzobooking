@@ -3,10 +3,10 @@
     <div class="row RowContainer">
       <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-xs-7 QouteCardContainer mb-5">
         <div class="QouteCard">
-          <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 25%;height:auto">
+          <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 25%;height:auto;margin-left: 3%">
           <div class="SubQoute" style="margin-top: 1%; color: white">
             <h5 class="QouteText" style="color: white">Mezzo Hotel Admin App</h5>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+            <p style="margin-right: 30%">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
               when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
               It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
               It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
@@ -14,20 +14,20 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-5 d-flex justify-content-center LoginCardContainer mb-5">
+      <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-5 d-flex justify-content-center LoginCardContainer mb-0">
         <div class="card LoginCard">
           <div class="card-body LoginCardBody">
-            <div class="d-flex justify-content-center pt-5 pb-5 mb-3">
+            <div class="d-flex justify-content-center pt-3 pb-4 mb-3">
               <b>Request to Reset Password with Mezzo Hotel</b>
             </div>
             <div>
-              <roundedInput 
+              <roundedInput
                 :type="'text'"
                 :styles="{
                   border: !this.isEmailError ? '.2px solid red !important' : 'none'
                 }"
                 :placeholder="'Email Address'"
-                :class="''"
+                :class="'LoginField'"
                 v-model="email"
               />
               <p
@@ -35,7 +35,7 @@
                 v-if="!this.isEmailError"
               >{{email == '' ? 'Required Field' :'Invalid email'}}</p>
             </div>
-            <div class="message mt-1 mb-2">
+            <div class="message mt-1 mb-0">
               <i v-if="showResponse" class="resetPasswordMessage">We send recory email to yor email address at <u>{{email}}</u>. Please give us a moment, it may take few minutes. Please check your email address to continue.</i>
               <i v-if="showError" class="resetPasswordMessage" style="color:red">Something went wrong.</i>
             </div>
@@ -50,7 +50,7 @@
               />
             </div>
             <div class="d-flex justify-content-center orSeparatorB">
-              <p style="color: #CBAB58;"><u>Remembered your Account?</u></p>
+              <p style="color: #CBAB58;">Remembered your Account?</p>
             </div>
             <hr>
             <div class="col-sm-12 mb-3 col-md-12 col-lg-12 d-flex justify-content-end" style="margin-left: 4%">
@@ -138,7 +138,7 @@ export default {
   font-size: 12px;
 }
 .message {
-  min-height: 80px;
+  min-height: 50px;
 }
 .orSeparatorA {
   margin-top: 35px;
@@ -149,7 +149,7 @@ export default {
   margin-bottom: 20px;
 }
 .LoginField {
-  margin-bottom: 35px;
+  margin-bottom: 0px;
 }
 .QouteText {
   font-size: 30px;
