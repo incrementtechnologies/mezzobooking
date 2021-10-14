@@ -137,10 +137,10 @@ export default {
           $('#loading').css({'display': 'block'})
           this.APIRequest('payloads/create_with_images', parameter, response => {
             $('#loading').css({'display': 'none'})
-            if(response.data.length > 0){
+            if(response.data != null){
               this.title = null
               this.canUpdate = false
-              this.retrieve({'payload_value': 'asc'}, {column: 'payload_value', value: ''}, false)
+              this.retrieve(this.currentSort, this.currentFilter, false)
             }
           })
         }else{

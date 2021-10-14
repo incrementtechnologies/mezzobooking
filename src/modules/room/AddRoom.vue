@@ -199,7 +199,6 @@ export default {
       room_type: null,
       type: null,
       non_price: null,
-      value: null,
       status: null,
       errorMessage: null,
       feature: [],
@@ -244,7 +243,7 @@ export default {
           this.room_type = response.data[0].category.id
           this.type = response.data[0].label
           this.non_price = response.data[0].refundable
-          this.value = response.data[0].currency
+          this.type = response.data[0].currency
           this.status = response.data[0].status
           this.featured = response.data[0].images
           this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
@@ -371,14 +370,14 @@ export default {
       })
     },
     create(){
-      // if(this.description === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.value === null || this.status === null || this.type === null
-      // ){
-      //   this.errorMessage = 'All fields are required'
-      //   return
-      // }else if(this.regular_price <= 0 || this.non_price <= 0){
-      //   this.errorMessage = 'Value should be greater than 0'
-      //   return
-      // }
+      if(this.description === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.type === null || this.status === null
+      ){
+        this.errorMessage = 'All fields are required'
+        return
+      }else if(this.regular_price <= 0 || this.non_price <= 0){
+        this.errorMessage = 'Value should be greater than 0'
+        return
+      }
       // save to room
       let roomParameter = {
         code: this.user.code,

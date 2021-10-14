@@ -87,7 +87,7 @@ body{
   .login-content-holder{
     width: 100%;
     float: left;
-    min-height: 400px;
+    /* min-height: 400px; */
     overflow: hidden;
   }
 /*---------------------------------------------

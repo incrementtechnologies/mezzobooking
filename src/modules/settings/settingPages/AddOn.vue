@@ -82,7 +82,7 @@ import Confirmation from 'src/components/increment/generic/modal/Confirmation.vu
 import errorModal from 'src/components/increment/generic/Modal/Alert.vue'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
   },
   data() {
     return {
@@ -170,14 +170,14 @@ export default {
     room(){
       this.active = true
       this.active1 = true
-      this.retrieve()
+      this.retrieve({'created_at': 'asc'}, {column: 'type', value: ''}, false)
     },
     room1(){
       this.active = false
       this.active1 = false
-      this.retrieve()
+      this.retrieve({'created_at': 'asc'}, {column: 'type', value: ''}, false)
     },
-    retrieve(sort = null, filter = null, flag = null){
+    retrieve(sort, filter, flag){
       if(flag === true) {
         this.offset += this.limit
       }
@@ -187,6 +187,7 @@ export default {
       if(sort !== null){
         this.currentSort = sort
       }
+      console.log('[]', this.currentFilter)
       let parameter = {
         condition: [{
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
@@ -205,7 +206,7 @@ export default {
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        sort: sort
+        sort: sort != null ? sort : this.currentSort
       }
       console.log('[[]fasdf', parameter)
       $('#loading').css({'display': 'block'})
