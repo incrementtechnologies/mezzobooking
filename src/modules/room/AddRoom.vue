@@ -365,7 +365,7 @@ export default {
         id: data
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('product_images/delete', parameter, response => {
+      this.APIRequest('room_images/delete', parameter, response => {
         $('#loading').css({'display': 'none'})
       })
     },
@@ -410,7 +410,7 @@ export default {
               console.log('[Error in Creating Pricing]')
             }
           })
-          this.APIRequest('product_images/create_with_image', imageParameter).then(response => {
+          this.APIRequest('room_images/create_with_image', imageParameter).then(response => {
             if(Number(response.data) > 0){
               this.$router.push('/rooms')
             }

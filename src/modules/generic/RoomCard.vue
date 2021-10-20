@@ -4,7 +4,7 @@
       <div class="card" style="min-height: 240px">
         <div class="card-horizontal">
           <div class="img-square-wrapper">
-            <img class="" style="min-height: 240px; width:240px" :src="list.images.length > 0 ? config.BACKEND_URL + list.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
+            <img class="" style="min-height: 240px; width:240px; height: 240px" :src="list.images.length > 0 ? config.BACKEND_URL + list.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
           </div>
           <div class="card-body">
             <div class="mb-4">
