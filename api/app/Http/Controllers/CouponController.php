@@ -112,4 +112,15 @@ class CouponController extends APIController
         // $this->response['data'] = $res;
         return $this->response();
     }
+
+    public function apply(Request $request){
+		$data = $request->all();
+		$result = Coupon::where('code', '=', $data['code'])->first();
+		if($result !== null){
+			$this->response['data'] = $result;
+		}else{
+			$this->response['error'] = "Coupon code does not exist";
+		}
+		return $this->response();
+	}
 }
