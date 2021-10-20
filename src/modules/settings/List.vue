@@ -33,22 +33,22 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
-  .cards{
-    height: 100px;
-    background-color: white;
-    margin-bottom: 3%;
-  }
-  .cards:hover{
-    cursor: pointer;
-    background: rgba(0,0,0, 0.1)
-  }
-  .column{
-    margin: auto;
-    padding: 20px;
-  }
-  .column i{
-    float: right;
-    color: $secondary;
-    font-size: 20px
-  }
+    .cards{
+      height: 100px;
+      background-color: white;
+      margin-bottom: 3%;
+    }
+    .cards:hover{
+      cursor: pointer;
+      background: rgba(0,0,0, 0.1)
+    }
+    .column{
+      margin: auto;
+      padding: 20px;
+    }
+    .column i{
+      float: right;
+      color: $secondary;
+      font-size: 20px
+    }
 </style>

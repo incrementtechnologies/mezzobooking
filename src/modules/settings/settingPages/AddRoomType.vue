@@ -111,7 +111,7 @@ export default {
         id: data
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('product_images/delete', parameter, response => {
+      this.APIRequest('room_images/delete', parameter, response => {
         $('#loading').css({'display': 'none'})
       })
     }
