@@ -251,7 +251,6 @@ export default {
             account_id: this.user.userID,
             price: this.price,
             title: this.addOns,
-            merchant_id: 1,
             type: this.active === true ? 'room' : 'checkout',
             url: 'test',
             currency: 'PHP'
