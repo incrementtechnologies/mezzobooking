@@ -36,7 +36,7 @@ export default {
     .cards{
       height: 100px;
       background-color: white;
-      margin-bottom: 3%;
+      margin-top: 3%;
     }
     .cards:hover{
       cursor: pointer;

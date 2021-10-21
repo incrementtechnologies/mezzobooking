@@ -3,10 +3,10 @@
     <div class="row RowContainer">
       <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-xs-7 QouteCardContainer mb-5">
         <div class="QouteCard">
-          <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 25%;height:auto;margin-left: 3%">
-          <div class="SubQoute" style="margin-top: 1%; color: white">
+          <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 18%;height:auto;margin-left: 6%">
+          <div class="SubQoute" style="margin-top: 6%; color: white">
             <h5 class="QouteText" style="color: white">Mezzo Hotel Admin App</h5>
-            <p style="margin-right: 30%">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+            <p class="SupportingText">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
               when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
               It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
               It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
@@ -17,14 +17,14 @@
       <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xs-5 d-flex justify-content-center LoginCardContainer mb-5">
         <div class="card RegisterCard">
           <div class="card-body RegisterCardBody">
-            <div class="d-flex justify-content-center pt-3 pb-4 mb-3">
+            <div class="d-flex justify-content-center pt-3 pb-4 mb-3" style="font-weight: 1000">
               <b>Register with Mezzo Hotel</b>
             </div>
             <p
               class="mb-2 pb-0 errorMessage"
               v-if="errorMessage != null"
             >{{errorMessage}}</p>
-            <div>
+            <div class="fields">
               <!-- <p class="mt-2"><b>Username</b></p> -->
               <roundedInput 
                 :type="'text'"
@@ -278,20 +278,24 @@ export default {
   margin-bottom: 20px;
 }
 .QouteText {
-  font-size: 30px;
-  // font-weight: bold;
+  font-size: 45px;
 }
 .SubQoute {
   text-align: left;
 }
+.SupportingText {
+  margin-right: 30%;
+  margin-top: 4%;
+}
 .QouteCard {
   width: 80% !important;
-  margin-top: 5vh;
+  margin-top: 10vh;
   margin-bottom: 5vh;
   text-align: left;
+  margin-left: 10%;
 }
 .RegisterCard {
-  margin-top: 5%;
+  margin-top: 15%;
   width: 475px;
   background-color: white;
   border-radius: 20px;
@@ -301,7 +305,7 @@ export default {
 }
 .RegisterCardBody {}
 .LoginContainer {
-  min-height: 91.9vh;
+  min-height: 91.6vh;
   background-color: $primary;
   padding-top: 3%;
 }
@@ -317,7 +321,9 @@ export default {
 .LoginCardContainer {
   background-color: transparent !important;
 }
-
+.fields {
+  margin-top: 30px;
+}
 @media (max-width: 500px) {
   .RegisterCard {
     width: 100%;
