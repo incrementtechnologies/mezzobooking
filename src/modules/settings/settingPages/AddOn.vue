@@ -187,7 +187,6 @@ export default {
       if(sort !== null){
         this.currentSort = sort
       }
-      console.log('[]', this.currentFilter)
       let parameter = {
         condition: [{
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
@@ -208,11 +207,9 @@ export default {
         offset: flag ? this.offset : 0,
         sort: sort != null ? sort : this.currentSort
       }
-      console.log('[[]fasdf', parameter)
       $('#loading').css({'display': 'block'})
       this.APIRequest('add-on/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
-        console.log('[]', response)
         if(response.data.length > 0){
           this.data = response.data
         }else{
@@ -286,26 +283,28 @@ export default {
           })
         }
       }else{
-        console.log('[]fdff')
         this.title = 'Please input your desired price and add-ons.'
         this.$refs.errorModal.show()
       }
     },
     validation(){
-      if(this.addOns !== null && this.addOns !== '' && this.addOns !== undefined){
-        console.log('[]fdfffffffff')
-        this.validated = true
+      if((this.addOns === null || this.addOns === undefined || this.addOns === '') && this.price === 0){
+        this.validated = false
+        this.title = 'Please input your desired price and add-ons.'
         this.$refs.errorModal.show()
-        this.title = 'Please input your desired add-ons.'
         return this.validated
-      }else if(this.price > 0){
-        console.log('[gdfgsdfgsdf')
+      }else if(this.addOns === null || this.addOns === undefined || this.addOns === ''){
+        this.validated = false
+        this.title = 'Please input your desired add-ons.'
         this.$refs.errorModal.show()
+        return this.validated
+      }else if(this.price === 0){
+        this.validated = false
         this.title = 'Please input your desired price.'
-        this.validated = true
+        this.$refs.errorModal.show()
         return this.validated
       }else{
-        this.validated = false
+        this.validated = true
         return this.validated
       }
 

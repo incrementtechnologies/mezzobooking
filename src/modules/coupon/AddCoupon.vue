@@ -58,7 +58,7 @@
             <div class="col-md-6">
                 <label>Amount</label>
                 <div class="input-group">
-                    <input v-model="amount"  type="number" class="form-control-custom form-control">
+                    <input v-model="amount" type="number" class="form-control-custom form-control">
                     <!-- <select v-model="currency" class="form-control" style="width:102px; height:40px">
                         <option value="PHP">PHP</option>
                     </select> -->
