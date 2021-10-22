@@ -443,37 +443,37 @@ body{
 ---------------------------------------*/
 
 
-.profile-photo-header{
-  float: left;
-  width: 100%;
-  height: 80px;
-  color: $primary;
-}
-.profile-image-holder-header{
-  width: 100%;
-  float: left;
-  height: 80px;
-  text-align: center;
-  margin-top: 25px;
-}
-.profile-image-holder-header img{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-}
+// .profile-photo-header{
+//   float: left;
+//   width: 100%;
+//   height: 80px;
+//   color: $primary;
+// }
+// .profile-image-holder-header{
+//   width: 100%;
+//   float: left;
+//   height: 80px;
+//   text-align: center;
+//   margin-top: 25px;
+// }
+// .profile-image-holder-header img{
+//   width: 80px;
+//   height: 80px;
+//   border-radius: 50%;
+// }
 
-.profile-photo-header i{
-  float: left !important;
-  font-size: 60px !important;
-  line-height: 80px !important;
-  width: 100% !important;
-}
+// .profile-photo-header i{
+//   float: left !important;
+//   font-size: 60px !important;
+//   line-height: 80px !important;
+//   width: 100% !important;
+// }
 
 
 .logo-brand{
   width: 30%;
   height: 30%;
-  padding-top: 4px
+  padding-top: 8px;
 }
 .left-menu-icons .account-type{
   padding: 10px 10px 10px 10px;
