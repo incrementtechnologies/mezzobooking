@@ -107,9 +107,9 @@
           <label>Regular Price</label>
           <div class="input-group">
             <input v-model="regular_price"  type="number" class="form-control-custom form-control">
-            <select v-model="type" class="form-control" style="width:102px; height:60px">
+            <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
-            </select>
+            </select> -->
           </div>
       </div>
       <div class="col-md-6">
@@ -127,9 +127,9 @@
         <label>Non-Refundable Price</label>
         <div class="input-group">
           <input v-model="non_price"  type="number" class="form-control-custom form-control">
-          <select v-model="type" class="form-control" style="width:102px; height:60px">
+          <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
-          </select>
+          </select> -->
         </div>
       </div>
       <div class="col-md-6">
@@ -139,6 +139,17 @@
             <option value="pending">Pending</option>
             <option value="publish">Publish</option>
           </select>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <label>Maximum Capacity</label>
+        <div class="input-group">
+          <input v-model="maximum_capacity"  type="number" class="form-control-custom form-control">
+          <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
+              <option value="PHP">PHP</option>
+          </select> -->
         </div>
       </div>
     </div>
@@ -211,7 +222,8 @@ export default {
       types: [],
       tempImage: [],
       isUpdate: false,
-      price_id: null
+      price_id: null,
+      maximum_capacity: null
     }
   },
   components: {
@@ -236,6 +248,7 @@ export default {
       }
       this.APIRequest('room/retrieve_by_id', parameter).then(response => {
         if(response.data.length > 0){
+          this.maximum_capacity = response.data[0].max_capacity
           this.description = response.data[0].description
           this.regular_price = response.data[0].regular
           this.price_terms = response.data[0].label
@@ -333,6 +346,7 @@ export default {
         code: this.user.code,
         account_id: this.user.userID,
         title: this.title,
+        max_capacity: this.maximum_capacity,
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
@@ -370,7 +384,7 @@ export default {
       })
     },
     create(){
-      if(this.description === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.type === null || this.status === null
+      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.type === null || this.status === null
       ){
         this.errorMessage = 'All fields are required'
         return
@@ -383,6 +397,7 @@ export default {
         code: this.user.code,
         account_id: this.user.userID,
         title: this.title,
+        max_capacity: this.maximum_capacity,
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
