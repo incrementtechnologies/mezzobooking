@@ -7,7 +7,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-rooms')">Add Room</button>
+    <button class="btn btn-primary pull-right" @click="$router.push('/add-rooms')">Add Room</button>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -206,5 +206,9 @@ $(function () {
   }
   .table-row:active{
     background-color: white;
+  }
+  .btn-primary{
+    margin-bottom: 25px;
+    height: 40px !important;
   }
 </style>

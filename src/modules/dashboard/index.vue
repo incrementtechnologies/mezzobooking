@@ -2,37 +2,37 @@
   <div class="container">
     <div class="row" style="width: 100%;">
       <div class="column" style="width: 80%;">
-        <h3>Welcome to your Dashboard!</h3>
-        <p style="margin-top: 5px;">Here are the latest update of activities as of today in BUsiness Name</p>
+        <h3 style="font-weight: 1000">Welcome to Dashboard</h3>
+        <!-- <p style="margin-top: 5px;">Here are the latest update of activities as of today in BUsiness Name</p> -->
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column first">
         <p class="title">Total Sales</p>
-        <p style="color: white; margin: 0;"><b>PHP {{data.total_sales}}</b></p>
+        <p class="data"><b>PHP {{data.total_sales}}</b></p>
       </div>
       <div class="column second">
         <p class="title">Reservations</p>
-        <p style="color: white; margin: 0;"><b>{{data.previous}}</b></p>
+        <p class="data"><b>{{data.previous}}</b></p>
       </div>
       <div class="column third">
         <p class="title">Total Bookings</p>
-        <p style="color: white; margin: 0;"><b>{{data.upcomming}}</b></p>
+        <p class="data"><b>{{data.upcomming}}</b></p>
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column fourth">
         <p class="title">Average Bookings</p>
-        <p style="color: white; margin: 0;"><b>{{data.average_bookings}}</b></p>
+        <p class="data"><b>{{data.average_bookings}}</b></p>
       </div>
       <div class="column fifth">
         <p class="title">Average Revenue</p>
-        <p style="color: white; margin: 0;"><b>PHP {{data.average_revenue}}</b></p>
+        <p class="data"><b>PHP {{data.average_revenue}}</b></p>
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column" style="width: 80%;">
-        <p><b>Latest Bookings</b></p>
+        <h3 style="font-weight: 1000">Latest Bookings</h3>
       </div>
       <div class="column" style="width: 20%;">
         <div style="float: right;">
@@ -166,6 +166,12 @@ export default{
 }
 p{
   margin: 0;
+}
+.data{
+  color: white;
+  margin: 0;
+  font-weight: 500;
+  font-size: 180%;
 }
 .first{
   height: 100px;
