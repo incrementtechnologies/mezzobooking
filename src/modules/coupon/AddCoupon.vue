@@ -56,12 +56,12 @@
         </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <label>Type</label>
+                <label>Amount</label>
                 <div class="input-group">
                     <input v-model="amount"  type="number" class="form-control-custom form-control">
-                    <select v-model="currency" class="form-control" style="width:102px; height:40px">
+                    <!-- <select v-model="currency" class="form-control" style="width:102px; height:40px">
                         <option value="PHP">PHP</option>
-                    </select>
+                    </select> -->
                 </div>
             </div>
             <div class="col-md-6">
@@ -101,6 +101,15 @@
                     </select>
                 </div>
             </div>
+            <div class="col-md-6">
+                <label>Type</label>
+                <div class="input-group">
+                    <select v-model="type" type="text" class="form-control-custom form-control">
+                        <option value="percentage">Percentage Discount</option>
+                        <option value="fixed">Fixed Discount</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="mt-4" v-if="data !== null">
             <button class="btn btn-danger footerBtn" @click="remove">Delete</button>
@@ -131,7 +140,8 @@ export default {
       roomTypes: [],
       isMultiple: true,
       selectedIndex: null,
-      selectedTypes: []
+      selectedTypes: [],
+      type: null
     }
   },
   components: {
@@ -146,7 +156,7 @@ export default {
   methods: {
     create(){
       if(this.code === null || this.description === null || this.start_date === null || this.end_date === null ||
-      this.limit === null || this.limit_per_customer === null || this.currency === null || this.amount === null || this.status === null
+      this.limit === null || this.type === null || this.limit_per_customer === null || this.currency === null || this.amount === null || this.status === null
       ){
         this.errorMessage = 'All fields are required'
         return
@@ -165,6 +175,7 @@ export default {
         currency: this.currency,
         amount: this.amount,
         status: this.status,
+        type: this.type,
         selectedType: JSON.stringify(this.selectedTypes)
       }
       if(this.data !== null){
