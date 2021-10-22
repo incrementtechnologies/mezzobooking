@@ -116,13 +116,39 @@ class CouponController extends APIController
     public function apply(Request $request){
 		$data = $request->all();
 		$result = Coupon::where('code', '=', $data['code'])->first();
+        $noOfCouponUsed = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds($data['account_id'], $result['id']);
+        $noOfPersonUseCoupon = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds(null, $result['id']);
+        $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->getByIds($data['account_id'], 'in_progress');
+        $currDate = Carbon::now();
 		if($result !== null){
-			$this->response['data'] = $result;
+            if($result['end_date'] >= $currDate){
+                if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
+                    if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
+                        $this->response['data'] = $result;
+                        app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation['id']);
+                    }else{
+                        $this->response['error'] = "You've reach your maximum application of the same coupon";
+                    }
+                }else{
+                    $this->response['error'] = "Coupon is not available";
+                }
+            }else{
+                $this->response['error'] = "Coupon was expired";
+            }
 		}else{
 			$this->response['error'] = "Coupon code does not exist";
 		}
 		return $this->response();
 	}
+    
+    public function retrieveByReservation(Request $request){
+        $data = $request->all();
+        $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->getByIds($data['account_id'], $data['status']);
+        if($reservation !== null){
+            $this->response['data'] = Coupon::where('id', '=', $reservation['coupon_id'])->first();
+        }
+        return $this->response();
+    }
 
     public function retrieveById($couponId){
         return Coupon::where('id', '=', $couponId)->first();

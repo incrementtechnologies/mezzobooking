@@ -156,7 +156,7 @@ export default {
   methods: {
     create(){
       if(this.code === null || this.description === null || this.start_date === null || this.end_date === null ||
-      this.limit === null || this.type === null || this.limit_per_customer === null || this.currency === null || this.amount === null || this.status === null
+      this.limit === null || this.type === null || this.limit_per_customer === null || this.amount === null || this.status === null
       ){
         this.errorMessage = 'All fields are required'
         return
@@ -172,7 +172,7 @@ export default {
         end_date: this.end_date,
         limit: this.limit,
         limit_per_customer: this.limit_per_customer,
-        currency: this.currency,
+        currency: 'PHP',
         amount: this.amount,
         status: this.status,
         type: this.type,
@@ -188,7 +188,7 @@ export default {
       }else{
         this.APIRequest('coupons/create', parameter).then(response => {
           if(response.data !== null){
-            // this.$router.push('/coupons')
+            this.$router.push('/coupons')
           }
         })
       }
