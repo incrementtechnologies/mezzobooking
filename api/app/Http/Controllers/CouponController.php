@@ -123,4 +123,8 @@ class CouponController extends APIController
 		}
 		return $this->response();
 	}
+
+    public function retrieveById($couponId){
+        return Coupon::where('id', '=', $couponId)->first();
+    }
 }
