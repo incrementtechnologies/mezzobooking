@@ -16,6 +16,7 @@ class Coupon extends APIModel
         'locality',
         'amount',
         'limit',
+        'type',
         'limit_per_customer',
         'start_date',
         'end_date',
