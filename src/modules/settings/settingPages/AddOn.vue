@@ -286,15 +286,21 @@ export default {
           })
         }
       }else{
+        console.log('[]fdff')
+        this.title = 'Please input your desired price and add-ons.'
         this.$refs.errorModal.show()
       }
     },
     validation(){
       if(this.addOns !== null && this.addOns !== '' && this.addOns !== undefined){
+        console.log('[]fdfffffffff')
         this.validated = true
+        this.$refs.errorModal.show()
         this.title = 'Please input your desired add-ons.'
         return this.validated
       }else if(this.price > 0){
+        console.log('[gdfgsdfgsdf')
+        this.$refs.errorModal.show()
         this.title = 'Please input your desired price.'
         this.validated = true
         return this.validated
