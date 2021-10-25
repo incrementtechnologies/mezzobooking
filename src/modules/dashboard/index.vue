@@ -12,11 +12,11 @@
         <p class="data"><b>PHP {{data.total_sales}}</b></p>
       </div>
       <div class="column second">
-        <p class="title">Reservations</p>
+        <p class="title">Reservations(Previous-Current)</p>
         <p class="data"><b>{{data.previous}}</b></p>
       </div>
       <div class="column third">
-        <p class="title">Total Bookings</p>
+        <p class="title">Total Bookings(Upcomming)</p>
         <p class="data"><b>{{data.upcomming}}</b></p>
       </div>
     </div>
