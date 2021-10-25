@@ -8,7 +8,7 @@
           </div>
           <div class="card-body">
             <div class="mb-4">
-              <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%; font-size: 10px; padding: 3px;">{{list.category.payload_value}}</b></span>
+              <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%; font-size: 10px; padding: 3px;" v-if="list.category.payload_value !== undefined">{{list.category.payload_value}}</b></span>
               <span style="float:right"><b>{{list.currency != null ? list.currency : 'PHP'}}{{list.regular != null ? list.regular : 0}}/{{list.label != null ? list.label : 'No Label'}}</b><i @click="$router.push('/add-rooms/'+ list.id)" class="fa fa-pencil ml-2"></i></span>
             </div>
             <p class="card-text">{{list.description !== null ? list.description : 'No description'}}</p>
