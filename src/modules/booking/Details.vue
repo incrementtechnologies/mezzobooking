@@ -4,21 +4,21 @@
       <div style="background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
           <div class="mb-5">
             <span>Booking #:</span>
-            <b>MEZZOHOTEL-AMAZINGCODE</b>
+            <b>{{reservations.code}}</b>
             <span style="float:right;color:#CBAB58">Status: Confirmed</span>
           </div>
           <div class="row">
               <div class="col-md-6">
                 <label>Start Date</label>
                 <div class="input-group">
-                    <input type="date" class="form-control-custom form-control">
+                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Adults</label>
                     <div class="input-group">
-                        <input type="text" class="form-control-custom form-control" style="border-right-style: none;">
+                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -30,14 +30,14 @@
               <div class="col-md-6">
                 <label>End Date</label>
                 <div class="input-group">
-                    <input type="date" class="form-control-custom form-control">
+                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Children</label>
                     <div class="input-group">
-                        <input type="text" class="form-control-custom form-control" style="border-right-style: none;">
+                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -49,13 +49,13 @@
               <div class="col-md-6">
                 <label>Additional information(Optional)</label>
                 <div class="input-group">
-                    <textarea class="form-control-custom form-control" style="height: 165px !important;"></textarea>
+                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"></textarea>
                 </div>
               </div>
                <div class="col-md-6">
                 <label>Coupon</label>
                 <div class="input-group">
-                    <input type="text" class="form-control-custom form-control" style="border-right-style: none;">
+                    <input type="text" v-model="reservations.coupon.code" class="form-control-custom form-control" style="border-right-style: none;">
                     <span style="background: white;" class="input-group-addon password">
                         <i class="fas fa-sync-alt" aria-hidden="true"></i>
                     </span>
@@ -63,30 +63,50 @@
               </div>
           </div>
           <b>Payment Methods</b>
-          <div>
+          <div v-if="reservations.details.payment_method === 'credit'">
               <i class="fa fa-cc-visa" style="font-size: 15px;margin-right: 15px;"></i>
               <span>***3245 - paid</span>
           </div>
+          <div v-if="reservations.details.payment_method === 'checkIn'">
+              <i class="fas fa-money-bill-wave" style="font-size: 15px;margin-right: 15px;"></i>
+              <span>Payment upon check-in</span>
+          </div>
+          <div v-if="reservations.details.payment_method === 'bank'">
+            <i class="fas fa-landmark" style="font-size: 15px;margin-right: 15px;"></i>
+            <span>Bank Transfer</span>
+        </div>
         <section  class="mt-3">
             <b>Summary</b><br/>
             <span class="ml-2">Rooms</span>
-            <div class="row ml-4">
+            <div class="row ml-4" v-for="(each, idx) in summary" :key="idx"> 
                 <div class="col-md-6">
-                    <span>Junior Suit x 2</span>
-                    <i class="fa fa-pencil actionBtn"></i>
+                    <span>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</span>
+                    <!-- <i class="fa fa-pencil actionBtn"></i> -->
                 </div>
                 <div class="col-md-6">
-                    <p>PHP 4,0000.00</p>
+                    <p>PHP {{each.rooms[0].regular * each.qty}}</p>
                 </div>
             </div>
-            <span class="ml-2">Discount - 10% OFF(MEZZOHOTEL2021)</span>
-            <i class="fa fa-pencil actionBtn"></i>
-            <i class="fa fa-trash actionBtn"></i>
-            <div class="row ml-4">
+            <div v-if="reservations.coupon !== null">
+              <span class="ml-2">Discount - {{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}} OFF({{reservations.coupon.code}})</span>
+              <!-- <i class="fa fa-pencil actionBtn"></i>
+              <i class="fa fa-trash actionBtn"></i> -->
+              <div class="row ml-4">
+                  <div class="col-md-6">
+                  </div>
+                  <div class="col-md-6">
+                      <p>PHP {{reservations.coupon.amount / 100}}</p>
+                  </div>
+              </div>
+            </div>
+            <span class="ml-2">AddOns</span>
+            <div class="row ml-4" v-for="(each, idx) in reservations.details.selectedAddOn" :key="idx"> 
                 <div class="col-md-6">
+                    <span>{{each.title}}</span>
+                    <!-- <i class="fa fa-pencil actionBtn"></i> -->
                 </div>
                 <div class="col-md-6">
-                    <p>PHP 4,0000.00</p>
+                    <p>PHP {{each.price}}</p>
                 </div>
             </div>
             <div class="row">
@@ -94,7 +114,7 @@
                     <span style="font-weight: bold; font-size:16px">Total</span>
                 </div>
                 <div class="col-md-6">
-                    <p style="font-weight: bold; font-size:16px">PHP 4,0000.00</p>
+                    <p style="font-weight: bold; font-size:16px">PHP {{total}}</p>
                 </div>
             </div>
         </section>
@@ -103,38 +123,40 @@
         <div><b>Customer Details</b></div>
             <div class="row" style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
                 <div class="col-md-6">
-                    <span style="font-size:12px">Customer ID: 12334</span><br/>
-                    <span style="font-weight:bold; font-size:16px">Test User</span>
-                    <p style="font-size:12px">123344556667</p>
+                    <span style="font-size:12px">Customer ID: {{customer.id}}</span><br/>
+                    <span style="font-weight:bold; font-size:16px">{{customer.username}}</span>
+                    <p style="font-size:12px">{{customer.information.cellular_number || 'N/A'}}</p>
                 </div>
                 <div class="col-md-6" style="padding: 10px 0px">
-                    <span>Email Address: <b>testaccount@email.com</b></span>
+                    <span>Email Address: <b>{{customer.email}}</b></span>
                 </div>
             </div>
       </section>
-      <!-- <section>
+      <section>
         <div><b>Room Assigning</b></div>
-        <div class="row" style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
-            <div class="col-md-6">
-                <span style="font-size:12px">Customer ID: 12334</span><br/>
-                <span style="font-weight:bold; font-size:16px">Test User</span>
-                <p style="font-size:12px">123344556667</p>
+        <div style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
+          <div  v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
+            <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
+              <div class="row">
+              <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`">
+                  <select class="form-control" v-model="item.category">
+                    <option v-for="el in each.specificRooms" :key="el.id" :value="el.id">{{el.title}}</option>
+                  </select>
+              </div>
             </div>
-            <div class="col-md-6" style="padding: 10px 0px">
-                <span>Email Address: <b>testaccount@email.com</b></span>
-            </div>
+          </div>
         </div>
-      </section> -->
+      </section>
       <section class="actionBtns mt-3">
           <div class="row" style="margin-left:auto; margin-right:auto;">
               <div class="col-md-6">
-                  <button class="btn btn-danger footerBtn">Cancel</button>
-                  <button class="btn btn-danger footerBtn">Refund</button>
+                  <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')">Cancel</button>
+                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refund')">Refund</button>
               </div>
               <div class="col-md-6">
                   <div style="float:right">
-                    <button class="btn btn-secondary footerBtn">Confirm</button>
-                    <button class="btn btn-primary footerBtn">Complete</button>
+                    <button class="btn btn-secondary footerBtn"  @click="updateRoom('confirm')">Confirm</button>
+                    <button class="btn btn-primary footerBtn"  @click="updateRoom('complete')">Complete</button>
                   </div>
               </div>
           </div>
@@ -147,9 +169,115 @@
 
 <script>
 import RoomCard from 'src/modules/generic/RoomCard.vue'
+import AUTH from 'src/services/auth'
+import moment from 'moment'
 export default {
   components: {
     RoomCard
+  },
+  mounted(){
+    this.retrieve()
+  },
+  data: () => ({
+    user: AUTH.user,
+    summary: [],
+    addOns: [],
+    subTotal: 0,
+    total: 0,
+    rooms: [],
+    coupon: null,
+    reservations: null,
+    customer: null,
+    roomAssign: [],
+    assignedRoom: [],
+    inputs: []
+  }),
+  methods: {
+    retrieveCoupon(){
+      let parameter = {
+        account_id: this.user.userID,
+        status: 'completed'
+      }
+      this.APIRequest('coupons/retrieve_by_reservation', parameter, response => {
+        this.coupon = response.data
+        if(response.data.type === 'percentage'){
+          let tempAmount = parseInt(response.data.amount) / 100
+          this.total = this.subTotal - (this.subTotal * tempAmount)
+        }else if(response.data.type === 'fixed'){
+          this.total = this.subTotal - parseInt(response.data.amount)
+        }
+      })
+    },
+    retrieve(){
+      // console.log('========', this.$route.params.id)
+      let params = {
+        id: this.$route.params.id
+      }
+      this.APIRequest('reservations/retrieve_all_details', params, response => {
+        if(response.data !== null){
+          this.reservations = response.data.reservation
+          this.customer = response.data.customer
+          this.reservations.check_in = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
+          this.reservations.check_out = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
+          console.log('---------------', this.reservations)
+          this.summary = response.data.cart
+          this.summary.map((el, idx) => {
+            this.subTotal += el.rooms[0].regular * parseInt(el.checkoutQty)
+            if(this.summary.length - 1 === idx){
+              this.reservations.details.selectedAddOn.map((item, indx) => {
+                this.subTotal += item.price
+                if(this.reservations.details.selectedAddOn.length - 1 === indx){
+                  if(this.reservations.coupon !== null){
+                    if(this.reservations.coupon.type === 'percentage'){
+                      let tempAmount = (this.reservations.coupon.amount) / 100
+                      this.total = this.subTotal - (this.subTotal * tempAmount)
+                    }else if(this.reservations.coupon.type === 'fixed'){
+                      this.total = this.subTotal - parseInt(this.reservations.coupon.amount)
+                    }
+                  }
+                }
+              })
+            }
+          })
+          this.summary.map(el => {
+            for (let index = 0; index < el.qty; index++) {
+              let input = {
+                category: null
+              }
+              this.inputs.push(input)
+            }
+          })
+        }
+      })
+    },
+    retrieveRooms(category){
+      // this.roomAssign = []
+      let params = {
+        category_id: category
+      }
+      this.APIRequest('room/retrieve_by_params', params, response => {
+        this.roomAssign = response.data
+      })
+    },
+    updateRoom(status){
+      let temp = []
+      let params = {
+        booking: temp,
+        roomCode: this.$route.params.id,
+        reservation_id: this.reservations.id,
+        status: status
+      }
+      this.summary.map(el => {
+        el.inputs.map((item, idx) => {
+          item['room_id'] = el.rooms[0].id
+          temp.push(item)
+        })
+      })
+      console.log('=>>>>>>>>>', params)
+      this.APIRequest('reservations/update_reservation', params, response => {
+        this.$router.push('/bookings')
+      })
+    }
   }
 }
 </script>
