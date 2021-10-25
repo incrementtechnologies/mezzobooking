@@ -5,20 +5,20 @@
           <div class="mb-5">
             <span>Booking #:</span>
             <b>{{reservations.code}}</b>
-            <span style="float:right;color:#CBAB58">Status: Confirmed</span>
+            <span style="float:right;color:#CBAB58">Status: {{reservations.status}}</span>
           </div>
           <div class="row">
               <div class="col-md-6">
                 <label>Start Date</label>
                 <div class="input-group">
-                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control">
+                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control"  :disabled="isDisable">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Adults</label>
                     <div class="input-group">
-                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;">
+                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;" :disabled="isDisable">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -30,14 +30,14 @@
               <div class="col-md-6">
                 <label>End Date</label>
                 <div class="input-group">
-                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control">
+                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control"  :disabled="isDisable">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Children</label>
                     <div class="input-group">
-                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;">
+                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -49,13 +49,13 @@
               <div class="col-md-6">
                 <label>Additional information(Optional)</label>
                 <div class="input-group">
-                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"></textarea>
+                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"  :disabled="isDisable"></textarea>
                 </div>
               </div>
                <div class="col-md-6">
                 <label>Coupon</label>
                 <div class="input-group">
-                    <input type="text" v-model="reservations.coupon.code" class="form-control-custom form-control" style="border-right-style: none;">
+                    <input type="text" v-model="reservations.coupon.code" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable">
                     <span style="background: white;" class="input-group-addon password">
                         <i class="fas fa-sync-alt" aria-hidden="true"></i>
                     </span>
@@ -139,7 +139,7 @@
             <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
               <div class="row">
               <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`">
-                  <select class="form-control" v-model="item.category">
+                  <select class="form-control" v-model="item.category" :disabled="isDisable">
                     <option v-for="el in each.specificRooms" :key="el.id" :value="el.id">{{el.title}}</option>
                   </select>
               </div>
@@ -151,10 +151,10 @@
           <div class="row" style="margin-left:auto; margin-right:auto;">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')">Cancel</button>
-                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refund')">Refund</button>
+                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refund')" v-if="isDisable===false">Refund</button>
               </div>
               <div class="col-md-6">
-                  <div style="float:right">
+                  <div style="float:right" v-if="isDisable===false">
                     <button class="btn btn-secondary footerBtn"  @click="updateRoom('confirm')">Confirm</button>
                     <button class="btn btn-primary footerBtn"  @click="updateRoom('complete')">Complete</button>
                   </div>
@@ -162,7 +162,9 @@
           </div>
       </section>
 			<section  style="margin-left:auto; margin-right:auto;">
-				<RoomCard/>
+        <div v-for="(selected, idx) in summary" :key="idx">
+				  <RoomCard :list="selected.rooms[0]"/>
+        </div>
 			</section>
   </div>
 </template>
@@ -190,7 +192,8 @@ export default {
     customer: null,
     roomAssign: [],
     assignedRoom: [],
-    inputs: []
+    inputs: [],
+    isDisable: false
   }),
   methods: {
     retrieveCoupon(){
@@ -219,8 +222,12 @@ export default {
           this.customer = response.data.customer
           this.reservations.check_in = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
           this.reservations.check_out = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
-          console.log('---------------', this.reservations)
           this.summary = response.data.cart
+          if(this.reservations.status === 'confirm' || this.reservations.status === 'complete'){
+            this.isDisable = true
+          }else{
+            this.isDisable = false
+          }
           this.summary.map((el, idx) => {
             this.subTotal += el.rooms[0].regular * parseInt(el.checkoutQty)
             if(this.summary.length - 1 === idx){
