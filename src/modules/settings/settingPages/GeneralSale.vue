@@ -21,18 +21,18 @@
           <td>
             <div class="row" style="margin-left: 2%;padding-right: 2%">
               <div class="col-md-6" style="padding: 20px 0px">
-                <b><span style="font-size: 12px">Cutomer ID: {{item.id}}</span></b><br/>
-                <span style="font-size: 24px; font-weight: bold">{{item.name !== " " ? item.name : item.username}}</span><br/>
-                <span style="font-size: 12px">{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
+                <b><span style="font-size: 12px">{{item.start_date}} - {{item.end_date}}</span></b><br/>
+                <span style="font-size: 24px; font-weight: bold">{{item.amount}}{{item.type !== "percentage" ? '%' : ''}} OFF</span><br/>
+                <span style="font-size: 12px">{{item.description}}</span>
               </div>
               <div class="col-md-6 column">
                 <div class="box mr-1">
-                  <p class="box-title">Total Bookings</p>
-                  <span><b>{{item.total_bookings}}</b></span>
+                  <p class="box-title">Total Sales</p>
+                  <span><b>PHP {{item.total_sale[0].total}}</b></span>
                 </div>
                 <div class="box">
-                  <p class="box-title">Total Spent</p>
-                  <span><b>PHP{{item.total_spent}}</b></span>
+                  <p class="box-title">Total Bookings</p>
+                  <span><b>{{item.total_sale[0].total_booking}}</b></span>
                 </div>
               </div>
             </div>
@@ -158,7 +158,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('customers/retrieve', parameter).then(response => {
+      this.APIRequest('coupons/retrieve_general_sale', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(flag === true) {
           response.data.forEach(element => {

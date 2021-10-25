@@ -150,6 +150,25 @@ class CouponController extends APIController
         return $this->response();
     }
 
+    public function retrieveGeneralSale(Request $request){
+        $data = $request->all();
+        $con = $data['condition'];
+        $result = Coupon::where($con[0]['column'], $con[0]['clause'], $con[0]['value'])
+            ->orderBy(array_keys($data['sort'])[0], array_values($data['sort'])[0])
+            ->limit($data['limit'])
+            ->offset($data['offset'])->get();
+        if(sizeof($result) > 0){
+            for ($i=0; $i <= sizeof($result)-1; $i++) {
+                $item = $result[$i];
+                $result[$i]['total_sale'] = app('Increment\Hotel\Reservation\Http\ReservationController')->retrieveSaleByCoupon('coupon_id', $item['id']);
+                $result[$i]['start_date'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['start_date'])->copy()->tz($this->response['timezone'])->format('F d, Y');
+                $result[$i]['end_date'] = Carbon::createFromFormat('Y-m-d H:i:s', $item['end_date'])->copy()->tz($this->response['timezone'])->format('F d, Y');
+            }
+        }
+        $this->response['data'] = $result;
+        return $this->response();
+    }
+
     public function retrieveById($couponId){
         return Coupon::where('id', '=', $couponId)->first();
     }

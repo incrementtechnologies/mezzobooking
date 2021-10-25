@@ -142,6 +142,7 @@ Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");
 Route::post($route.'apply', $controller."apply");
 Route::post($route.'retrieve_coupon', $controller."retrieveCoupon");
+Route::post($route.'retrieve_general_sale', $controller."retrieveGeneralSale");
 Route::post($route.'retrieve_by_reservation', $controller."retrieveByReservation");
 Route::post($route.'validate', $controller."retrieveByValidation");
 Route::post($route.'delete', $controller."delete");
