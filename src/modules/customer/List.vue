@@ -59,7 +59,7 @@ import { ExportToCsv } from 'export-to-csv'
 import COMMON from 'src/common.js'
 export default {
   mounted() {
-    this.retrieve({'email': 'asc'}, {column: 'email', value: ''}, false)
+    this.retrieve({'username': 'asc'}, {column: 'username', value: ''}, false)
   },
   data() {
     return {
@@ -74,45 +74,21 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
+          title: 'Username ascending',
+          payload: 'username',
+          payload_value: 'asc'
+        }, {
+          title: 'Username descending',
+          payload: 'username',
+          payload_value: 'desc'
+        }, {
+          title: 'Email ascending',
           payload: 'email',
-          payload_value: 'asc',
-          type: 'text'
+          payload_value: 'asc'
         }, {
-          title: 'Email Descending',
+          title: 'Email descending',
           payload: 'email',
-          payload_value: 'desc',
-          type: 'text'
-        }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Ascending',
-          payload: 'check_out',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Descending',
-          payload: 'check_out',
-          payload_value: 'desc',
-          type: 'date'
-        }, {
-          title: 'Status Ascending',
-          payload: 'status',
-          payload_value: 'asc',
-          type: 'text'
-        }, {
-          title: 'Status Descending',
-          payload: 'status',
-          payload_value: 'desc',
-          type: 'text'
+          payload_value: 'desc'
         }]
       }],
       currentFilter: null,

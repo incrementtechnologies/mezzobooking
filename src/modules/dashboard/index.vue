@@ -136,7 +136,9 @@ export default{
   methods: {
     retrieve(){
       let parameter = {}
+      $('#loading').css({display: 'block'})
       this.APIRequest('dashboards/retrieve', parameter, response => {
+        $('#loading').css({display: 'none'})
         if(response.data !== null){
           this.data = response.data
         }
