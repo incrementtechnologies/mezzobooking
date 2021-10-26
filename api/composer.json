@@ -44,7 +44,8 @@
             "packages/increment/common/notification/src/",
             "packages/increment/hotel/reservation/src/",
             "packages/increment/hotel/room/src/",
-            "packages/increment/hotel/addon/src/"
+            "packages/increment/hotel/addon/src/",
+            "packages/increment/hotel/payment/src/"
         ],
         "psr-4": {
             "App\\": "app/",
@@ -61,7 +62,8 @@
             "Increment\\Account\\Merchant\\":"packages/increment/account/merchant/src/",
             "Increment\\Hotel\\Reservation\\": "packages/increment/hotel/reservation/src/",
             "Increment\\Hotel\\Room\\":"packages/increment/hotel/room/src/",
-            "Increment\\Hotel\\AddOn\\":"packages/increment/hotel/addon/src/"
+            "Increment\\Hotel\\AddOn\\":"packages/increment/hotel/addon/src/",
+            "Increment\\Hotel\\Payment\\":"packages/increment/hotel/payment/src/"
         }
     },
     "autoload-dev": {
