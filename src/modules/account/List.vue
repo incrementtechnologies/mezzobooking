@@ -15,7 +15,7 @@
       :grid="['list']">
     </filter-product>
     
-    <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
+    <table v-if="data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row">
           <td>
@@ -29,10 +29,17 @@
             <div style="text-align:center"><b>Email Address</b> <br/><u>{{item.email}}</u></div>
           </td>
           <td>
-            <div style="text-align:center"><b>Name</b> <br/>{{item.account_information.first_name}} - {{item.account_information.last_name}}</div>
+            <div style="text-align:center"><b>Name</b><br/>
+              <div v-if="item.account_information !== null">
+                {{item.account_information.first_name}} - {{item.account_information.last_name}}
+              </div>
+              <div>
+                N/A
+              </div>
+            </div>
           </td>
           <td>
-            <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information.cellular_number}}</div>
+            <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information !== null ? item.account_information.cellular_number : 'N/A'}}</div>
           </td>
           <td>
             <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}
@@ -52,7 +59,7 @@
         </tr>
       </tbody>
     </table>
-    <empty v-if="data === null || data.length === 0" :title="'Empty Accounts!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data.length <= 0" :title="'Empty Accounts!'" :action="'No activity at the moment.'"></empty>
   </div>
 </template>
 <script>
@@ -65,7 +72,7 @@ export default {
   data() {
     return {
       user: AUTH.user,
-      data: null,
+      data: [],
       auth: AUTH,
       selecteditem: null,
       category: [{
@@ -85,22 +92,6 @@ export default {
         }, {
           title: 'Email descending',
           payload: 'email',
-          payload_value: 'desc'
-        }, {
-          title: 'Type ascending',
-          payload: 'status',
-          payload_value: 'asc'
-        }, {
-          title: 'Type descending',
-          payload: 'status',
-          payload_value: 'desc'
-        }, {
-          title: 'Created ascending',
-          payload: 'created_at',
-          payload_value: 'asc'
-        }, {
-          title: 'Created descending',
-          payload: 'created_at',
           payload_value: 'desc'
         }]
       }],
