@@ -19,6 +19,10 @@
         <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b>
       </span>
     </span>
+    <p
+      class="mb-2 pb-0 errorMessage"
+      v-if="errorMessage != ''"
+    >{{errorMessage}}</p>
     <div class="row mt-4">
       <div class="col-md-6">
         <label>Title</label>
@@ -384,8 +388,8 @@ export default {
       })
     },
     create(){
-      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.type === null || this.status === null
-      ){
+      console.log('[[', this.description, this.maximum_capacity, this.selectedAddOns, this.selectedFeature, this.regular_price, this.price_terms, this.title, this.non_price, this.type, this.status)
+      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.type === null || this.status === null){
         this.errorMessage = 'All fields are required'
         return
       }else if(this.regular_price <= 0 || this.non_price <= 0){
@@ -393,6 +397,7 @@ export default {
         return
       }
       // save to room
+      console.log('[]')
       let roomParameter = {
         code: this.user.code,
         account_id: this.user.userID,
@@ -403,6 +408,7 @@ export default {
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
       }
+      console.log('[asdfadsfasdfasdf]', roomParameter)
       this.APIRequest('room/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
@@ -418,6 +424,7 @@ export default {
             url: this.images,
             status: 'room_images'
           }
+          console.log('[>>>>>>>>]', imageParameter)
           this.APIRequest('pricings/create', pricingParameter).then(response => {
             if(response.data > 0){
               console.log('Pricing Created Successfully')
@@ -425,6 +432,7 @@ export default {
               console.log('[Error in Creating Pricing]')
             }
           })
+          console.log('[>>>>>>>>]', pricingParameter)
           this.APIRequest('room_images/create_with_image', imageParameter).then(response => {
             if(Number(response.data) > 0){
               this.$router.push('/rooms')
@@ -438,21 +446,27 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
-    .actionBtn{
-        color: $secondary
-    }
-    .actionBtn:hover, .backBtn:hover{
-        cursor: pointer;
-    }
-    .form-control-custom{
-        width: 300px !important;
-        height: 60px !important;
-    }
-    label{
-        font-weight: bold;
-    }
-    .footerBtn{
-        width: 150px;
-        height: 50px
-	}
+.errorMessage {
+  margin-top: 10px;
+  color: $danger;
+  font-size: 13px;
+  text-align: center;
+}
+.actionBtn{
+    color: $secondary
+}
+.actionBtn:hover, .backBtn:hover{
+    cursor: pointer;
+}
+.form-control-custom{
+    width: 300px !important;
+    height: 60px !important;
+}
+label{
+    font-weight: bold;
+}
+.footerBtn{
+    width: 150px;
+    height: 50px
+}
 </style>
