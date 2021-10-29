@@ -53,6 +53,13 @@
 </template>
 <script>
 export default {
+  mounted(){
+    if(this.$route.params.status === 'publish'){
+      this.isSwitch = true
+    }else{
+      this.isSwitch = false
+    }
+  },
   data(){
     return {
       isSwitch: false,

@@ -15,11 +15,11 @@
     </span>
     <span style="float:right">
       <span>
-        <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code)">Set Schedules & Limits</b>
+        <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code + '/' + status)">Set Schedules & Limits</b>
         <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b>
       </span>
     </span>
-      <p style="color:red">{{errorMessage}}</p>
+    <p style="color:red">{{errorMessage}}</p>
     <div class="row mt-4">
       <div class="col-md-6">
         <label>Title</label>
@@ -439,21 +439,27 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
-    .actionBtn{
-        color: $secondary
-    }
-    .actionBtn:hover, .backBtn:hover{
-        cursor: pointer;
-    }
-    .form-control-custom{
-        width: 300px !important;
-        height: 60px !important;
-    }
-    label{
-        font-weight: bold;
-    }
-    .footerBtn{
-        width: 150px;
-        height: 50px
-	}
+.errorMessage {
+  margin-top: 10px;
+  color: $danger;
+  font-size: 13px;
+  text-align: center;
+}
+.actionBtn{
+    color: $secondary
+}
+.actionBtn:hover, .backBtn:hover{
+    cursor: pointer;
+}
+.form-control-custom{
+    width: 300px !important;
+    height: 60px !important;
+}
+label{
+    font-weight: bold;
+}
+.footerBtn{
+    width: 150px;
+    height: 50px
+}
 </style>

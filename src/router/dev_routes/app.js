@@ -190,7 +190,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/set-availability/:id?',
+    path: '/set-availability/:id?/:status?',
     name: 'set_availability',
     component: resolve => require(['modules/room/SetAvailability.vue'], resolve),
     meta: {
