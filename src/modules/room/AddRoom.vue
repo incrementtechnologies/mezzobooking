@@ -15,7 +15,7 @@
     </span>
     <span style="float:right">
       <span>
-        <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code)">Set Schedules & Limits</b>
+        <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code + '/' + status)">Set Schedules & Limits</b>
         <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b>
       </span>
     </span>
