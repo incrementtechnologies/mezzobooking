@@ -19,10 +19,7 @@
         <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b>
       </span>
     </span>
-    <p
-      class="mb-2 pb-0 errorMessage"
-      v-if="errorMessage != ''"
-    >{{errorMessage}}</p>
+    <p style="color:red">{{errorMessage}}</p>
     <div class="row mt-4">
       <div class="col-md-6">
         <label>Title</label>
@@ -128,7 +125,7 @@
     </div>
     <div class="row mt-4">
       <div class="col-md-6">
-        <label>Non-Refundable Price</label>
+        <label>Refundable Price</label>
         <div class="input-group">
           <input v-model="non_price"  type="number" class="form-control-custom form-control">
           <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
@@ -388,11 +385,11 @@ export default {
       })
     },
     create(){
-      console.log('[[', this.description, this.maximum_capacity, this.selectedAddOns, this.selectedFeature, this.regular_price, this.price_terms, this.title, this.non_price, this.type, this.status)
-      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.non_price === null || this.type === null || this.status === null){
+      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.status === null
+      ){
         this.errorMessage = 'All fields are required'
         return
-      }else if(this.regular_price <= 0 || this.non_price <= 0){
+      }else if(this.regular_price <= 0){
         this.errorMessage = 'Value should be greater than 0'
         return
       }
@@ -416,7 +413,7 @@ export default {
             room_id: response.data,
             regular: this.regular_price,
             refundable: this.non_price,
-            currency: this.type,
+            currency: 'PHP',
             label: this.price_terms
           }
           let imageParameter = {
