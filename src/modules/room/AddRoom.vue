@@ -394,7 +394,6 @@ export default {
         return
       }
       // save to room
-      console.log('[]')
       let roomParameter = {
         code: this.user.code,
         account_id: this.user.userID,
@@ -405,7 +404,6 @@ export default {
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
       }
-      console.log('[asdfadsfasdfasdf]', roomParameter)
       this.APIRequest('room/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
@@ -421,7 +419,6 @@ export default {
             url: this.images,
             status: 'room_images'
           }
-          console.log('[>>>>>>>>]', imageParameter)
           this.APIRequest('pricings/create', pricingParameter).then(response => {
             if(response.data > 0){
               console.log('Pricing Created Successfully')
@@ -429,7 +426,6 @@ export default {
               console.log('[Error in Creating Pricing]')
             }
           })
-          console.log('[>>>>>>>>]', pricingParameter)
           this.APIRequest('room_images/create_with_image', imageParameter).then(response => {
             if(Number(response.data) > 0){
               this.$router.push('/rooms')
