@@ -36,27 +36,30 @@
       </div>
       <div class="column" style="width: 20%;">
         <div style="float: right;">
-          <span class="bookings">Go to Bookings</span>
+          <span class="bookings" @click="$router.push('/bookings')">Go to Bookings</span>
         </div>
       </div>
     </div>
     <table class="table table-bordered table-responsive">
-      <tbody>
-        <tr class="table-row">
+      <tbody v-if="bookings.length > 0"> 
+        <tr class="table-row" v-for="(item, index) in bookings" :key="index" @click="$router.push('/booking-details/' + item.code)">
           <td>
-            <b><span style="font-size: 14px">sample@email.com - pending</span></b><br/>
-            <span style="font-size: 12px">August 18, 2021-August 19, 2021</span>
+            <b><span style="font-size: 14px">{{item.email}}-{{item.status}}</span></b><br/>
+            <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
           <td>
-            <div style="text-align:center"><b>Adults</b> <br/>5</div>
+            <div style="text-align:center"><b>Adults</b> <br/>{{item.details.adults}}</div>
           </td>
           <td>
-            <div style="text-align:center"><b>Children</b> <br/>5</div>
+            <div style="text-align:center"><b>Children</b> <br/>{{item.details.child}}</div>
           </td>
           <td style="padding: 20px 0;">
-            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP 500</div>
+            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.price}}</div>
           </td>
         </tr>
+      </tbody>
+      <tbody v-else>
+        <p>No Bookings yet</p>
       </tbody>
     </table>
     <div class="row" style="width: 100%; margin-top: 40px;">
@@ -94,11 +97,13 @@ import '@progress/kendo-ui'
 import '@progress/kendo-theme-default/dist/all.css'
 import { Chart, ChartInstaller } from '@progress/kendo-charts-vue-wrapper'
 import { DataSource, DataSourceInstaller } from '@progress/kendo-datasource-vue-wrapper'
+import moment from 'moment'
 Vue.use(ChartInstaller)
 Vue.use(DataSourceInstaller)
 export default{
   mounted(){
     this.retrieve()
+    this.retrieveBooking()
   },
   data(){
     return {
@@ -125,7 +130,9 @@ export default{
           format: `${0}`
         }
       }],
-      data: []
+      data: [],
+      bookingLimit: 3,
+      bookings: []
     }
   },
   components: {
@@ -141,6 +148,30 @@ export default{
         $('#loading').css({display: 'none'})
         if(response.data !== null){
           this.data = response.data
+        }
+      })
+    },
+    retrieveBooking(){
+      let parameter = {
+        condition: [{
+          value: '%%',
+          column: 'created_at',
+          clause: 'like'
+        }],
+        limit: 3,
+        offset: 0,
+        sort: {
+          created_at: 'desc'
+        }
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('reservations/retrieve_bookings', parameter).then(response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0) {
+          response.data.forEach(element => {
+            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+          })
+          this.bookings = response.data
         }
       })
     }

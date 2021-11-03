@@ -17,7 +17,7 @@
     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
+        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.id)">
           <td>
             <div class="row" style="margin-left: 2%;padding-right: 2%">
               <div class="col-md-6" style="padding: 20px 0px">
@@ -192,7 +192,8 @@ export default {
         }
       })
     },
-    redirect(){
+    redirect(id){
+      this.$router.push('/add-limits/general_limit/' + id)
     },
     exportData(){
       let options = {
@@ -245,6 +246,10 @@ $(function () {
   }
   .table-row{
     background-color:white;
+  }
+  .table-row:hover{
+    background: rgba(0,0,0, 0.1);
+    cursor: pointer;
   }
   .box{
     // border-color: $gray !important;

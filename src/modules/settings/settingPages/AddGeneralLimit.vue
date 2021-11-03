@@ -18,7 +18,7 @@
             <label>Room Type</label>
             <div class="input-group">
               <select @change="getSelectedType" class="form-control-custom form-control">
-                <option v-for="(type, idx) in types" :key="idx" :value="type.id" :selected="$route.params.id !== undefined && parseInt($route.params.id) === parseInt(type.id) ? true : false">{{type.payload_value}}</option>
+                <option v-for="(each, idx) in types" :key="idx" :value="each.id" :selected="routeParams !== undefined && parseInt(routeParams) === parseInt(each.id) ? true : false">{{each.payload_value}}</option>
               </select>
             </div>
           </div>
@@ -48,10 +48,17 @@
 </template>
 <script>
 import AUTH from 'src/services/auth'
+import moment from 'moment'
 export default {
   mounted() {
+    console.log('============', this.$route)
     this.retrieveType()
-    this.type = this.$route.params.id !== undefined ? this.$route.params.id : null
+    if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general_limit') {
+      this.routeParams = this.$route.params.id !== undefined ? this.$route.params.id : null
+    }
+    if(this.$route.params.id !== undefined){
+      this.retrieve()
+    }
   },
   data: () => ({
     types: [],
@@ -60,9 +67,25 @@ export default {
     start_date: null,
     end_date: null,
     limit: null,
-    errorMessage: null
+    errorMessage: null,
+    routeParams: null,
+    data: null
   }),
   methods: {
+    retrieve(){
+      let params = {
+        id: this.$route.params.id
+      }
+      this.APIRequest('availabilities/retrieve_by_id', params, response => {
+        if(response.data.length > 0){
+          this.data = response.data[0]
+          this.limit = this.data.limit
+          this.routeParams = parseInt(this.data.payload_value)
+          this.start_date = moment(new Date(this.data.start_date)).format('YYYY-MM-DD')
+          this.end_date = moment(new Date(this.data.end_date)).format('YYYY-MM-DD')
+        }
+      })
+    },
     retrieveType(){
       let parameter = {
         condition: [
@@ -76,18 +99,21 @@ export default {
       this.APIRequest('payloads/retrieve', parameter, response => {
         if(response.data.length > 0){
           this.types = response.data
-          this.type = response.data[0].id
+          if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general_limit') {
+            this.routeParams = response.data[0].id
+          }
         }
       })
     },
     getSelectedType(event){
       console.log('==', event.target.value)
       this.type = event.target.value
+      this.routeParams = event.target.value
     },
     create(){
       let parameter = {
         payload: 'room_type',
-        payload_value: this.type,
+        payload_value: this.routeParams,
         limit: this.limit,
         start_date: this.start_date,
         end_date: this.end_date,
@@ -98,9 +124,26 @@ export default {
         return
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('availabilities/create', parameter, response => {
+      let route = null
+      if(this.data !== null){
+        route = 'availabilities/update'
+        parameter['id'] = this.$route.params.id
+        parameter['payload'] = 'room'
+      }else{
+        route = 'availabilities/create'
+      }
+      console.log('-----------', parameter)
+      this.APIRequest(route, parameter, response => {
         $('#loading').css({'display': 'none'})
-        this.$router.push('/general-limit')
+        if(route === 'availabilities/create'){
+          if(response.error !== null){
+            this.errorMessage = response.error
+          }else{
+            this.$router.push('/general-limit')
+          }
+        }else{
+          this.$router.push('/general-limit')
+        }
       })
     }
   }
