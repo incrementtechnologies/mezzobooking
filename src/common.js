@@ -41,11 +41,11 @@ export default {
     {title: 'Business Setting', type: 'merchant', allowed: ['prefix', 'website', 'address', 'schedule', 'information']}
   ],
   settingsTabMenu: [
-    {
-      title: 'Account Settings',
-      description: 'Receives email address every time there’s a login of the account.',
-      route: '/profile'
-    },
+    // {
+    //   title: 'Account Settings',
+    //   description: 'Receives email address every time there’s a login of the account.',
+    //   route: '/profile'
+    // },
     {
       title: 'General Rooms Limits Settings',
       description: 'Receives email address every time there’s a login of the account.',

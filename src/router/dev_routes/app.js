@@ -183,7 +183,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/add-limits/:id?',
+    path: '/add-limits/:parentRoute?/:id?',
     name: 'add_limits',
     component: resolve => require(['modules/settings/settingPages/AddGeneralLimit.vue'], resolve),
     meta: {
