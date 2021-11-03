@@ -404,7 +404,8 @@ export default {
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
       }
-      this.APIRequest('room/create', roomParameter).then(response => {
+      console.log('=============', roomParameter)
+      this.APIRequest('room/', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
             account_id: this.user.userID,
