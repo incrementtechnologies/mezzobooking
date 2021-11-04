@@ -13,7 +13,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px; height: 40px !important;" @click="$router.push('/add-limits')">Add Limits</button>
+    <button class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px; height: 40px !important;" @click="$router.push('/add-limits/general-limit')">Add Limits</button>
     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
@@ -193,7 +193,7 @@ export default {
       })
     },
     redirect(id){
-      this.$router.push('/add-limits/general_limit/' + id)
+      this.$router.push('/add-limits/general-limit/' + id)
     },
     exportData(){
       let options = {
