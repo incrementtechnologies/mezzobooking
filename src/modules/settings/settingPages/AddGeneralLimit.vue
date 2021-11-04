@@ -1,7 +1,7 @@
 <template>
     <div style="margin: 56px">
       <span>
-          <span @click="$router.push('/general-limit')" class="backBtn">
+          <span @click="$router.push(`/${$route.params.parentRoute}`)" class="backBtn">
               <i class="fa fa-chevron-left"></i>
               Back
           </span>
@@ -53,7 +53,7 @@ export default {
   mounted() {
     console.log('============', this.$route)
     this.retrieveType()
-    if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general_limit') {
+    if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general-limit') {
       this.routeParams = this.$route.params.id !== undefined ? this.$route.params.id : null
     }
     if(this.$route.params.id !== undefined){
@@ -74,7 +74,18 @@ export default {
   methods: {
     retrieve(){
       let params = {
-        id: this.$route.params.id
+        condition: [
+          {
+            column: this.$route.params.parentRoute !== 'general-limit' ? 'payload_value' : 'id',
+            clause: '=',
+            value: this.$route.params.id
+          },
+          {
+            column: 'payload',
+            clause: '=',
+            value: 'room_type'
+          }
+        ]
       }
       this.APIRequest('availabilities/retrieve_by_id', params, response => {
         if(response.data.length > 0){
@@ -99,9 +110,9 @@ export default {
       this.APIRequest('payloads/retrieve', parameter, response => {
         if(response.data.length > 0){
           this.types = response.data
-          if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general_limit') {
-            this.routeParams = response.data[0].id
-          }
+          // if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general_limit') {
+          //   this.routeParams = response.data[0].id
+          // }
         }
       })
     },
@@ -119,6 +130,7 @@ export default {
         end_date: this.end_date,
         status: 'available'
       }
+      console.log('------------', parameter)
       if(Object.keys(parameter).includes('') || Object.keys(parameter).includes(null)){
         this.errorMessage = 'Field should not be empty'
         return
@@ -127,8 +139,7 @@ export default {
       let route = null
       if(this.data !== null){
         route = 'availabilities/update'
-        parameter['id'] = this.$route.params.id
-        parameter['payload'] = 'room'
+        parameter['id'] = this.$route.params.parentRoute === 'general-limit' ? parseInt(this.$route.params.id) : this.data.id
       }else{
         route = 'availabilities/create'
       }
@@ -136,13 +147,13 @@ export default {
       this.APIRequest(route, parameter, response => {
         $('#loading').css({'display': 'none'})
         if(route === 'availabilities/create'){
-          if(response.error !== null){
+          if(response.error !== null && response.error.length > 0){
             this.errorMessage = response.error
           }else{
-            this.$router.push('/general-limit')
+            this.$router.push(`/${this.$route.params.parentRoute}`)
           }
         }else{
-          this.$router.push('/general-limit')
+          this.$router.push(`/${this.$route.params.parentRoute}`)
         }
       })
     }
