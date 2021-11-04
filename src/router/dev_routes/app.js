@@ -78,7 +78,7 @@ export default{
       tokenRequired: true
     }
   }, {
-    path: '/bookings',
+    path: '/bookings/:category?/:id?',
     name: 'produbookingscts',
     component: resolve => require(['modules/booking/List.vue'], resolve),
     meta: {

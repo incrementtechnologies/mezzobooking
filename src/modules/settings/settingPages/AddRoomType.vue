@@ -10,8 +10,8 @@
           <span style="float:right">
               <span>
                 <b class="mr-5 actionBtn" @click="$route.params.id !== undefined ? $router.push('/add-limits/room-types/' + $route.params.id) : $router.push('/add-limits/room-types')">Set Schedules & Limits</b>
-                <b class="mr-5 actionBtn">Go to Bookings</b>
-                <b class="actionBtn" @click="saveType()">Save</b>
+                <b class="mr-5 actionBtn" v-if="data !== null" @click="$router.push(`/bookings/${type}/${data.id}`)">Go to Bookings</b>
+                <b class="actionBtn" @click="saveType()">{{data === null ? 'Save' : 'Update'}}</b>
               </span>
           </span>
         </section>
