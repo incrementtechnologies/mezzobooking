@@ -1,6 +1,9 @@
 <template>
   <div style="margin: 56px;">
-    <p><b>Current Bookings</b></p>
+    <p>
+      <b v-if="$route.params.category === undefined">Current Bookings</b>
+      <span v-else class="backAction" @click="$router.push('/room-types')"><i class="fas fa-chevron-left"></i>&nbsp;Back / {{$route.params.category}}</span>
+    </p>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -150,6 +153,13 @@ export default {
         offset: flag ? this.offset : 0,
         sort: sort !== null ? sort : this.currentSort
       }
+      if(this.$route.params.category !== undefined){
+        parameter.condition.push({
+          value: this.$route.params.id,
+          column: 'reservation_id',
+          clause: '='
+        })
+      }
       $('#loading').css({'display': 'block'})
       console.log(flag)
       this.APIRequest('reservations/retrieve_bookings', parameter).then(response => {
@@ -241,6 +251,10 @@ $(function () {
 })
 </script>
 <style lang="scss" scoped>
+  .backAction{
+    font-size: 15px;
+    cursor: pointer;
+  }
   .table{
     border-collapse:separate !important;
     border-spacing:0 15px !important;

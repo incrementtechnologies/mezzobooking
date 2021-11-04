@@ -2,7 +2,7 @@
   <div class="system-body"> 
      <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide" id="idfactory" >
       <div class="sidebar">
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" :style="hide === 'hidden' ? 'margin-top: 50%;padding-right: 30px' : null">
             <li class="header">
                 <span v-if="menuFlag === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
@@ -25,7 +25,7 @@
               </ul>
             </li>
             <li v-for="item, index in menuOff" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActiveOff(index)" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && menuFlag === false" class="menu-holder-hidden">
-              <i v-bind:class="item.icon"></i>
+              <i v-bind:class="item.icon" class=" visible" :style="item.flag || $route.path === '/' + item.path ? ' ' : ' color:gray'"></i>
             </li>
           </ul>
         </div>

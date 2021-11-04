@@ -583,6 +583,7 @@ body{
  @media (min-width: 1200px){
     .system-header{
       width: 18%;
+      z-index: 9999 !important;
     }
     .header-navbar{
       width: 82%;
@@ -608,6 +609,7 @@ body{
  @media (max-width: 1199px){
     .system-header{
       width: 18%;
+      z-index: 9999 !important
     }
     .header-navbar{
       width: 82%;
@@ -667,6 +669,7 @@ body{
     
     .system-header{
       width: 15%;
+      z-index: 9999 !important
     }
     
     .navbar-brand{
