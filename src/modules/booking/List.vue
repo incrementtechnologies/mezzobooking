@@ -156,7 +156,7 @@ export default {
       if(this.$route.params.category !== undefined){
         parameter.condition.push({
           value: this.$route.params.id,
-          column: 'reservation_id',
+          column: 'T6.reservation_id',
           clause: '='
         })
       }
