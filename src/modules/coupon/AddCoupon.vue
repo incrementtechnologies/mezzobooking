@@ -9,7 +9,7 @@
           </span>
           <span style="float:right">
               <span>
-                  <b class="mr-5 actionBtn">Go to revenue</b>
+                  <b class="mr-5 actionBtn" @click="$router.push('/revenue/'+code + '/' + data.id)">Go to revenue</b>
                   <b class="actionBtn" @click="create()">Save</b>
               </span>
           </span>

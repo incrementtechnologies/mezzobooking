@@ -405,7 +405,7 @@ export default {
         status: this.status
       }
       console.log('=============', roomParameter)
-      this.APIRequest('room/', roomParameter).then(response => {
+      this.APIRequest('room/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
             account_id: this.user.userID,
