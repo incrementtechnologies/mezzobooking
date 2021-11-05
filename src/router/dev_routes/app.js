@@ -203,6 +203,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/revenue/:code?/:id?',
+    name: 'revenue',
+    component: resolve => require(['modules/coupon/Revenue.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
