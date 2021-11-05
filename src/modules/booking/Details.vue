@@ -87,7 +87,7 @@
                     <p>PHP {{each.rooms[0].regular * each.qty}}</p>
                 </div>
             </div>
-            <div v-if="reservations.coupon !== null">
+            <div v-if="reservations.coupon.code !== null">
               <span class="ml-2">Discount - {{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}} OFF({{reservations.coupon.code}})</span>
               <!-- <i class="fa fa-pencil actionBtn"></i>
               <i class="fa fa-trash actionBtn"></i> -->

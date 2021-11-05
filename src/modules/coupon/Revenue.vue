@@ -152,10 +152,10 @@ export default {
         offset: flag ? this.offset : 0,
         sort: sort !== null ? sort : this.currentSort
       }
-      if(this.$route.params.category !== undefined){
+      if(this.$route.params.code !== undefined){
         parameter.condition.push({
           value: this.$route.params.id,
-          column: 'reservation_id',
+          column: 'reservations.coupon_id',
           clause: '='
         })
       }
