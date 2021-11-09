@@ -30,13 +30,26 @@
             <div class="col-md-6">
                 <label>Start Date</label>
                 <div class="input-group">
-                    <input v-model="start_date" type="datetime-local" class="form-control-custom form-control">
+                    <date-picker 
+                      v-model="start_date" 
+                      :type="'date'" 
+                      :disabled-date="disablePreviousDates"
+                      :format="'MMM D, YYYY'"
+                      :value-type="'YYYY-MM-DD'"
+                      style="width: 500px"></date-picker>
+                    <!-- <input v-model="start_date" type="datetime-local" class="form-control-custom form-control"> -->
                 </div>
             </div>
             <div class="col-md-6">
                 <label>End Date</label>
                 <div class="input-group">
-                    <input v-model="end_date"  type="datetime-local" class="form-control-custom form-control">
+                    <date-picker 
+                      v-model="end_date" 
+                      :type="'date'" 
+                      :disabled-date="afterPreviousDate"
+                      :format="'MMM D, YYYY'"
+                      :value-type="'YYYY-MM-DD'"
+                      style="width: 500px"></date-picker>
                 </div>
             </div>
         </div>
@@ -67,7 +80,7 @@
             <div class="col-md-6">
                 <label>Target</label>
                 <searchField
-                :test="'payload'"
+                :test="'target'"
                 :placeholder="'Select Target'"
                 :items="roomTypes"
                 :isMultiple="isMultiple"
@@ -86,7 +99,7 @@
                 }"
                 :class="'multiselect__tags1'"
                 :selectedIndex="selectedIndex"
-                @onSelect="onSelect"
+                @onSelectTarget="onSelect"
                 ref="searchField"
               />
             </div>
@@ -112,9 +125,15 @@
             </div>
         </div>
         <div class="mt-4" v-if="data !== null">
-            <button class="btn btn-danger footerBtn" @click="remove">Delete</button>
+            <button class="btn btn-danger footerBtn" @click="confirmRemove">Delete</button>
         </div>
       </div>
+      <confirmation
+        :title="'Confirmation Modal'"
+        :message="'Are you sure you want to delete ?'"
+        ref="confirms"
+        @onConfirm="remove"
+      />
   </div>
 </template>
 
@@ -122,6 +141,8 @@
 import AUTH from 'src/services/auth'
 import searchField from 'src/modules/generic/searchField.vue'
 import moment from 'moment'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
 export default {
   data(){
     return {
@@ -145,7 +166,9 @@ export default {
     }
   },
   components: {
-    searchField
+    'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
+    searchField,
+    DatePicker
   },
   mounted(){
     if(this.$route.params.code !== undefined){
@@ -155,6 +178,7 @@ export default {
   },
   methods: {
     create(){
+      var moment = require('moment')
       if(this.code === null || this.description === null || this.start_date === null || this.end_date === null ||
       this.limit === null || this.type === null || this.limit_per_customer === null || this.amount === null || this.status === null
       ){
@@ -162,6 +186,10 @@ export default {
         return
       }else if(this.value <= 0 || this.limit <= 0 || this.limit_per_customer <= 0){
         this.errorMessage = 'Value should be greater than 0'
+        return
+      }
+      if(moment(this.start_date).isValid() === false || moment(this.end_date).isValid() === false){
+        this.errorMessage = 'Invalid date format'
         return
       }
       let parameter = {
@@ -210,7 +238,7 @@ export default {
           this.end_date = moment(this.data.end_date).format('yyyy-MM-DDThh:mm')
           this.limit = this.data.limit
           this.limit_per_customer = this.data.limit_per_customer
-          this.currency = this.data.type
+          this.type = this.data.type
           this.amount = this.data.amount
           this.status = this.data.status
           let isAll = this.data.target.filter(el => {
@@ -221,7 +249,8 @@ export default {
           }else{
             this.isMultiple = true
           }
-          this.$refs.searchField.value = this.data.target
+          this.$refs.searchField.targets = Object.values(this.data.target)
+          console.log('-------------', this.$refs.searchField.targets)
         }else{
           this.data = null
         }
@@ -237,12 +266,15 @@ export default {
         this.roomTypes = response.data
       })
     },
-    remove(){
+    confirmRemove(){
+      this.$refs.confirms.show(this.data.id)
+    },
+    remove(data){
       let parameter = {
-        id: this.data.id
+        id: data.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('reservations/delete', parameter).then(response => {
+      this.APIRequest('coupons/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         this.$router.push('/coupons')
       })
@@ -270,6 +302,16 @@ export default {
         this.selectedTypes = data
       }
       // console.log('---------', this.$refs.searchField.value)
+    },
+    afterPreviousDate(date){
+      if(this.start_date === null){
+        return null
+      }
+      return date < new Date(this.start_date)
+    },
+    disablePreviousDates(date) {
+      var d = new Date()
+      return date < new Date(d.setDate(d.getDate() - 1))
     }
   }
 }
