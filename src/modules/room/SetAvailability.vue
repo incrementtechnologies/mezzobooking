@@ -8,7 +8,7 @@
       </span>
       <span style="float:right">
           <span>
-              <b class="actionBtn" @click="create()">Save</b>
+              <b class="actionBtn" @click="update()">Save</b>
           </span>
       </span>
       <section class="mt-5">
@@ -59,27 +59,53 @@ export default {
     }else{
       this.isSwitch = false
     }
+    this.retrieveById()
   },
   data(){
     return {
       isSwitch: false,
       description: null,
       start_date: null,
-      end_date: null
+      end_date: null,
+      data: null
     }
   },
   methods: {
-    create(){
-      //
+    retrieveById(){
       let parameter = {
+        condition: [{
+          column: 'payload',
+          value: 'room_id',
+          clause: '='
+        }, {
+          column: 'payload_value',
+          value: this.$route.params.id,
+          clause: '='
+        }]
+      }
+      this.APIRequest('availabilities/retrieve_by_id', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = response.data[0]
+          this.description = response.data[0].description
+          this.start_date = response.data[0].start_date
+          this.end_date = response.data[0].end_date
+        }
+      })
+    },
+    update(){
+      let parameter = {
+        id: this.data.id,
         payload: 'room_id',
         payload_value: this.$route.params.id,
         start_date: this.start_date,
         end_date: this.end_date,
+        limit: null,
         description: this.description,
         status: this.isSwitch === true ? 'available' : 'not_available'
       }
-      this.APIRequest('availabilities/create', parameter).then(response => {
+      console.log('[update]', parameter)
+      this.APIRequest('availabilities/update', parameter).then(response => {
+        console.log('[update]', response)
         if(response.data > 0){
           this.$router.push('/add-rooms/' + this.$route.params.id)
         }

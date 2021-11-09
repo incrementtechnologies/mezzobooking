@@ -50,35 +50,35 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
-          payload: 'email',
+          title: 'Room Ascending',
+          payload: 'title',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Email Descending',
-          payload: 'email',
+          title: 'Room Descending',
+          payload: 'title',
           payload_value: 'desc',
           type: 'text'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
+          title: 'Description Ascending',
+          payload: 'description',
           payload_value: 'asc',
-          type: 'date'
+          type: 'text'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
+          title: 'Description Ascending',
+          payload: 'description',
           payload_value: 'asc',
-          type: 'date'
+          type: 'text'
         }, {
-          title: 'CheckOut Ascending',
-          payload: 'check_out',
+          title: 'Maximum Capacity Ascending',
+          payload: 'max_capacity',
           payload_value: 'asc',
-          type: 'date'
+          type: 'text'
         }, {
-          title: 'CheckOut Descending',
-          payload: 'check_out',
+          title: 'Maximum Capacity Descending',
+          payload: 'max_capacity',
           payload_value: 'desc',
-          type: 'date'
+          type: 'text'
         }, {
           title: 'Status Ascending',
           payload: 'status',

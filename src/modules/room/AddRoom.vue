@@ -16,7 +16,7 @@
     <span style="float:right">
       <span>
         <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code + '/' + status)">Set Schedules & Limits</b>
-        <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b>
+        <!-- <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b> -->
       </span>
     </span>
     <p style="color:red">{{errorMessage}}</p>
@@ -119,6 +119,7 @@
             <select v-model="price_terms" type="text" class="form-control-custom form-control">
               <option value="NIGHT">Per Night</option>
               <option value="DAY">Per Day</option>
+              <option value="MONTH">Per Month</option>
             </select>
           </div>
       </div>
@@ -288,7 +289,7 @@ export default {
           }
         ]
       }
-      this.APIRequest('payloads/retrieve', parameter, response => {
+      this.APIRequest('payloads/retrieve_with_validations', parameter, response => {
         this.types = response.data
       })
     },
@@ -393,7 +394,6 @@ export default {
         this.errorMessage = 'Value should be greater than 0'
         return
       }
-      // save to room
       let roomParameter = {
         code: this.user.code,
         account_id: this.user.userID,
@@ -422,14 +422,14 @@ export default {
           }
           this.APIRequest('pricings/create', pricingParameter).then(response => {
             if(response.data > 0){
-              console.log('Pricing Created Successfully')
+              this.$router.push('/rooms')
             }else{
               console.log('[Error in Creating Pricing]')
             }
           })
           this.APIRequest('room_images/create_with_image', imageParameter).then(response => {
             if(Number(response.data) > 0){
-              this.$router.push('/rooms')
+              console.log('[Successfully Added]')
             }
           })
         }

@@ -9,7 +9,7 @@
           </span>
           <span style="float:right">
               <span>
-                  <b class="mr-5 actionBtn" @click="$router.push('/revenue/'+code + '/' + data.id)">Go to revenue</b>
+                  <b class="mr-5 actionBtn" @click="$route.params.code !== undefined ? $router.push('/revenue/'+code + '/' + data.id) : $router.push('/bookings')">Go to revenue</b>
                   <b class="actionBtn" @click="create()">Save</b>
               </span>
           </span>
@@ -96,8 +96,8 @@
                 <label>Status</label>
                 <div class="input-group">
                     <select v-model="status" type="text" class="form-control-custom form-control">
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
+                        <option value="draft">Draft</option>
+                        <option value="publish">Publish</option>
                     </select>
                 </div>
             </div>
