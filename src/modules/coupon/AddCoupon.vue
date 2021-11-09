@@ -30,13 +30,26 @@
             <div class="col-md-6">
                 <label>Start Date</label>
                 <div class="input-group">
-                    <input v-model="start_date" type="datetime-local" class="form-control-custom form-control">
+                    <date-picker 
+                      v-model="start_date" 
+                      :type="'date'" 
+                      :disabled-date="disablePreviousDates"
+                      :format="'MMM D, YYYY'"
+                      :value-type="'YYYY-MM-DD'"
+                      style="width: 500px"></date-picker>
+                    <!-- <input v-model="start_date" type="datetime-local" class="form-control-custom form-control"> -->
                 </div>
             </div>
             <div class="col-md-6">
                 <label>End Date</label>
                 <div class="input-group">
-                    <input v-model="end_date"  type="datetime-local" class="form-control-custom form-control">
+                    <date-picker 
+                      v-model="end_date" 
+                      :type="'date'" 
+                      :disabled-date="afterPreviousDate"
+                      :format="'MMM D, YYYY'"
+                      :value-type="'YYYY-MM-DD'"
+                      style="width: 500px"></date-picker>
                 </div>
             </div>
         </div>
@@ -122,6 +135,8 @@
 import AUTH from 'src/services/auth'
 import searchField from 'src/modules/generic/searchField.vue'
 import moment from 'moment'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
 export default {
   data(){
     return {
@@ -145,7 +160,8 @@ export default {
     }
   },
   components: {
-    searchField
+    searchField,
+    DatePicker
   },
   mounted(){
     if(this.$route.params.code !== undefined){
@@ -155,6 +171,7 @@ export default {
   },
   methods: {
     create(){
+      var moment = require('moment')
       if(this.code === null || this.description === null || this.start_date === null || this.end_date === null ||
       this.limit === null || this.type === null || this.limit_per_customer === null || this.amount === null || this.status === null
       ){
@@ -162,6 +179,10 @@ export default {
         return
       }else if(this.value <= 0 || this.limit <= 0 || this.limit_per_customer <= 0){
         this.errorMessage = 'Value should be greater than 0'
+        return
+      }
+      if(moment(this.start_date).isValid() === false || moment(this.end_date).isValid() === false){
+        this.errorMessage = 'Invalid date format'
         return
       }
       let parameter = {
@@ -270,6 +291,16 @@ export default {
         this.selectedTypes = data
       }
       // console.log('---------', this.$refs.searchField.value)
+    },
+    afterPreviousDate(date){
+      if(this.start_date === null){
+        return null
+      }
+      return date < new Date(this.start_date)
+    },
+    disablePreviousDates(date) {
+      var d = new Date()
+      return date < new Date(d.setDate(d.getDate() - 1))
     }
   }
 }
