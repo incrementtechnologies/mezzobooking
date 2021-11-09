@@ -80,7 +80,7 @@
             <div class="col-md-6">
                 <label>Target</label>
                 <searchField
-                :test="'payload'"
+                :test="'target'"
                 :placeholder="'Select Target'"
                 :items="roomTypes"
                 :isMultiple="isMultiple"
@@ -99,7 +99,7 @@
                 }"
                 :class="'multiselect__tags1'"
                 :selectedIndex="selectedIndex"
-                @onSelect="onSelect"
+                @onSelectTarget="onSelect"
                 ref="searchField"
               />
             </div>
@@ -125,9 +125,15 @@
             </div>
         </div>
         <div class="mt-4" v-if="data !== null">
-            <button class="btn btn-danger footerBtn" @click="remove">Delete</button>
+            <button class="btn btn-danger footerBtn" @click="confirmRemove">Delete</button>
         </div>
       </div>
+      <confirmation
+        :title="'Confirmation Modal'"
+        :message="'Are you sure you want to delete ?'"
+        ref="confirms"
+        @onConfirm="remove"
+      />
   </div>
 </template>
 
@@ -160,6 +166,7 @@ export default {
     }
   },
   components: {
+    'confirmation': require('components/increment/generic/modal/Confirmation.vue'),
     searchField,
     DatePicker
   },
@@ -231,7 +238,7 @@ export default {
           this.end_date = moment(this.data.end_date).format('yyyy-MM-DDThh:mm')
           this.limit = this.data.limit
           this.limit_per_customer = this.data.limit_per_customer
-          this.currency = this.data.type
+          this.type = this.data.type
           this.amount = this.data.amount
           this.status = this.data.status
           let isAll = this.data.target.filter(el => {
@@ -242,7 +249,8 @@ export default {
           }else{
             this.isMultiple = true
           }
-          this.$refs.searchField.value = this.data.target
+          this.$refs.searchField.targets = Object.values(this.data.target)
+          console.log('-------------', this.$refs.searchField.targets)
         }else{
           this.data = null
         }
@@ -258,12 +266,15 @@ export default {
         this.roomTypes = response.data
       })
     },
-    remove(){
+    confirmRemove(){
+      this.$refs.confirms.show(this.data.id)
+    },
+    remove(data){
       let parameter = {
-        id: this.data.id
+        id: data.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('reservations/delete', parameter).then(response => {
+      this.APIRequest('coupons/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         this.$router.push('/coupons')
       })

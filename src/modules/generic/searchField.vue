@@ -1,6 +1,7 @@
 <template>
   <div>
     <Multiselect style="width:100%" v-if="(test === 'payload')" v-model="features" tag-placeholder="Search Tag" :placeholder="placeholder" :searchable="false" :close-on-select="false" :clear-on-select="false" label="payload_value" track-by="id" :options="items" :multiple="true" @input="returnFeature()"></Multiselect>
+    <Multiselect style="width:100%" v-else-if="(test === 'target')" v-model="targets" tag-placeholder="Search Tag" :placeholder="placeholder" :searchable="false" :close-on-select="false" :clear-on-select="false" label="payload_value" track-by="id" :options="items" :multiple="true" @input="returnTarget()"></Multiselect>
     <Multiselect style="width:100%" v-else v-model="add_ons" tag-placeholder="Search Tag" :placeholder="placeholder" :searchable="false" :close-on-select="false" :clear-on-select="false" label="title" track-by="id" :options="items" :multiple="true" @input="returnAddOn()"></Multiselect>
   </div>
 </template>
@@ -12,7 +13,8 @@ export default {
   data() {
     return {
       features: [],
-      add_ons: []
+      add_ons: [],
+      targets: []
     }
   },
   components: {
@@ -24,6 +26,9 @@ export default {
     },
     returnAddOn(){
       this.$emit('onSelectAdd', this.add_ons)
+    },
+    returnTarget(){
+      this.$emit('onSelectTarget', this.targets)
     }
   }
 }
