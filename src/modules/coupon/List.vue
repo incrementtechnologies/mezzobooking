@@ -19,18 +19,18 @@
         <tr v-for="(item, index) in data" :key="index" class="table-row">
           <td style="width: 200px">
             <div style="text-align:center">
-              <b><span style="font-size: 14px">{{item.code}}</span></b><br/>
+              <b><span style="font-size: 12px">{{item.code}}</span></b><br/>
               <span style="font-size: 12px">{{item.description}}</span>
             </div>
           </td>
           <td style="width: 200px">
-            <div style="text-align:center"><b>Start Date</b> <br/>{{item.start_date}}</div>
+            <div style="text-align:center"><b style="font-size: 12px">Start Date</b> <br/><span style="font-size:11px">{{item.start_date}}</span></div>
           </td>
           <td style="width: 200px">
-            <div style="text-align:center"><b>End Date</b> <br/>{{item.end_date}}</div>
+            <div style="text-align:center;"><b style="font-size: 12px">End Date</b> <br/><span style="font-size:11px">{{item.end_date}}</span></div>
           </td>
           <td style="width: 200px">
-            <div style="text-align:center"><b>Limit</b> <br/>{{item.limit}}</div>
+            <div style="text-align:center"><b style="font-size: 12px">Limit</b> <br/><span style="font-size:11px">{{item.limit}}</span></div>
           </td>
           <td style="padding-left: 0; padding-right: 0; width: 200px">
             <div class="row">
@@ -41,7 +41,7 @@
                 </div>
               </div>
               <div class="col-md-4" style="width: 270px;z-index:9999">
-                <i class="fa fa-pencil text-primary" @click="$router.push('/add-coupons/'+ item.code)"></i>
+                <i class="fa fa-pencil" style="color:#003" @click="$router.push('/add-coupons/'+ item.code)"></i>
                 <i class="fa fa-trash text-danger" @click.prevent="confirmRemove(item.id)"></i>
               </div>
             </div>
