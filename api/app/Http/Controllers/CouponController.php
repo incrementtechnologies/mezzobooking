@@ -172,4 +172,12 @@ class CouponController extends APIController
     public function retrieveById($couponId){
         return Coupon::where('id', '=', $couponId)->first();
     }
+    public function delete(Request $request){
+        $data = $request->all();
+        $result = Coupon::where('id', '=', $data['id'])->update(array(
+            'deleted_at' => Carbon::now()
+        ));
+        $this->response['data'] = $result;
+        return $this->response();
+    }
 }

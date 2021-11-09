@@ -7,7 +7,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button class="btn btn-primary pull-right" @click="$router.push('/add-coupons')">Add Coupon</button>
+    <button class="btn btn-primary pull-right" @click.prevent="$router.push('/add-coupons')">Add Coupon</button>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -16,7 +16,7 @@
     </filter-product>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="$router.push('/add-coupons/'+ item.code)">
+        <tr v-for="(item, index) in data" :key="index" class="table-row">
           <td style="width: 200px">
             <div style="text-align:center">
               <b><span style="font-size: 14px">{{item.code}}</span></b><br/>
@@ -40,9 +40,9 @@
                   <p style="font-size:16px;font-weight:bold;">PHP {{item.amount}}</p>
                 </div>
               </div>
-              <div class="col-md-4" style="width: 270px">
+              <div class="col-md-4" style="width: 270px;z-index:9999">
                 <i class="fa fa-pencil text-primary" @click="$router.push('/add-coupons/'+ item.code)"></i>
-                <i class="fa fa-trash text-danger"></i>
+                <i class="fa fa-trash text-danger" @click.prevent="confirmRemove(item.id)"></i>
               </div>
             </div>
           </td>
@@ -51,13 +51,13 @@
     </table>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Coupons!'" :action="'No activity at the moment.'"></empty>
-    <!-- <confirmation
-    :title="'Confirmation Modal'"
-    :message="'Are you sure you want to delete ?'"
-    ref="confirms"
-    @onConfirm="remove()"
+    <confirmation
+      :title="'Confirmation Modal'"
+      :message="'Are you sure you want to delete ?'"
+      ref="confirms"
+      @onConfirm="deleteCoupon"
     >
-    </confirmation> -->
+    </confirmation>
     <show-booking ref="booking"/>
   </div>
 </template>
@@ -196,6 +196,17 @@ export default {
           })
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
+      })
+    },
+    confirmRemove(id){
+      console.log('=========', id)
+      this.$refs.confirms.show(id)
+    },
+    deleteCoupon(data){
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('coupons/delete', {id: data.id}, response => {
+        $('#loading').css({'display': 'none'})
+        this.retrieve(this.currentSort, this.currentFilter, false)
       })
     },
     remove(){
