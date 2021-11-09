@@ -17,13 +17,13 @@
                   <i class="fas fa-check checkIcon" ></i>
                   <span>{{item.title || item.payload_value}}</span>
               </div>
-              <div v-if="list.additional_info.feature.length > 0" class="col-md-6" v-for="(item, index) in list.additional_info.add_ons" :key="index">
+              <div v-if="list.additional_info.add_ons.length > 0" class="col-md-6" v-for="(item, index) in list.additional_info.add_ons" :key="index">
                   <i class="fas fa-check checkIcon" ></i>
                   <span>{{item.title || item.payload_value}}</span>
               </div>
             </div>
             <!-- <div class="row" v-if="Object.values(list.additional_info).length > 0">
-              <div class="col-md-6" v-for="(item, index) in Object.values(list.additional_info)" :key="index">
+              <div class="col-md-6" v-for="(item, index) in Object.vadlues(list.additional_info)" :key="index">
                 <div v-for="(x, index) in item" :key="index">
                   <span><i class="fa fa-check"></i></span>
                   <span>{{x.title || x.payload_value}}</span>
@@ -60,13 +60,21 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
+  .card-body{
+    width: 70%;
+  }
   .card-horizontal {
     display: flex;
     flex: 1 1 auto;
     min-height: 240px;
+    width: 100%;
   }
   .fa-check {
     color: $secondary
+  }
+  p{
+    word-break: break-word !important;
+    width: 95%;
   }
 </style>
 

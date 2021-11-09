@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 56px;">
     <p>
-      <span class="backAction" @click="$router.push('/room-types')"><i class="fas fa-chevron-left"></i>&nbsp;Back / {{$route.params.code}}</span>
+      <span class="backAction" @click="$router.push('/coupons')"><i class="fas fa-chevron-left"></i>&nbsp;Back / {{$route.params.code}}</span>
     </p>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
