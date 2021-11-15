@@ -70,20 +70,12 @@
       <div class="column" style="width: 20%;">
         <div style="float: right;">
           <span style="margin-right: 10px;">Last 30 days</span>
-          <span><i class="fas fa-chevron-down"></i></span>
+          <!-- <span><i class="fas fa-chevron-down"></i></span> -->
         </div>
       </div>
     </div>
     <div class="graph">
-      <kendo-chart
-      :title-text="''"
-      :legend-position="'bottom'"
-      :tooltip-visible="true"
-      :tooltip-template="'$#: value #'"
-      :series="series"
-      :category-axis-categories="categories"
-      :value-axis="valueAxis">
-    </kendo-chart>
+      <BarGraph :data="datas" v-if="datas.labels.length > 0"/>
     </div>
   </div>
 </template>
@@ -92,53 +84,44 @@ import ROUTER from 'src/router'
 import AUTH from 'src/services/auth'
 import CONFIG from 'src/config.js'
 import Posts from 'src/modules/generic/Posts.vue'
-import Vue from 'vue'
-import '@progress/kendo-ui'
-import '@progress/kendo-theme-default/dist/all.css'
-import { Chart, ChartInstaller } from '@progress/kendo-charts-vue-wrapper'
-import { DataSource, DataSourceInstaller } from '@progress/kendo-datasource-vue-wrapper'
 import moment from 'moment'
-Vue.use(ChartInstaller)
-Vue.use(DataSourceInstaller)
+import BarGraph from 'src/modules/generic/BarGraph.vue'
 export default{
   mounted(){
     this.retrieve()
+    this.retrieveGraph()
     this.retrieveBooking()
   },
   data(){
     return {
       user: AUTH.user,
-      series: [{
-        type: 'line',
-        name: 'Name',
-        data: [6316.77, 6513.70, 6477.32, 6367.24, 6402.62, 5594.97, 3768.79, 4191.90, 3493.53, 3272.31]
-      }],
-      categories: [
-        'a',
-        'b',
-        'c',
-        'd',
-        'e',
-        'f',
-        'g',
-        'h',
-        'i',
-        'j'
-      ],
-      valueAxis: [{
-        labels: {
-          format: `${0}`
-        }
-      }],
       data: [],
       bookingLimit: 3,
-      bookings: []
+      bookings: [],
+      datas: {
+        labels: [],
+        datasets: [
+          {
+            fill: false,
+            borderColor: '#003',
+            backgroundColor: '#003',
+            label: 'RESERVATIONS',
+            data: []
+          },
+          {
+            fill: false,
+            borderColor: '#f87979',
+            backgroundColor: '#f87979',
+            label: 'SALES',
+            data: []
+          }
+        ]
+      }
     }
   },
   components: {
     Posts,
-    Chart,
-    DataSource
+    BarGraph
   },
   methods: {
     retrieve(){
@@ -148,6 +131,18 @@ export default{
         $('#loading').css({display: 'none'})
         if(response.data !== null){
           this.data = response.data
+        }
+      })
+    },
+    retrieveGraph(){
+      this.APIRequest('reservations/retrieve_dashboard', {}, response => {
+        let tempXaxis = response.data
+        for (let index = 0; index <= tempXaxis.length - 1; index++) {
+          const element = tempXaxis[index]
+          console.log('=============', element.date)
+          this.datas.labels.push(element.date)
+          this.datas.datasets[0].data.push(element.total_reservations)
+          this.datas.datasets[1].data.push(element.total_sales)
         }
       })
     },
