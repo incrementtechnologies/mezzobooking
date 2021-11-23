@@ -69,13 +69,13 @@
 }
 
 .btn-primary:hover{
-  background: $darkPrimary !important;
-  border-color: $darkPrimary !important;
+  background: $primary !important;
+  border-color: $primary !important;
 }
 
 .btn-primary:active{
-  background: $darkPrimary !important;
-  border-color: $darkPrimary !important;
+  background: $primary !important;
+  border-color: $primary !important;
 }
 
 .btn-secondary{
