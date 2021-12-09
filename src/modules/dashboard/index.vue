@@ -44,7 +44,7 @@
       <tbody v-if="bookings.length > 0"> 
         <tr class="table-row" v-for="(item, index) in bookings" :key="index" @click="$router.push('/booking-details/' + item.code)">
           <td>
-            <b><span style="font-size: 14px">{{item.email}}-{{item.status}}</span></b><br/>
+            <b><span style="font-size: 14px">{{item.details.name}} - {{item.status}}</span></b><br/>
             <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
           <td>
@@ -54,7 +54,7 @@
             <div style="text-align:center"><b>Children</b> <br/>{{item.details.child}}</div>
           </td>
           <td style="padding: 20px 0;">
-            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.price}}</div>
+            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.total}}</div>
           </td>
         </tr>
       </tbody>

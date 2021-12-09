@@ -112,7 +112,7 @@ export default {
     RoomCard
   },
   methods: {
-    retrieve(sort = null, filter = null, flag = null){
+    retrieve(sort, filter, flag){
       if(flag === true) {
         this.offset += this.limit
       }
@@ -131,7 +131,7 @@ export default {
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
         account_id: this.user.userID,
-        sort: sort
+        sort: this.currentSort
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('room/retrieve', parameter).then(response => {
