@@ -99,7 +99,7 @@
                   </div>
               </div>
             </div>
-            <span class="ml-2">AddOns</span>
+            <span class="ml-2" v-if="reservations.details.selectedAddOn.length > 0">AddOns</span>
             <div class="row ml-4" v-for="(each, idx) in reservations.details.selectedAddOn" :key="idx"> 
                 <div class="col-md-6">
                     <span>{{each.title}}</span>
@@ -135,6 +135,7 @@
       <section>
         <div><b>Room Assigning</b></div>
         <div style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
+          <p v-if="emptyAssignment !== null" style="color: red">{{emptyAssignment}}<br></p>
           <div  v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
             <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
               <div class="row">
@@ -150,13 +151,13 @@
       <section class="actionBtns mt-3">
           <div class="row" style="margin-left:auto; margin-right:auto;">
               <div class="col-md-6">
-                  <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')">Cancel</button>
-                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refund')" v-if="isDisable===false">Refund</button>
+                  <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
+                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refund')" v-if="isDisable===false && reservations.details.refundable > 0">Refund</button>
               </div>
               <div class="col-md-6">
                   <div style="float:right" v-if="isDisable===false">
                     <button class="btn btn-secondary footerBtn"  @click="updateRoom('confirm')">Confirm</button>
-                    <button class="btn btn-primary footerBtn"  @click="updateRoom('complete')">Complete</button>
+                    <button class="btn btn-primary footerBtn"  @click="updateRoom('complete')" v-if="reservations.status === 'confirm'">Complete</button>
                   </div>
               </div>
           </div>
@@ -193,7 +194,8 @@ export default {
     roomAssign: [],
     assignedRoom: [],
     inputs: [],
-    isDisable: false
+    isDisable: false,
+    emptyAssignment: null
   }),
   methods: {
     retrieveCoupon(){
@@ -202,12 +204,16 @@ export default {
         status: 'completed'
       }
       this.APIRequest('coupons/retrieve_by_reservation', parameter, response => {
-        this.coupon = response.data
-        if(response.data.type === 'percentage'){
-          let tempAmount = parseInt(response.data.amount) / 100
-          this.total = this.subTotal - (this.subTotal * tempAmount)
-        }else if(response.data.type === 'fixed'){
-          this.total = this.subTotal - parseInt(response.data.amount)
+        if(response.data !== null){
+          this.coupon = response.data
+          if(response.data.type === 'percentage'){
+            let tempAmount = parseInt(response.data.amount) / 100
+            this.total = this.subTotal - (this.subTotal * tempAmount)
+          }else if(response.data.type === 'fixed'){
+            this.total = this.subTotal - parseInt(response.data.amount)
+          }
+        }else{
+          this.total = this.subTotal
         }
       })
     },
@@ -246,6 +252,7 @@ export default {
               })
             }
           })
+          this.retrieveCoupon()
           this.summary.map(el => {
             for (let index = 0; index < el.qty; index++) {
               let input = {
@@ -274,16 +281,31 @@ export default {
         reservation_id: this.reservations.id,
         status: status
       }
-      this.summary.map(el => {
-        el.inputs.map((item, idx) => {
-          item['room_id'] = el.rooms[0].id
-          temp.push(item)
+      if(status === 'confirm'){
+        this.summary.map(el => {
+          el.inputs.map((item, idx) => {
+            if(item.category === null){
+              this.emptyAssignment = 'Please assign their rooms'
+              return
+            }else{
+              item['room_id'] = el.rooms[0].id
+              temp.push(item)
+              this.emptyAssignment = null
+            }
+          })
         })
-      })
-      console.log('=>>>>>>>>>', params)
-      this.APIRequest('reservations/update_reservation', params, response => {
-        this.$router.push('/bookings')
-      })
+      }
+      if(status === 'confirm' && temp.length > 0){
+        this.APIRequest('reservations/update_reservation', params, response => {
+          this.$router.push('/bookings')
+          this.emptyAssignment = null
+        })
+      }else if(status === 'complete' || status === 'cancelled' || status === 'refund'){
+        this.APIRequest('reservations/update_reservation', params, response => {
+          this.$router.push('/bookings')
+          this.emptyAssignment = null
+        })
+      }
     }
   }
 }
