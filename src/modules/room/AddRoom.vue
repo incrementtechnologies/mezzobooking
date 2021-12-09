@@ -413,7 +413,8 @@ export default {
             regular: this.regular_price,
             refundable: this.non_price,
             currency: 'PHP',
-            label: this.price_terms
+            label: this.price_terms,
+            category: this.room_type
           }
           let imageParameter = {
             room_id: response.data,
