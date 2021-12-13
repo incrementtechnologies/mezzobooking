@@ -54,7 +54,7 @@ import AUTH from 'src/services/auth'
 import moment from 'moment'
 export default {
   mounted() {
-    console.log('============', this.$route)
+    console.log('========', this.$route)
     this.retrieveType()
     if(this.$route.params.parentRoute !== undefined && this.$route.params.parentRoute !== 'general-limit') {
       this.routeParams = this.$route.params.id !== undefined ? this.$route.params.id : null
