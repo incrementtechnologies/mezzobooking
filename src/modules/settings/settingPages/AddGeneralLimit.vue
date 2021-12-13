@@ -17,8 +17,11 @@
           <div class="col-md-6">
             <label>Room Type</label>
             <div class="input-group">
-              <select @change="getSelectedType" class="form-control-custom form-control">
+              <select @change="getSelectedType" class="form-control-custom form-control" v-if="$route.params.id !== undefined">
                 <option v-for="(each, idx) in types" :key="idx" :value="each.id" :selected="routeParams !== undefined && parseInt(routeParams) === parseInt(each.id) ? true : false">{{each.payload_value}}</option>
+              </select>
+              <select v-model="routeParams" class="form-control-custom form-control" v-if="$route.params.id === undefined">
+                <option v-for="(each, idx) in types" :key="idx" :value="each.id" >{{each.payload_value}}</option>
               </select>
             </div>
           </div>

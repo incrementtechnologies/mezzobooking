@@ -248,7 +248,7 @@ export default {
       let parameter = {
         room_id: id
       }
-      this.APIRequest('room/retrieve_by_id', parameter).then(response => {
+      this.APIRequest('rooms/retrieve_by_id', parameter).then(response => {
         if(response.data.length > 0){
           this.maximum_capacity = response.data[0].max_capacity
           this.description = response.data[0].description
@@ -272,7 +272,7 @@ export default {
         id: id.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('room/delete', parameter).then(response => {
+      this.APIRequest('rooms/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data > 0){
           this.$router.push('/rooms')
@@ -355,7 +355,7 @@ export default {
         status: this.status,
         images: this.images
       }
-      this.APIRequest('room/update_with_images', parameter).then(response => {
+      this.APIRequest('rooms/update_with_images', parameter).then(response => {
         if(response.data >= 1 && this.price_id != null){
           let pricingParameter = {
             id: this.price_id,
@@ -405,7 +405,7 @@ export default {
         status: this.status
       }
       console.log('=============', roomParameter)
-      this.APIRequest('room/create', roomParameter).then(response => {
+      this.APIRequest('rooms/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
             account_id: this.user.userID,

@@ -269,7 +269,7 @@ export default {
       let params = {
         category_id: category
       }
-      this.APIRequest('room/retrieve_by_params', params, response => {
+      this.APIRequest('rooms/retrieve_by_params', params, response => {
         this.roomAssign = response.data
       })
     },

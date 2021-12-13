@@ -134,7 +134,7 @@ export default {
         sort: this.currentSort
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('room/retrieve', parameter).then(response => {
+      this.APIRequest('rooms/retrieve', parameter).then(response => {
         console.log('[response.data]', response.data)
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
