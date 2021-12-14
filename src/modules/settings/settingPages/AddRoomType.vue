@@ -21,6 +21,32 @@
                 <label for="name">Room Type Name</label>
                 <input type="text" v-model="type" class="form-control form-control-custom" placeholder="add room type name">
             </div>
+             <div class="mt-4">
+                <label for="name">Set Default Features</label>
+                <searchField
+                  :test="'payload'"
+                  :placeholder="'Set Default Features'"
+                  :items="feature"
+                  :styles="{
+                    background: 'none',
+                    color: '#84868B !important',
+                    width: '100% !important',
+                    borderRadius: '5px !important',
+                    border: 'none',
+                    marginBottom: '35px'
+                  }"
+                  :dropdownItemStyles="{
+                    borderRadius: '5px',
+                    overflow: 'hidden',
+                    width: 'calc(100% - 30px)'
+                  }"
+                  :class="'multiselect__tags1'"
+                  :selectedIndex="selectedIndex"
+                  @onSelect="onSelect"
+                  v-if="!isClearing"
+                  ref="searchFieldFeature"
+                  />
+             </div>
             <div class="mt-4">
                 <label for="name">Description</label>
                 <textarea class="form-control" v-model="description" placeholder="type description" style="height: 165px !important;"></textarea>
@@ -35,10 +61,12 @@
 
 <script>
 import ImageUpload from 'modules/generic/ImageUpload.vue'
+import searchField from 'src/modules/generic/searchField.vue'
 import AUTH from 'src/services/auth'
 export default {
   mounted(){
     this.retrieve()
+    this.retrieveFeature()
   },
   data(){
     return{
@@ -48,11 +76,17 @@ export default {
       description: null,
       errorMessage: null,
       featured: [],
-      data: null
+      data: null,
+      isClearing: false,
+      selectedIndex: null,
+      feature: [],
+      selectedFeatures: [],
+      isEmpty: false
     }
   },
   components: {
-    ImageUpload
+    ImageUpload,
+    searchField
   },
   methods: {
     getImage(event){
@@ -72,7 +106,8 @@ export default {
         category: this.description,
         payload_value: this.type,
         images: this.images,
-        status: 'create'
+        status: 'create',
+        details: JSON.stringify(this.selectedFeatures)
       }
       $('#loading').css({'display': 'block'})
       if(this.data === null){
@@ -114,6 +149,26 @@ export default {
       this.APIRequest('room_images/delete', parameter, response => {
         $('#loading').css({'display': 'none'})
       })
+    },
+    retrieveFeature(){
+      let parameter = {
+        condition: [
+          {
+            column: 'payload',
+            clause: '=',
+            value: 'feature'
+          }
+        ]
+      }
+      this.APIRequest('payloads/retrieve', parameter, response => {
+        this.feature = response.data
+      })
+    },
+    onSelect(data) {
+      this.selectedFeatures = data.map(el => {
+        return ({payload_value: el.payload_value, id: el.id})
+      })
+      this.isEmpty = false
     }
   }
 }
