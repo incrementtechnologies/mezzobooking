@@ -149,9 +149,6 @@
         <label>Maximum Capacity</label>
         <div class="input-group">
           <input v-model="maximum_capacity"  type="number" class="form-control-custom form-control">
-          <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
-              <option value="PHP">PHP</option>
-          </select> -->
         </div>
       </div>
     </div>
