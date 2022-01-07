@@ -5,7 +5,7 @@
           <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
           <div class="overlay">
             <label class="removeIcon">
-              <i class="fa fa-close removeImage" @click="removeImage(image)"></i>
+              <i class="fas fa-close removeImage" @click="removeImage(image)"></i>
             </label>
           </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="container">  
           <div class="addImage" @click="clickAddImage()">
               <input type="file" hidden ref="fileInput" @change="getFile($event)">
-              <i class="fa fa-plus addIcon"></i>
+              <i class="fas fa-plus addIcon"></i>
           </div>
         </div>
       </div>

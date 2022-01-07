@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div class="col-md-2 column">
-                <i class="fa fa-chevron-right"></i>
+                <i class="fas fa-chevron-right"></i>
             </div>
         </div>
     </div>

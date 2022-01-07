@@ -8,7 +8,7 @@
                   <span class="profile-image-holder"  v-if="user.profile !== null">
                     <img v-bind:src="config.BACKEND_URL + user.profile.url">
                   </span>
-                  <i class="fa fa-user-circle-o profile-icon" v-else></i>
+                  <i class="fas fa-user-circle profile-icon" v-else></i>
                   <i class="fas fa-check text-primary profile-status" v-if="user.status === 'VERIFIED'"></i>
                   Hi {{user.username}}!
                 </span>
@@ -36,7 +36,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title"><i class="fa fa-warning text-danger"></i> Confirmation!</h4>
+              <h4 class="modal-title"><i class="fas fa-warning text-danger"></i> Confirmation!</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -420,7 +420,7 @@ export default {
       config: CONFIG,
       menu: COMMON.sidebarMenu,
       menuOff: COMMON.sidebarMenu,
-      toggleSidebar: 'fa fa-toggle-on',
+      toggleSidebar: 'fas fa-toggle-on',
       hide: '',
       flag: false,
       confirmation: {
@@ -535,7 +535,7 @@ export default {
         this.subPrevMenu = 0
       }
       this.menuFlag = !this.menuFlag
-      this.toggleSidebar = (this.menuFlag === false) ? 'fa fa-toggle-off' : 'fa fa-toggle-on'
+      this.toggleSidebar = (this.menuFlag === false) ? 'fas fa-toggle-off' : 'fas fa-toggle-on'
       this.hide = (this.menuFlag === false) ? 'hidden' : ''
     }
   }

@@ -9,7 +9,7 @@
       </span>
       <span class="menu">
         <span class="navbar-menu-toggler-md">
-          <i class="fa fa-bars" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onclick="void(0)"></i>
+          <i class="fas fa-bars" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onclick="void(0)"></i>
         </span>
         <ul class="header-primary-menu">
           <!-- <li class="nav-item" v-on:click="scrollTo('#partner')" v-if="flag === true"><a class="nav-link">Be Our Partner</a></li>
