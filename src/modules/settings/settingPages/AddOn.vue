@@ -3,7 +3,7 @@
     <div class="mb-5">
       <span>
           <span @click="$router.push('/settings')" class="backBtn">
-              <i class="fa fa-chevron-left"></i>
+              <i class="fas fa-chevron-left"></i>
               Back
           </span>
       </span>
@@ -45,8 +45,8 @@
               </div>
               <div class="col-md-6 column">
                 <div class="actionBtn ml-2">
-                  <i class="fa fa-pencil" @click="showUpdate(item)"></i>
-                  <span><i class="fa fa-trash"  @click="showDeleteConfirmation(item)"></i></span>
+                  <i class="fas fa-pencil" @click="showUpdate(item)"></i>
+                  <span><i class="fas fa-trash"  @click="showDeleteConfirmation(item)"></i></span>
                 </div>
                 <div class="box mr-1">
                   <p class="box-title">Default Price</p>

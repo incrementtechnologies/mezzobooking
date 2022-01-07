@@ -8,7 +8,7 @@
     </div>
     <nav class="header-navbar">
       <span class="navbar-menu-toggler-md" v-bind:class="{'active-menu': menuFlag === true}" data-toggle="collapse" data-target="#idfactory" aria-controls="idfactory" aria-expanded="false" aria-label="Toggle navigation" v-on:click="makeActive('menu')">
-          <i class="fa fa-bars" aria-hidden="true"></i>
+          <i class="fas fa-bars" aria-hidden="true"></i>
       </span>
       <!-- <span class="left-menu-icons">
         <label class="account-type  hide-on-mobile bg-warning" v-if="!common.header.indexOf('status') && user !== null">{{user.type}}</label>

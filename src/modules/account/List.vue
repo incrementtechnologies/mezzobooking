@@ -43,10 +43,10 @@
           </td>
           <td>
             <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}
-              <i class="fa fa-pencil text-primary" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
+              <i class="fas fa-pencil text-primary" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
               <span v-if="editTypeIndex === index">
-                <i class="fa fa-times text-danger" style="float: right;" @click="setEditTypeIndex(index, item)"></i>
-                <i class="fa fa-check text-primary" style="float: right;" @click="updateType(item, index)"></i>
+                <i class="fas fa-times text-danger" style="float: right;" @click="setEditTypeIndex(index, item)"></i>
+                <i class="fas fa-check text-primary" style="float: right;" @click="updateType(item, index)"></i>
                 <select class="form-control" v-model="newAccountType" style="float: right; width: 45%;">
                   <option v-for="(typeItem, typeIndex) in ['USER', 'ADMIN']" :key="typeIndex">{{typeItem}}</option>
                 </select>

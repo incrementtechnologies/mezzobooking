@@ -2,7 +2,7 @@
     <div style="margin: 56px">
       <span>
           <span @click="$router.push('/add-rooms/' + $route.params.id)" class="backBtn">
-              <i class="fa fa-chevron-left"></i>
+              <i class="fas fa-chevron-left"></i>
               Back
           </span>
       </span>

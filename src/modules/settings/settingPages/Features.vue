@@ -26,8 +26,8 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <span style="float:right">
-                                <i class="fa fa-pencil ml-2 actionBtn" @click="showUpdate(feature)"></i>
-                                <i class="fa fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(feature)"></i>
+                                <i class="fas fa-pencil ml-2 actionBtn" @click="showUpdate(feature)"></i>
+                                <i class="fas fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(feature)"></i>
                             </span>
                             <span><b  style="font-size:24px">{{feature.payload_value}}</b><br>
                                 Date Created: {{feature.created_at}}
