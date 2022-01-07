@@ -165,7 +165,7 @@ export default {
           column: 'account_type',
           clause: '='
         }],
-        sort: sort
+        sort: sort !== null ? sort : this.currentSort
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('accounts/retrieve_accounts_admin', parameter).then(response => {
