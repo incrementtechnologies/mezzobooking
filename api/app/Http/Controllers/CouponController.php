@@ -44,7 +44,15 @@ class CouponController extends APIController
         ->offset($data['offset'])
         ->orderBy(array_keys($data['sort'])[0], array_values($data['sort'])[0])
         ->get();
+
+        $size = Coupon::where('account_id', '=', $data['account_id'])
+        ->where($con[0]['column'], $con[0]['clause'], $con[0]['value'])
+        ->where('deleted_at', '=', null)
+        ->orderBy(array_keys($data['sort'])[0], array_values($data['sort'])[0])
+        ->get();
+
         $this->response['data'] = $res;
+        $this->response['size'] = sizeof($size);
         return $this->response();
     }
 
@@ -157,6 +165,8 @@ class CouponController extends APIController
             ->orderBy(array_keys($data['sort'])[0], array_values($data['sort'])[0])
             ->limit($data['limit'])
             ->offset($data['offset'])->get();
+        
+        $size = Coupon::where($con[0]['column'], $con[0]['clause'], $con[0]['value'])->get();
         if(sizeof($result) > 0){
             for ($i=0; $i <= sizeof($result)-1; $i++) {
                 $item = $result[$i];
@@ -166,6 +176,7 @@ class CouponController extends APIController
             }
         }
         $this->response['data'] = $result;
+        $this->response['size'] = sizeOf($size);
         return $this->response();
     }
 
