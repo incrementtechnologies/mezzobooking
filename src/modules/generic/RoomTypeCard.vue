@@ -21,31 +21,37 @@
         </div>
       </div>
     </div>
-    <confirmation
+    <Confirmation
       :title="'Confirmation Modal'"
       :message="'Are you sure you want to delete ?'"
       ref="confirms"
-      @onConfirm="remove($event)"
-      ></confirmation>
+      @onConfirm="e => {
+        remove(e)
+      }"
+    ></Confirmation>
   </div>
 </template>
 <script>
+import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 import CONFIG from 'src/config.js'
 export default {
   props: ['data'],
   data(){
     return {
-      config: CONFIG
+      config: CONFIG,
+      deleteId: null
     }
   },
   components: {
-    'confirmation': require('components/increment/generic/modal/Confirmation.vue')
+    Confirmation
   },
   methods: {
     deleteConfirmation(id){
       this.$refs.confirms.show(id)
+      this.deleteId = id
     },
     remove(id){
+      console.log('remove', id)
       this.$parent.delete(id.id)
     }
   }

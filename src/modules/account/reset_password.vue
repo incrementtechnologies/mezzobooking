@@ -174,7 +174,7 @@ export default {
 }
 .LoginCardBody {}
 .LoginContainer {
-  min-height: 91.9vh;
+  min-height: 91.8vh;
   background-color: $primary;
 }
 .RowContainer {
