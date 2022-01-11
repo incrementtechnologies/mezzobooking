@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     deleteConfirmation(id){
+      console.log('>>>>>>>>>', id)
       this.$refs.confirms.show(id)
       this.deleteId = id
     },

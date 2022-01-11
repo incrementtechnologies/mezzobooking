@@ -168,6 +168,7 @@ export default {
       console.log(flag)
       this.APIRequest('coupons/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
+        this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         if(flag === true) {
           response.data.forEach(element => {
             element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
