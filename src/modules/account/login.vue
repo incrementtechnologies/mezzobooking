@@ -209,7 +209,7 @@ export default {
 }
 .LoginContainer {
   padding-top: 3%;
-  min-height: 91.6vh;
+  min-height: 91.8vh;
   background-color: $primary;
 }
 .RowContainer {
