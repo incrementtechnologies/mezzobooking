@@ -75,45 +75,25 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
-          payload: 'email',
+          title: 'Amount Ascending',
+          payload: 'amount',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Email Descending',
-          payload: 'email',
+          title: 'Amount Descending',
+          payload: 'amount',
           payload_value: 'desc',
           type: 'text'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
+          title: 'Start Date Ascending',
+          payload: 'start_date',
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
+          title: 'End Date Ascending',
+          payload: 'end_date',
           payload_value: 'asc',
           type: 'date'
-        }, {
-          title: 'CheckOut Ascending',
-          payload: 'check_out',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Descending',
-          payload: 'check_out',
-          payload_value: 'desc',
-          type: 'date'
-        }, {
-          title: 'Status Ascending',
-          payload: 'status',
-          payload_value: 'asc',
-          type: 'text'
-        }, {
-          title: 'Status Descending',
-          payload: 'status',
-          payload_value: 'desc',
-          type: 'text'
         }]
       }],
       currentFilter: null,
