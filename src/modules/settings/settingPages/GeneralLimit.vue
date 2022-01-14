@@ -96,12 +96,12 @@ export default {
           type: 'date'
         }, {
           title: 'Room Type Ascending',
-          payload: 'type',
+          payload: 'payload_value',
           payload_value: 'asc',
           type: 'text'
         }, {
           title: 'Room Type Descending',
-          payload: 'type',
+          payload: 'payload_value',
           payload_value: 'desc',
           type: 'text'
         }]
