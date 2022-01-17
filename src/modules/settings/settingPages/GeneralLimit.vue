@@ -21,7 +21,8 @@
           <td>
             <div class="row" style="margin-left: 2%;padding-right: 2%">
               <div class="col-md-6" style="padding: 20px 0px">
-                <span style="font-size: 12px">{{item.start_date}} - {{item.end_date}}</span><br/>
+                <span style="font-size: 12px" v-if="item.start_date !== null">{{item.start_date}} - {{item.end_date}}</span>
+                <span style="font-size: 12px" v-else>Available all the time</span><br/>
                 <span style="font-size: 24px; font-weight: bold">{{item.limit}} available only</span><br/>
                 <span style="font-size: 12px">{{item.payload_value}}</span>
               </div>

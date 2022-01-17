@@ -187,7 +187,7 @@ export default {
         decimalSeparator: '.',
         showLabels: true,
         showTitle: true,
-        title: 'Trackr',
+        title: 'MezzoHotel-Customer List',
         useTextFile: false,
         useBom: true,
         // useKeysAsHeaders: true,
