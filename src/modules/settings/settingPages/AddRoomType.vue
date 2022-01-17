@@ -184,7 +184,7 @@ export default {
 }
 .form-control-custom{
     // width: 300px !important;
-    height: 60px !important;
+    height: 45px !important;
 }
 label{
     font-weight: bold;

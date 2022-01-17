@@ -19,6 +19,7 @@
         <RoomTypeCard :data="room"/>
       </div>
     </table>
+    <empty v-if="data.length === 0" :title="'Empty Customers!'" :action="'No activity at the moment.'"></empty>
   </div>
 </template>
 
@@ -29,6 +30,7 @@ import AUTH from 'src/services/auth'
 export default {
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
+    'empty': require('components/increment/generic/empty/Empty.vue'),
     Pager,
     RoomTypeCard
   },
