@@ -257,6 +257,7 @@ export default {
       })
     },
     retrieveRoomTypes(){
+      console.log('========')
       this.APIRequest('payloads/retrieve_all', {}, response => {
         let defaultdata = {
           id: 'All',

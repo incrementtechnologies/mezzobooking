@@ -71,6 +71,16 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
+          title: 'Code Ascending',
+          payload: 'code',
+          payload_value: 'asc',
+          type: 'text'
+        }, {
+          title: 'Code Descending',
+          payload: 'code',
+          payload_value: 'desc',
+          type: 'text'
+        }, {
           title: 'Created Ascending',
           payload: 'created_at',
           payload_value: 'asc',
