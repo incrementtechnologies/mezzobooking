@@ -221,6 +221,7 @@ export default {
       this.$router.push('/booking-details/' + data)
     },
     exportData(){
+      console.log('-----------', this.data)
       let options = {
         fieldSeparator: ',',
         quoteStrings: '"',
@@ -243,9 +244,9 @@ export default {
             check_in: item.check_in,
             check_out: item.check_out,
             no_of_adults: item.details.adults,
-            no_of_children: item.details.children,
+            no_of_children: item.details.child,
             status: item.status,
-            amount: item.price
+            amount: item.total
           }
           exportData.push(obj)
         }

@@ -22,13 +22,13 @@
             <div class="row" style="margin-left: 2%;padding-right: 2%">
               <div class="col-md-6" style="padding: 20px 0px">
                 <b><span style="font-size: 12px">{{item.start_date}} - {{item.end_date}}</span></b><br/>
-                <span style="font-size: 24px; font-weight: bold">{{item.amount}}{{item.type !== "percentage" ? '%' : ''}} OFF</span><br/>
+                <span style="font-size: 24px; font-weight: bold">{{item.amount}}{{item.type === "percentage" ? '%' : ''}} OFF</span><br/>
                 <span style="font-size: 12px">{{item.description}}</span>
               </div>
               <div class="col-md-6 column">
                 <div class="box mr-1">
                   <p class="box-title">Total Sales</p>
-                  <span><b>PHP {{item.total_sale[0].total}}</b></span>
+                  <span v-if="item.total_sale[0].total !== null"><b>PHP {{item.total_sale[0].total}}</b></span>
                 </div>
                 <div class="box">
                   <p class="box-title">Total Bookings</p>
@@ -197,7 +197,7 @@ export default {
         useBom: true,
         // useKeysAsHeaders: true,
         filename: COMMON.APP_NAME,
-        headers: ['Customer Id', 'Name', 'Email', 'Phone', 'Total Spent', 'Total Bookings']
+        headers: ['Customer Id', 'Amount', 'Start Date', 'End Date', 'Total Bookings', 'Total Sales']
       }
       var exportData = []
       if(this.data.length > 0){
@@ -205,11 +205,11 @@ export default {
           const item = this.data[index]
           let obj = {
             customer_id: item.id,
-            name: item.name !== ' ' ? item.name : item.username,
-            email: item.email,
-            phone: item.phone !== null ? item.phone : 'N/A',
-            total_spent: item.total_spent,
-            total_bookings: item.total_bookings
+            amount: item.amount !== null ? item.amount + (item.type === 'percentage' ? '%' : '') : 'N/A',
+            start_date: item.start_date,
+            end_date: item.end_date,
+            total_booking: item.total_sale[0].total_booking,
+            total_sale: item.total_sale[0].total !== null ? item.total_sale[0].total : 0
           }
           exportData.push(obj)
         }

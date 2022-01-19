@@ -218,8 +218,8 @@ export default {
           let obj = {
             room_type: item.payload_value,
             limit: item.limit,
-            start_date: item.start_date,
-            end_date: item.end_date
+            start_date: item.start_date !== null ? item.start_date : 'N/A',
+            end_date: item.end_date !== null ? item.end_date : 'N/A'
           }
           exportData.push(obj)
         }
