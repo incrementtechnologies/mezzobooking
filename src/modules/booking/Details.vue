@@ -1,12 +1,13 @@
 <template>
   <div style="margin:56px">
-      <div><b>Booking Details</b></div>
+      <div><b>Booking Details {{reservations.status}}</b></div>
       <div style="background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
           <div class="mb-5">
             <span>Booking #:</span>
             <b>{{reservations.code}}</b>
             <span style="float:right;color:#CBAB58">Status: {{reservations.status}}</span>
           </div>
+          <p v-if="errorMessage !== null" style="color: red">{{errorMessage}}<br></p>
           <div class="row">
               <div class="col-md-6">
                 <label>Start Date</label>
@@ -139,8 +140,8 @@
           <div  v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
             <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
               <div class="row">
-              <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`">
-                  <select class="form-control" v-model="item.category" :disabled="isDisable">
+              <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`" >
+                  <select class="form-control" v-model="item.category" :disabled="isDisable" @change="getSelectedRoom($event)">
                     <option v-for="el in each.specificRooms" :key="el.id" :value="el.id">{{el.title}}</option>
                   </select>
               </div>
@@ -152,12 +153,12 @@
           <div class="row" style="margin-left:auto; margin-right:auto;">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
-                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refund')" v-if="isDisable===false && reservations.details.refundable > 0">Refund</button>
+                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false && reservations.details.refundable > 0">Refund</button>
               </div>
               <div class="col-md-6">
-                  <div style="float:right" v-if="isDisable===false">
-                    <button class="btn btn-secondary footerBtn"  @click="updateRoom('confirm')">Confirm</button>
-                    <button class="btn btn-primary footerBtn"  @click="updateRoom('complete')" v-if="reservations.status === 'confirm'">Complete</button>
+                  <div style="float:right" >
+                    <button class="btn btn-secondary footerBtn"  @click="updateRoom('confirmed')" v-if="isDisable===false">Confirm</button>
+                    <button class="btn btn-primary footerBtn"  @click="updateRoom('completed')" v-show="reservations.status === 'confirmed'">Complete</button>
                   </div>
               </div>
           </div>
@@ -195,7 +196,8 @@ export default {
     assignedRoom: [],
     inputs: [],
     isDisable: false,
-    emptyAssignment: null
+    roomAssignError: null,
+    errorMessage: null
   }),
   methods: {
     retrieveCoupon(){
@@ -229,7 +231,7 @@ export default {
           this.reservations.check_in = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
           this.reservations.check_out = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
           this.summary = response.data.cart
-          if(this.reservations.status === 'confirm' || this.reservations.status === 'complete'){
+          if(this.reservations.status === 'confirmed' || this.reservations.status === 'completed'){
             this.isDisable = true
           }else{
             this.isDisable = false
@@ -281,30 +283,57 @@ export default {
         reservation_id: this.reservations.id,
         status: status
       }
-      if(status === 'confirm'){
+      if(status === 'confirmed'){
+        let hasEmpty = false
         this.summary.map(el => {
           el.inputs.map((item, idx) => {
             if(item.category === null){
-              this.emptyAssignment = 'Please assign their rooms'
-              return
+              console.log('----------', item.category)
+              hasEmpty = true
             }else{
               item['room_id'] = el.rooms[0].id
               temp.push(item)
-              this.emptyAssignment = null
             }
           })
         })
+        if(hasEmpty === true){
+          this.emptyAssignment = 'Missing a room assignment'
+          return
+        }
       }
-      if(status === 'confirm' && temp.length > 0){
+      console.log(status, this.emptyAssignment !== null)
+      if(status === 'confirmed' && this.emptyAssignment !== null){
+        this.errorMessage = 'You have an existing error, please fix it before proceeding'
+        return
+      }
+      if(status === 'confirmed' && temp.length > 0){
         this.APIRequest('reservations/update_reservation', params, response => {
           this.$router.push('/bookings')
           this.emptyAssignment = null
         })
-      }else if(status === 'complete' || status === 'cancelled' || status === 'refund'){
+      }else if(status === 'completed' || status === 'cancelled' || status === 'refunded'){
         this.APIRequest('reservations/update_reservation', params, response => {
           this.$router.push('/bookings')
           this.emptyAssignment = null
         })
+      }
+    },
+    getSelectedRoom(event){
+      let counter = 0
+      this.summary.map(el => {
+        for (let i = 0; i < el.inputs.length; i++) {
+          const item = el.inputs[i]
+          if(parseInt(item.category) === parseInt(event.target.value)){
+            counter += 1
+          }
+        }
+      })
+      if(counter > 1){
+        this.emptyAssignment = 'This room is already selected, please select other rooms'
+        return
+      }else{
+        this.emptyAssignment = null
+        this.errorMessage = null
       }
     }
   }

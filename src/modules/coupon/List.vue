@@ -41,7 +41,7 @@
                 </div>
               </div>
               <div class="col-md-4" style="width: 270px;z-index:9999">
-                <i class="fas fa-pencil" style="color:#003" @click="$router.push('/add-coupons/'+ item.code)"></i>
+                <i class="fas fa-pencil-alt" style="color:#003" @click="$router.push('/add-coupons/'+ item.code)"></i>
                 <i class="fas fa-trash text-danger" @click.prevent="confirmRemove(item.id)"></i>
               </div>
             </div>
