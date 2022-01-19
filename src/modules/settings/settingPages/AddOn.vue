@@ -45,7 +45,7 @@
               </div>
               <div class="col-md-6 column">
                 <div class="actionBtn ml-2">
-                  <i class="fas fa-pencil" @click="showUpdate(item)"></i>
+                  <i class="fas fa-pencil-alt" @click="showUpdate(item)"></i>
                   <span><i class="fas fa-trash"  @click="showDeleteConfirmation(item)"></i></span>
                 </div>
                 <div class="box mr-1">
