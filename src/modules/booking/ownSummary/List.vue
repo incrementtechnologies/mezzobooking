@@ -24,7 +24,7 @@
     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
+        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.code)">
           <td>
             <b><span style="font-size: 14px">{{item.email}}-{{item.status}}</span></b><br/>
             <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
@@ -202,8 +202,8 @@ export default {
         }
       })
     },
-    redirect(){
-      this.$router.push('/booking-details')
+    redirect(id){
+      this.$router.push('/booking-details/' + id)
     },
     exportData(){
       let options = {
