@@ -52,6 +52,7 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
 export default {
   mounted(){
     if(this.$route.params.status === 'publish'){
@@ -87,8 +88,8 @@ export default {
         if(response.data.length > 0){
           this.data = response.data[0]
           this.description = response.data[0].description
-          this.start_date = response.data[0].start_date
-          this.end_date = response.data[0].end_date
+          this.start_date = moment(new Date(response.data[0].start_date)).format('YYYY-MM-DD')
+          this.end_date = moment(new Date(response.data[0].end_date)).format('YYYY-MM-DD')
         }
       })
     },
