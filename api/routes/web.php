@@ -136,7 +136,7 @@ Route::post($route.'update', $controller."update");
 Route::post($route.'delete', $controller."delete");
 
 //Coupon Controller
-$route = env('PACKAGE_ROUTE', '').'/coupons/';
+$route = env('PACKAGE_ROUTE', '').'/room_coupon/';
 $controller = 'CouponController@';
 Route::post($route.'create', $controller."create");
 Route::post($route.'retrieve', $controller."retrieve");

@@ -208,13 +208,13 @@ export default {
       }
       if(this.data !== null){
         parameter['id'] = this.data.id
-        this.APIRequest('coupons/update', parameter).then(response => {
+        this.APIRequest('room_coupon/update', parameter).then(response => {
           if(response.data !== null){
             this.$router.push('/coupons')
           }
         })
       }else{
-        this.APIRequest('coupons/create', parameter).then(response => {
+        this.APIRequest('room_coupon/create', parameter).then(response => {
           if(response.data !== null){
             this.$router.push('/coupons')
           }
@@ -229,7 +229,7 @@ export default {
         }],
         account_id: this.user.userID
       }
-      this.APIRequest('coupons/retrieve_coupon', parameters).then(response => {
+      this.APIRequest('room_coupon/retrieve_coupon', parameters).then(response => {
         if(response.data !== null){
           this.data = response.data
           this.code = this.data.code
@@ -275,7 +275,7 @@ export default {
         id: data.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('coupons/delete', parameter).then(response => {
+      this.APIRequest('room_coupon/delete', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         this.$router.push('/coupons')
       })

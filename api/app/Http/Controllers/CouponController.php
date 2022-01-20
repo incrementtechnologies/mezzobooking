@@ -93,8 +93,6 @@ class CouponController extends APIController
             'end_date' => $data['end_date'],
             'limit' => $data['limit'],
             'limit_per_customer' => $data['limit_per_customer'],
-            'payload' => $data['payload'],
-            'payload_value' => $data['payload_value'],
             'status' => $data['status'],
             'updated_at' => Carbon::now(),
         ));
@@ -117,7 +115,7 @@ class CouponController extends APIController
                 }
             }
         }
-        // $this->response['data'] = $res;
+        $this->response['data'] = $res;
         return $this->response();
     }
 
