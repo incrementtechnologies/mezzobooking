@@ -205,7 +205,7 @@ export default {
         account_id: this.user.userID,
         status: 'completed'
       }
-      this.APIRequest('coupons/retrieve_by_reservation', parameter, response => {
+      this.APIRequest('room_coupon/retrieve_by_reservation', parameter, response => {
         if(response.data !== null){
           this.coupon = response.data
           if(response.data.type === 'percentage'){

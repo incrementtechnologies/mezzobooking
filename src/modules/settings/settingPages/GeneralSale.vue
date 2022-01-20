@@ -138,7 +138,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('coupons/retrieve_general_sale', parameter).then(response => {
+      this.APIRequest('room_coupon/retrieve_general_sale', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         if(flag === true) {

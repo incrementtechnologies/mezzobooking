@@ -166,7 +166,7 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
-      this.APIRequest('coupons/retrieve', parameter).then(response => {
+      this.APIRequest('room_coupon/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
         if(flag === true) {
@@ -205,7 +205,7 @@ export default {
     },
     deleteCoupon(data){
       $('#loading').css({'display': 'block'})
-      this.APIRequest('coupons/delete', {id: data.id}, response => {
+      this.APIRequest('room_coupon/delete', {id: data.id}, response => {
         $('#loading').css({'display': 'none'})
         this.retrieve(this.currentSort, this.currentFilter, false)
       })
