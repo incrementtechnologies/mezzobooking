@@ -117,16 +117,20 @@ export default {
       status: 'VERIFIED'
     }
     vue.APIRequest('authenticate', credentials, (response) => {
-      this.tokenData.token = response.token
-      this.setToken(this.tokenData.token)
-      vue.APIRequest('authenticate/user', {}, (userInfo) => {
-        if(userInfo.account_type === 'ADMIN'){
-          this.setUser(userInfo, null, null)
-          this.updateData()
-        }else{
-          this.deaunthenticate()
-        }
-      })
+      if(response.token !== null){
+        this.tokenData.token = response.token
+        this.setToken(this.tokenData.token)
+        vue.APIRequest('authenticate/user', {}, (userInfo) => {
+          if(userInfo.account_type === 'ADMIN'){
+            this.setUser(userInfo, null, null)
+            this.updateData()
+          }else{
+            this.deaunthenticate()
+          }
+        })
+      }else{
+        callback(response)
+      }
     }, (response, status) => {
       if(errorCallback){
         errorCallback(response, status)

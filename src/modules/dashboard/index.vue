@@ -7,25 +7,25 @@
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
-      <div class="column first">
+      <div class="column first card">
         <p class="title">Total Sales</p>
         <p class="data"><b>PHP {{data.total_sales}}</b></p>
       </div>
-      <div class="column second">
+      <div class="column second card">
         <p class="title">Reservations(Previous-Current)</p>
         <p class="data"><b>{{data.previous}}</b></p>
       </div>
-      <div class="column third">
+      <div class="column third card">
         <p class="title">Total Bookings(Upcomming)</p>
         <p class="data"><b>{{data.upcomming}}</b></p>
       </div>
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
-      <div class="column fourth">
+      <div class="column fourth card">
         <p class="title">Average Bookings</p>
         <p class="data"><b>{{data.average_bookings}}</b></p>
       </div>
-      <div class="column fifth">
+      <div class="column fifth card">
         <p class="title">Average Revenue</p>
         <p class="data"><b>PHP {{data.average_revenue}}</b></p>
       </div>
@@ -201,8 +201,10 @@ p{
   font-weight: 500;
   font-size: 180%;
 }
+
+
 .first{
-  height: 100px;
+  min-height: 20vh;
   width: 32%;
   background-color: $primary;
   margin-right: 2%;
@@ -211,7 +213,7 @@ p{
   border-radius: 5px;
 }
 .second{
-  height: 100px;
+  min-height: 20vh;
   width: 32%;
   background-color: $danger;
   margin-right: 2%;
@@ -220,7 +222,7 @@ p{
   border-radius: 5px;
 }
 .third{
-  height: 100px;
+  min-height: 20vh;
   width: 32%;
   background-color: $secondary;
   padding-top: 25px;
@@ -228,7 +230,7 @@ p{
   border-radius: 5px;
 }
 .fourth{
-  height: 100px;
+  min-height: 20vh;
   width: 32%;
   background-color: $gray;
   margin-right: 2%;
@@ -237,7 +239,7 @@ p{
   border-radius: 5px;
 }
 .fifth{
-  height: 100px;
+  min-height: 20vh;
   width: 32%;
   background-color: $warning;
   margin-right: 2%;

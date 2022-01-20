@@ -72,8 +72,8 @@ class AuthenticateController extends Controller
       return response()->json(['error' => 'could_not_create_token'], 500);
     }
 
-    $token = compact('token');
     if(sizeof($result) > 0){
+      $token = compact('token');
       app('App\Http\Controllers\NotificationSettingController')->manageNotification($result[0]['id']);
       $lastLogin = Carbon::createFromFormat('Y-m-d H:i:s', $result[0]['updated_at']);
       $currentDate = Carbon::now();
@@ -106,11 +106,16 @@ class AuthenticateController extends Controller
           'updated_at' => Carbon::now()
         ));
       }
+      return response()->json(array(
+        'token' => $token['token']
+      ));
+    }else{
+      return response()->json(array(
+        'token' => null,
+        'error' => 'Username or password are incorrect'
+      ));
     }
     
-    return response()->json(array(
-      'token' => $token['token']
-    ));
   }
   public function deauthenticate(){
     JWTAuth::invalidate(JWTAuth::getToken());

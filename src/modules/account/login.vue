@@ -124,7 +124,11 @@ export default {
         $('#loading').css({'display': 'block'})
         AUTH.authenticate(this.username, this.password, (response) => {
           $('#loading').css({'display': 'none'})
-          ROUTER.push(`/dashboard`)
+          if(response.error !== undefined && response.error !== null) {
+            this.errorMessage = response.error
+          }else{
+            ROUTER.push(`/dashboard`)
+          }
         }, (response, status) => {
           $('#loading').css({'display': 'none'})
           if(status === 401){
