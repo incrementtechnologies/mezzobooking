@@ -89,7 +89,7 @@ export default {
           type: 'date'
         }, {
           title: 'Created-At Ascending',
-          payload: 'create-at',
+          payload: 'created_at',
           payload_value: 'asc',
           type: 'text'
         }, {
