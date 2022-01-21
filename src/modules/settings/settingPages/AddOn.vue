@@ -97,45 +97,35 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Email Ascending',
-          payload: 'email',
+          title: 'Title Ascending',
+          payload: 'title',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Email Descending',
-          payload: 'email',
+          title: 'Title Descending',
+          payload: 'title',
           payload_value: 'desc',
           type: 'text'
         }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckIn Ascending',
-          payload: 'check_in',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Ascending',
-          payload: 'check_out',
-          payload_value: 'asc',
-          type: 'date'
-        }, {
-          title: 'CheckOut Descending',
-          payload: 'check_out',
-          payload_value: 'desc',
-          type: 'date'
-        }, {
-          title: 'Status Ascending',
-          payload: 'status',
+          title: 'Price Ascending',
+          payload: 'price',
           payload_value: 'asc',
           type: 'text'
         }, {
-          title: 'Status Descending',
-          payload: 'status',
+          title: 'Price Descending',
+          payload: 'price',
           payload_value: 'desc',
           type: 'text'
+        }, {
+          title: 'Created Ascending',
+          payload: 'created_at',
+          payload_value: 'asc',
+          type: 'date'
+        }, {
+          title: 'Created Descending',
+          payload: 'created_at',
+          payload_value: 'desc',
+          type: 'date'
         }]
       }],
       currentFilter: null,
@@ -170,12 +160,12 @@ export default {
     room(){
       this.active = true
       this.active1 = true
-      this.retrieve({'created_at': 'asc'}, {column: 'type', value: ''}, false)
+      this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
     },
     room1(){
       this.active = false
       this.active1 = false
-      this.retrieve({'created_at': 'asc'}, {column: 'type', value: ''}, false)
+      this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
     },
     retrieve(sort, filter, flag){
       if(flag === true) {
@@ -194,21 +184,18 @@ export default {
           clause: 'like'
         },
         {
-          value: this.user.userID,
-          column: 'account_id',
-          clause: 'like'
-        },
-        {
           value: this.active === true ? 'room' : 'checkout',
           column: 'type',
           clause: 'like'
         }],
         limit: flag ? this.limit : this.offset + this.limit,
         offset: flag ? this.offset : 0,
-        sort: sort != null ? sort : this.currentSort
+        sort: sort !== null ? sort : this.currentSort,
+        account_id: this.user.userID
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('add-on/retrieve', parameter).then(response => {
+        console.log('[sdfasdfasdf]', response)
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data

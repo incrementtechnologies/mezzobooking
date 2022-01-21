@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 56px;">
+  <div>
     <div style="float:left">
       <Pager
         :pages="numPages"
@@ -43,7 +43,7 @@
           </td>
           <td>
             <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}
-              <i class="fas fa-pencil text-primary" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
+              <i class="fas fa-pencil-alt text-primary" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
               <span v-if="editTypeIndex === index">
                 <i class="fas fa-times text-danger" style="float: right;" @click="setEditTypeIndex(index, item)"></i>
                 <i class="fas fa-check text-primary" style="float: right;" @click="updateType(item, index)"></i>

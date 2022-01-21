@@ -20,7 +20,8 @@
     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.code)">
+        <tr v-for="(item, index) in data" :key="index" class="table-row">
+        <!-- <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.code)"> -->
           <td>
             <b><span style="font-size: 14px">{{item.details.name}} - {{item.status}}</span></b><br/>
             <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
@@ -96,9 +97,9 @@ export default {
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'CheckIn Ascending',
+          title: 'CheckIn Descending',
           payload: 'check_in',
-          payload_value: 'asc',
+          payload_value: 'desc',
           type: 'date'
         }, {
           title: 'CheckOut Ascending',
@@ -152,7 +153,6 @@ export default {
       if(sort !== null){
         this.currentSort = sort
       }
-      console.log('=========', this.currentSort, sort)
       let parameter = {
         condition: [{
           value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
@@ -280,7 +280,7 @@ $(function () {
     background-color:white;
   }
   .table-row:hover{
-    cursor: pointer;
+    // cursor: pointer;
     background: rgba(0,0,0, 0.1)
   }
   .table-row:active{
