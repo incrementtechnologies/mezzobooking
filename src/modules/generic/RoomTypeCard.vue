@@ -10,7 +10,7 @@
             <div class="mb-3">
               <span style="float:right">
                 <i class="fas fa-pencil ml-2 actionBtn" @click="$router.push('/add-room-types/'+ data.id)"></i>
-                <i class="fas fa-trash ml-2 actionBtn" @click="deleteConfirmation(data.id)"></i>
+                <i class="fas fa-trash ml-2 actionBtn" @click="$parent.deleteConfirmation(data.id)"></i>
               </span>
               <span><b style="font-size:24px">{{data.payload_value}}</b><br>
                 Date Created: {{data.created_at}}
@@ -21,18 +21,9 @@
         </div>
       </div>
     </div>
-    <Confirmation
-      :title="'Confirmation Modal'"
-      :message="'Are you sure you want to delete ?'"
-      ref="confirms"
-      @onConfirm="e => {
-        remove(e)
-      }"
-    ></Confirmation>
   </div>
 </template>
 <script>
-import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 import CONFIG from 'src/config.js'
 export default {
   props: ['data'],
@@ -43,18 +34,8 @@ export default {
     }
   },
   components: {
-    Confirmation
   },
   methods: {
-    deleteConfirmation(id){
-      console.log('>>>>>>>>>', id)
-      this.$refs.confirms.show(id)
-      this.deleteId = id
-    },
-    remove(id){
-      console.log('remove', id)
-      this.$parent.delete(id.id)
-    }
   }
 }
 </script>
