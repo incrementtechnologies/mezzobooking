@@ -20,6 +20,12 @@
       </div>
     </table>
     <empty v-if="data.length === 0" :title="'Empty Customers!'" :action="'No activity at the moment.'"></empty>
+    <Confirmation
+      :title="'Confirmation Modal'"
+      :message="'Are you sure you want to delete ?'"
+      ref="confirms"
+      @onConfirm="remove"
+    ></Confirmation>
   </div>
 </template>
 
@@ -27,12 +33,14 @@
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 import RoomTypeCard from 'src/modules/generic/RoomTypeCard.vue'
 import AUTH from 'src/services/auth'
+import Confirmation from 'src/components/increment/generic/modal/Confirmation.vue'
 export default {
   components: {
     'filter-product': require('components/increment/ecommerce/filter/RoundedFilter.vue'),
     'empty': require('components/increment/generic/empty/Empty.vue'),
     Pager,
-    RoomTypeCard
+    RoomTypeCard,
+    Confirmation
   },
   mounted(){
     this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
@@ -126,6 +134,15 @@ export default {
         $('#loading').css({'display': 'none'})
         this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
       })
+    },
+    deleteConfirmation(id){
+      console.log('>>>>>>>>>', id)
+      this.$refs.confirms.show(id)
+      // this.deleteId = id
+    },
+    remove(e){
+      console.log('remove', e)
+      this.$parent.delete(e.id)
     }
   }
 }
