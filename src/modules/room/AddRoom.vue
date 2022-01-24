@@ -32,6 +32,7 @@
         <div class="input-group">
           <select v-model="room_type" class="form-control-custom form-control">
             <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
+            <!-- <option v-for="(type, idx) in types" :key="idx" :value="type.id" :selected="room_type.payload_value">{{type.payload_value}}</option> -->
           </select>
         </div>
       </div>
@@ -128,7 +129,7 @@
       <div class="col-md-6">
         <label>Refundable Price</label>
         <div class="input-group">
-          <input v-model="non_price"  type="number" class="form-control-custom form-control">
+          <input v-model="non_price" type="number" class="form-control-custom form-control">
           <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
           </select> -->
@@ -252,7 +253,6 @@ export default {
           this.regular_price = response.data[0].regular
           this.price_terms = response.data[0].label
           this.title = response.data[0].title
-          this.room_type = response.data[0].category.id
           this.type = response.data[0].label
           this.non_price = response.data[0].refundable
           this.type = response.data[0].currency
@@ -261,6 +261,7 @@ export default {
           this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
           this.$refs.searchFieldFeature.features = Object.values(response.data[0].additional_info)[1]
           this.price_id = response.data[0].price_id
+          this.room_type = response.data[0].category != null ? response.data[0].category.id : null
         }
       })
     },
@@ -401,7 +402,6 @@ export default {
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.status
       }
-      console.log('=============', roomParameter)
       this.APIRequest('rooms/create', roomParameter).then(response => {
         if(response.data > 0){
           let pricingParameter = {
