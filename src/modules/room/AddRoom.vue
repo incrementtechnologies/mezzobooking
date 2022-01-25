@@ -430,6 +430,9 @@ export default {
               console.log('[Successfully Added]')
             }
           })
+        }else{
+          this.errorMessage = response.error
+          console.log('[error]', response.error)
         }
       })
     }
