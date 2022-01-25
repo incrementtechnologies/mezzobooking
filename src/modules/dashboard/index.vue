@@ -9,7 +9,7 @@
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column first card">
         <p class="title">Total Sales</p>
-        <p class="data"><b>PHP {{data.total_sales}}</b></p>
+        <p class="data"><b>PHP {{data.total_sales > 0 ? data.total_sales.toFixed(2) : data.total_sales}}</b></p>
       </div>
       <div class="column second card">
         <p class="title">Reservations(Previous-Current)</p>

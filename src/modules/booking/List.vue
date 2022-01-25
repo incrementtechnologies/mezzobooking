@@ -18,12 +18,39 @@
       v-if="data !== null"
     /></div>
     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
+    <table class="table table-responsive">
+      <tbody>
+        <tr>
+          <td class="status1">
+            <i class="fas fa-circle"></i>
+            Pending
+          </td>
+          <td class="status2">
+            <i class="fas fa-circle"></i>
+            Confirmed
+          </td>
+          <td class="status3">
+            <i class="fas fa-circle"></i>
+            Completed
+          </td>
+          <td class="status4">
+            <i class="fas fa-circle"></i>
+            Cancelled
+          </td>
+          <td class="status5">
+            <i class="fas fa-circle"></i>
+            Refunded
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row">
         <!-- <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.code)"> -->
           <td>
-            <b><span style="font-size: 14px">{{item.name}} - {{item.status}}</span></b><br/>
+            <b><span style="font-size: 14px">{{item.name}} - <span :class="item.status==='for_approval' ? 'status1' : 
+              item.status === 'confirmed' ? 'status2' : item.status === 'completed' ? 'status3' : item.status === 'cancelled' ? 'status4' : 'status5'">#{{item.code}}</span></span></b><br/>
             <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
           <td>
@@ -263,6 +290,7 @@ $(function () {
 })
 </script>
 <style lang="scss" scoped>
+@import "~assets/style/colors.scss";
   .backAction{
     font-size: 15px;
     cursor: pointer;
@@ -285,5 +313,20 @@ $(function () {
   }
   .table-row:active{
     background-color: white;
+  }
+  .status1{
+    color: $warning
+  }
+  .status2{
+    color: $primary
+  }
+  .status3{
+    color: green
+  }
+  .status4{
+    color: $danger
+  }
+  .status5{
+    color: gray
   }
 </style>
