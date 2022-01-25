@@ -127,7 +127,7 @@ class CouponController extends APIController
         $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->getByIds($data['account_id'], 'in_progress');
         $currDate = Carbon::now();
 		if($result !== null){
-            if($result['end_date'] >= $currDate){
+            if($result['end_date'] > $currDate->format('Y-m-d H:i:s')){
                 if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
                     if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
                         $this->response['data'] = $result;
