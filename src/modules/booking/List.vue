@@ -23,7 +23,7 @@
         <tr v-for="(item, index) in data" :key="index" class="table-row">
         <!-- <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.code)"> -->
           <td>
-            <b><span style="font-size: 14px">{{item.details.name}} - {{item.status}}</span></b><br/>
+            <b><span style="font-size: 14px">{{item.name}} - {{item.status}}</span></b><br/>
             <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
           <td>
