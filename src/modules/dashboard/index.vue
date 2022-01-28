@@ -40,28 +40,7 @@
         </div>
       </div>
     </div>
-    <table class="table table-bordered table-responsive">
-      <tbody v-if="bookings.length > 0"> 
-        <tr class="table-row" v-for="(item, index) in bookings" :key="index" @click="$router.push('/booking-details/' + item.code)">
-          <td>
-            <b><span style="font-size: 14px">{{item.details.name}} - {{item.status}}</span></b><br/>
-            <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
-          </td>
-          <td>
-            <div style="text-align:center"><b>Adults</b> <br/>{{item.details.adults}}</div>
-          </td>
-          <td>
-            <div style="text-align:center"><b>Children</b> <br/>{{item.details.child}}</div>
-          </td>
-          <td style="padding: 20px 0;">
-            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.total}}</div>
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <p>No Bookings yet</p>
-      </tbody>
-    </table>
+    <BookingCard :data="bookings"/>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column" style="width: 80%;">
         <p><b>Summary</b></p>
@@ -86,6 +65,7 @@ import CONFIG from 'src/config.js'
 import Posts from 'src/modules/generic/Posts.vue'
 import moment from 'moment'
 import BarGraph from 'src/modules/generic/BarGraph.vue'
+import BookingCard from 'src/modules/generic/BookingCard.vue'
 export default{
   mounted(){
     this.retrieve()
@@ -121,7 +101,8 @@ export default{
   },
   components: {
     Posts,
-    BarGraph
+    BarGraph,
+    BookingCard
   },
   methods: {
     retrieve(){
