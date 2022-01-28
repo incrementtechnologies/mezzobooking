@@ -125,6 +125,14 @@ export default {
       this.routeParams = event.target.value
     },
     create(){
+      if(this.end_date < this.start_date){
+        this.errorMessage = 'Invalid date range'
+        return
+      }
+      if(this.limit < 0){
+        this.errorMessage = 'Invalid limit'
+        return
+      }
       let parameter = {
         payload: 'room_type',
         payload_value: this.routeParams,
@@ -134,7 +142,7 @@ export default {
         status: 'available'
       }
       console.log('------------', parameter)
-      if(Object.keys(parameter).includes('') || Object.keys(parameter).includes(null)){
+      if(Object.values(parameter).includes('') || Object.values(parameter).includes(null)){
         this.errorMessage = 'Field should not be empty'
         return
       }
