@@ -3,14 +3,14 @@
       <div class="column" v-for="(image, idx) in features" :key="idx">
         <div class="container">
           <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
-          <div class="overlay">
+          <div class="overlay" v-if="con === undefined">
             <label class="removeIcon">
               <i class="fas fa-close removeImage" @click="removeImage(image)"></i>
             </label>
           </div>
         </div>
       </div>
-      <div class="column"> 
+      <div class="column" v-if="con === undefined"> 
         <div class="container">  
           <div class="addImage" @click="clickAddImage()">
               <input type="file" hidden ref="fileInput" @change="getFile($event)">
@@ -26,7 +26,7 @@ import AUTH from 'src/services/auth'
 import axios from 'axios'
 import CONFIG from 'src/config.js'
 export default {
-  props: ['features'],
+  props: ['features', 'con'],
   data(){
     return {
       imageError: null,
@@ -61,7 +61,6 @@ export default {
         this.image = null
         return
       }
-      console.log('------------', this.image)
       let formData = new FormData()
       formData.append('file', this.image)
       formData.append('file_url', this.image.name.replace(' ', '_'))
@@ -80,7 +79,6 @@ export default {
       })
     },
     removeImage(data){
-      console.log(this.features.indexOf(data))
       this.features.splice(this.features.indexOf(data), 1)
       if(data.id !== undefined){
         this.$parent.removeImage(data.id)
