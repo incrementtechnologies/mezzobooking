@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
-    <BookingCard :data="bookings" v-if="bookings.lenght > 0"/>
+    <BookingCard :data="bookings" v-if="bookings.length > 0"/>
       <p v-else><br> No booking for the moment</p>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column" style="width: 80%;">
