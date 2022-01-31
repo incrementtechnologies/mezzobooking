@@ -40,7 +40,8 @@
         </div>
       </div>
     </div>
-    <BookingCard :data="bookings"/>
+    <BookingCard :data="bookings" v-if="bookings.lenght > 0"/>
+      <p v-else><br> No booking for the moment</p>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column" style="width: 80%;">
         <p><b>Summary</b></p>
@@ -185,7 +186,7 @@ p{
 
 
 .first{
-  min-height: 20vh;
+  min-height: 15vh;
   width: 32%;
   background-color: $primary;
   margin-right: 2%;
@@ -194,7 +195,7 @@ p{
   border-radius: 5px;
 }
 .second{
-  min-height: 20vh;
+  min-height: 15vh;
   width: 32%;
   background-color: $danger;
   margin-right: 2%;
@@ -203,7 +204,7 @@ p{
   border-radius: 5px;
 }
 .third{
-  min-height: 20vh;
+  min-height: 15vh;
   width: 32%;
   background-color: $secondary;
   padding-top: 25px;
@@ -211,7 +212,7 @@ p{
   border-radius: 5px;
 }
 .fourth{
-  min-height: 20vh;
+  min-height: 15vh;
   width: 32%;
   background-color: $gray;
   margin-right: 2%;
@@ -220,7 +221,7 @@ p{
   border-radius: 5px;
 }
 .fifth{
-  min-height: 20vh;
+  min-height: 15vh;
   width: 32%;
   background-color: $warning;
   margin-right: 2%;
