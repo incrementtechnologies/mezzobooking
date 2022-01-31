@@ -74,15 +74,16 @@ export default {
   methods: {
     retrieveById(){
       let parameter = {
-        condition: [{
-          column: 'payload',
-          value: 'room_id',
-          clause: '='
-        }, {
-          column: 'payload_value',
-          value: this.$route.params.id,
-          clause: '='
-        }]
+        room_code: this.$route.params.id
+        // condition: [{
+        //   column: 'payload',
+        //   value: 'room_id',
+        //   clause: '='
+        // }, {
+        //   column: 'payload_value',
+        //   value: this.$route.params.id,
+        //   clause: '='
+        // }]
       }
       this.APIRequest('availabilities/retrieve_by_id', parameter).then(response => {
         if(response.data.length > 0){
@@ -104,9 +105,7 @@ export default {
         description: this.description,
         status: this.isSwitch === true ? 'available' : 'not_available'
       }
-      console.log('[update]', parameter)
       this.APIRequest('availabilities/update', parameter).then(response => {
-        console.log('[update]', response)
         if(response.data > 0){
           this.$router.push('/add-rooms/' + this.$route.params.id)
         }

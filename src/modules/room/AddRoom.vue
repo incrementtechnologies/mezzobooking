@@ -155,7 +155,7 @@
     </div>
     <div class="mt-4">
       <label>Images</label>
-      <imageupload :features="featured" @setImage="getImage($event)"></imageupload>
+      <imageupload :features="featured" @setImage="getImage($event)" :con="$route.params.name"></imageupload>
     </div>
     <div class="row mt-4">
       <div class="col-md-6">
@@ -242,11 +242,11 @@ export default {
     showDeleteConfirmation(id){
       this.$refs.confirm.show(id)
     },
-    retrieveById(id){
+    retrieveById(code){
       let parameter = {
-        room_id: id
+        room_code: code
       }
-      this.APIRequest('rooms/retrieve_by_id', parameter).then(response => {
+      this.APIRequest('rooms/retrieve_by_code', parameter).then(response => {
         if(response.data.length > 0){
           this.maximum_capacity = response.data[0].max_capacity
           this.description = response.data[0].description

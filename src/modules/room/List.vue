@@ -135,7 +135,6 @@ export default {
       }
       $('#loading').css({'display': 'block'})
       this.APIRequest('rooms/retrieve', parameter).then(response => {
-        console.log('[response.data]', response.data)
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
