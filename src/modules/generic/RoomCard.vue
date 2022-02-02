@@ -45,6 +45,8 @@
 import CONFIG from 'src/config.js'
 export default {
   props: ['actionBtn', 'list'],
+  mounted(){
+  },
   data(){
     return {
       config: CONFIG
