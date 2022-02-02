@@ -194,6 +194,7 @@ export default {
     this.retrieveFeature()
     this.retrieveAddOns()
     if(this.$route.params.code != null){
+      console.log('[asfdasdfasdf]', this.$route.params.code)
       this.retrieveById(this.$route.params.code)
     }
   },
@@ -287,6 +288,9 @@ export default {
           }
         ]
       }
+      if(this.$route.params.code != null){
+        parameter['code'] = 'update'
+      }
       this.APIRequest('payloads/retrieve_with_validations', parameter, response => {
         this.types = response.data
       })
@@ -353,7 +357,9 @@ export default {
         status: this.status,
         images: this.images
       }
+      console.log('[parameter]', parameter)
       this.APIRequest('rooms/update_with_images', parameter).then(response => {
+        console.log('[response]', response)
         if(response.data >= 1 && this.price_id != null){
           let pricingParameter = {
             id: this.price_id,
@@ -393,7 +399,6 @@ export default {
         return
       }
       let roomParameter = {
-        code: this.user.code,
         account_id: this.user.userID,
         title: this.title,
         max_capacity: this.maximum_capacity,
