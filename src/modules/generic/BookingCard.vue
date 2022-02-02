@@ -28,8 +28,8 @@
     </table>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
-        <tr v-for="(item, index) in data" :key="index" class="table-row">
-        <!-- <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.code)"> -->
+        <!-- <tr v-for="(item, index) in data" :key="index" class="table-row"> -->
+        <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.reservation_code)">
           <td>
             <b><span style="font-size: 14px">{{item.name}} - <span :class="item.status==='for_approval' ? 'status1' : 
               item.status === 'confirmed' ? 'status2' : item.status === 'completed' ? 'status3' : item.status === 'cancelled' ? 'status4' : 'status5'">#{{item.code}}</span></span></b><br/>
@@ -51,9 +51,12 @@
 </template>
 <script>
 export default {
-  mounted() {
-  },
-  props: ['data']
+  props: ['data'],
+  methods: {
+    redirect(data){
+      this.$router.push('/booking-details/' + data)
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -194,7 +194,6 @@ export default {
     this.retrieveFeature()
     this.retrieveAddOns()
     if(this.$route.params.code != null){
-      console.log('[asfdasdfasdf]', this.$route.params.code)
       this.retrieveById(this.$route.params.code)
     }
   },
@@ -341,7 +340,7 @@ export default {
       })
       let parameter = {
         id: this.$route.params.code,
-        code: this.user.code,
+        code: this.$route.params.code,
         account_id: this.user.userID,
         title: this.title,
         max_capacity: this.maximum_capacity,
@@ -358,7 +357,7 @@ export default {
           let pricingParameter = {
             id: this.price_id,
             account_id: this.user.userID,
-            room_id: this.$route.params.code,
+            room_id: response.data,
             regular: this.regular_price,
             refundable: this.non_price,
             currency: this.type,
