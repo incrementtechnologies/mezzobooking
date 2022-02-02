@@ -311,13 +311,7 @@ export default {
     },
     retrieveAddOns(){
       let parameter = {
-        condition: [
-          {
-            column: 'account_id',
-            clause: '=',
-            value: this.user.userID
-          }
-        ]
+        type: 'room'
       }
       this.APIRequest('add-on/retrieve_all', parameter, response => {
         this.addOns = response.data
