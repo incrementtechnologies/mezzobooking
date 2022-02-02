@@ -206,6 +206,7 @@ export default {
         type: this.type,
         selectedType: JSON.stringify(this.selectedTypes)
       }
+      parameter.end_date = parameter.end_date + ' ' + '12:00:00'
       if(this.data !== null){
         parameter['id'] = this.data.id
         this.APIRequest('room_coupon/update', parameter).then(response => {
