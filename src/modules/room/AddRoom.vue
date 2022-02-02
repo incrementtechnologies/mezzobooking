@@ -113,6 +113,10 @@
               <option value="PHP">PHP</option>
             </select> -->
           </div>
+          <div>
+            <input type="checkbox" id="checkbox" v-model="tax">
+            <label style="font-weight: normal" for="checkbox">Including tax, utilities and all other fees.</label>
+          </div>
       </div>
       <div class="col-md-6">
           <label>Price Terms</label>
@@ -223,7 +227,8 @@ export default {
       tempImage: [],
       isUpdate: false,
       price_id: null,
-      maximum_capacity: null
+      maximum_capacity: null,
+      tax: 0
     }
   },
   components: {
@@ -257,6 +262,7 @@ export default {
           this.non_price = response.data[0].refundable
           this.type = response.data[0].currency
           this.status = response.data[0].status
+          this.tax = response.data[0].tax
           this.featured = response.data[0].images
           this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
           this.$refs.searchFieldFeature.features = Object.values(response.data[0].additional_info)[1]
@@ -361,6 +367,7 @@ export default {
             regular: this.regular_price,
             refundable: this.non_price,
             currency: this.type,
+            tax: this.tax === true ? 1 : 0,
             label: this.price_terms
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
@@ -407,6 +414,7 @@ export default {
             room_id: response.data,
             regular: this.regular_price,
             refundable: this.non_price,
+            tax: this.tax === true ? 1 : 0,
             currency: 'PHP',
             label: this.price_terms,
             category: this.room_type
