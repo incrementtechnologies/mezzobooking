@@ -220,7 +220,7 @@ export default {
       })
     },
     retrieve(){
-      // console.log('========', this.$route.params.id)
+      console.log('========', this.$route.params.id)
       let params = {
         id: this.$route.params.id
       }
