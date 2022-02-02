@@ -139,7 +139,7 @@ class CouponController extends APIController
                     $this->response['error'] = "Coupon is not available";
                 }
             }else{
-                $this->response['error'] = "Coupon was expired";
+                $this->response['error'] = "Coupon was expired ";
             }
 		}else{
 			$this->response['error'] = "Coupon code does not exist";
