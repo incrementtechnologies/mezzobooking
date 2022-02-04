@@ -8,7 +8,7 @@
       v-if="data !== null"
     /></div>
     <button class="btn btn-primary pull-right" @click="$router.push('/add-rooms')">Add Room</button>
-    <filter-product v-bind:category="category" 
+    <filter-product v-bind:category="category"
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
       @changeSortEvent="retrieve($event.sort, $event.filter)"

@@ -228,7 +228,8 @@ export default {
       isUpdate: false,
       price_id: null,
       maximum_capacity: null,
-      tax: 0
+      tax: 0,
+      addOnPrice: []
     }
   },
   components: {
@@ -331,7 +332,7 @@ export default {
     },
     onSelectAdd(data) {
       this.selectedAddOns = data.map(el => {
-        return ({title: el.title, id: el.id})
+        return ({title: el.title, id: el.id, price: el.price})
       })
       this.isEmpty = false
     },
@@ -398,6 +399,9 @@ export default {
         this.errorMessage = 'Value should be greater than 0'
         return
       }
+      this.addOnPrice = this.selectedAddOns.map(el => {
+        return (el.price)
+      })
       let roomParameter = {
         account_id: this.user.userID,
         title: this.title,
@@ -417,7 +421,8 @@ export default {
             tax: this.tax === true ? 1 : 0,
             currency: 'PHP',
             label: this.price_terms,
-            category: this.room_type
+            category: this.room_type,
+            addOnPrice: this.addOnPrice
           }
           let imageParameter = {
             room_id: response.data,
