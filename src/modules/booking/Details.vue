@@ -125,11 +125,11 @@
             <div class="row" style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
                 <div class="col-md-6">
                     <span style="font-size:12px">Customer ID: {{customer.id}}</span><br/>
-                    <span style="font-weight:bold; font-size:16px">{{customer.username}}</span>
-                    <p style="font-size:12px">{{customer.information.cellular_number || 'N/A'}}</p>
+                    <span style="font-weight:bold; font-size:16px">{{reservations.account_info.name}}</span>
+                    <p style="font-size:12px">{{reservations.account_info.cellular_number || 'N/A'}}</p>
                 </div>
                 <div class="col-md-6" style="padding: 10px 0px">
-                    <span>Email Address: <b>{{customer.email}}</b></span>
+                    <span>Email Address: <b>{{reservations.account_info.email}}</b></span>
                 </div>
             </div>
       </section>
