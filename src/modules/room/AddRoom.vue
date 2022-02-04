@@ -345,6 +345,9 @@ export default {
       this.selectedFeature = this.selectedFeature.map(el => {
         return ({payload_value: el.payload_value, id: el.id})
       })
+      this.addOnPrice = this.selectedAddOns.map(el => {
+        return (el.price)
+      })
       let parameter = {
         id: this.$route.params.code,
         code: this.$route.params.code,
@@ -369,7 +372,8 @@ export default {
             refundable: this.non_price,
             currency: this.type,
             tax: this.tax === true ? 1 : 0,
-            label: this.price_terms
+            label: this.price_terms,
+            addOnPrice: this.addOnPrice
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
             if(response.data === true){
