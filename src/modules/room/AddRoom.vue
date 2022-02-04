@@ -228,7 +228,8 @@ export default {
       isUpdate: false,
       price_id: null,
       maximum_capacity: null,
-      tax: 0
+      tax: 0,
+      addOnPrice: []
     }
   },
   components: {
@@ -331,7 +332,7 @@ export default {
     },
     onSelectAdd(data) {
       this.selectedAddOns = data.map(el => {
-        return ({title: el.title, id: el.id})
+        return ({title: el.title, id: el.id, price: el.price})
       })
       this.isEmpty = false
     },
@@ -343,6 +344,9 @@ export default {
       this.$refs.searchFieldFeature.returnFeature()
       this.selectedFeature = this.selectedFeature.map(el => {
         return ({payload_value: el.payload_value, id: el.id})
+      })
+      this.addOnPrice = this.selectedAddOns.map(el => {
+        return (el.price)
       })
       let parameter = {
         id: this.$route.params.code,
@@ -368,7 +372,8 @@ export default {
             refundable: this.non_price,
             currency: this.type,
             tax: this.tax === true ? 1 : 0,
-            label: this.price_terms
+            label: this.price_terms,
+            addOnPrice: this.addOnPrice
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
             if(response.data === true){
@@ -398,6 +403,9 @@ export default {
         this.errorMessage = 'Value should be greater than 0'
         return
       }
+      this.addOnPrice = this.selectedAddOns.map(el => {
+        return (el.price)
+      })
       let roomParameter = {
         account_id: this.user.userID,
         title: this.title,
@@ -417,7 +425,8 @@ export default {
             tax: this.tax === true ? 1 : 0,
             currency: 'PHP',
             label: this.price_terms,
-            category: this.room_type
+            category: this.room_type,
+            addOnPrice: this.addOnPrice
           }
           let imageParameter = {
             room_id: response.data,
