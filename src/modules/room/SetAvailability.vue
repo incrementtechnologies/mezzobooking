@@ -27,18 +27,30 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label>Start Date</label>
-            <div class="input-group">
-                <input v-model="start_date" type="date" class="form-control-custom form-control">
-            </div>
-          </div>
           <div class="col-md-6">
-            <label>End Date</label>
-            <div class="input-group">
-                <input v-model="end_date" type="date" class="form-control-custom form-control">
+                <label>Start Date</label>
+                <div class="input-group">
+                    <date-picker 
+                      v-model="start_date" 
+                      :type="'date'" 
+                      :disabled-date="disablePreviousDates"
+                      :format="'MMM D, YYYY'"
+                      :value-type="'YYYY-MM-DD'"
+                      style="width: 500px"></date-picker>
+                </div>
             </div>
-          </div>
+            <div class="col-md-6">
+                <label>End Date</label>
+                <div class="input-group">
+                    <date-picker 
+                      v-model="end_date" 
+                      :type="'date'" 
+                      :disabled-date="afterPreviousDate"
+                      :format="'MMM D, YYYY'"
+                      :value-type="'YYYY-MM-DD'"
+                      style="width: 500px"></date-picker>
+                </div>
+            </div>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -53,6 +65,8 @@
 </template>
 <script>
 import moment from 'moment'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
 export default {
   mounted(){
     if(this.$route.params.status === 'publish'){
@@ -61,6 +75,7 @@ export default {
       this.isSwitch = false
     }
     this.retrieveById()
+    this.retrieveTypeByCode()
   },
   data(){
     return {
@@ -68,22 +83,47 @@ export default {
       description: null,
       start_date: null,
       end_date: null,
-      data: null
+      data: null,
+      category: null,
+      type: null
     }
   },
+  components: {
+    DatePicker
+  },
   methods: {
+    retrieveStartandEnd(){
+      let parameter = {
+        id: this.category
+      }
+      this.APIRequest('availabilities/retrieve_by_code', parameter).then(response => {
+        this.type = response.data[0]
+      })
+    },
+    afterPreviousDate(date){
+      if(this.type.end_date === null){
+        return null
+      }
+      return date >= new Date(this.type.end_date) || date < new Date(this.start_date)
+    },
+    disablePreviousDates(date) {
+      if(this.type.start_date === null){
+        return null
+      }
+      return date < new Date(this.type.start_date) || date >= new Date(this.type.end_date)
+    },
+    retrieveTypeByCode(){
+      let parameter = {
+        code: this.$route.params.id
+      }
+      this.APIRequest('rooms/retrieve_type_by_code', parameter).then(response => {
+        this.category = response.data[0].category
+        this.retrieveStartandEnd()
+      })
+    },
     retrieveById(){
       let parameter = {
         room_code: this.$route.params.id
-        // condition: [{
-        //   column: 'payload',
-        //   value: 'room_id',
-        //   clause: '='
-        // }, {
-        //   column: 'payload_value',
-        //   value: this.$route.params.id,
-        //   clause: '='
-        // }]
       }
       this.APIRequest('availabilities/retrieve_by_id', parameter).then(response => {
         if(response.data.length > 0){
@@ -98,10 +138,10 @@ export default {
       let parameter = {
         id: this.data.id,
         payload: 'room_id',
-        payload_value: this.$route.params.id,
+        payload_value: this.data.payload_value,
         start_date: this.start_date,
         end_date: this.end_date,
-        limit: null,
+        limit: this.type.limit,
         description: this.description,
         status: this.isSwitch === true ? 'available' : 'not_available'
       }
