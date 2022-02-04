@@ -313,7 +313,7 @@ export default {
     },
     disablePreviousDates(date) {
       var d = new Date()
-      return date < new Date(d.setDate(d.getDate() - 1))
+      return date <= new Date(d.setDate(d.getDate() - 1))
     }
   }
 }
