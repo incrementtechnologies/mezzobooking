@@ -10,7 +10,7 @@ class DashboardController extends APIController
     public function retrieve(Request $request){
         $data = $request->all();
         $currDate  = Carbon::now();
-        $totalBookings = app('Increment\Hotel\Reservation\Http\ReservationController')->getTotalBookings($currDate);
+        $totalBookings = app('Increment\Hotel\Room\Http\CartController')->getTotalBookings($currDate);
         $totalSales = app('Increment\Hotel\Reservation\Http\ReservationController')->retrieveSaleByCoupon(null, null);
         $result = array(
             'previous' => $totalBookings['previous'],
