@@ -188,8 +188,8 @@ export default {
           column: 'type',
           clause: 'like'
         }],
-        limit: flag ? this.limit : this.offset + this.limit,
-        offset: flag ? this.offset : 0,
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         sort: sort !== null ? sort : this.currentSort,
         account_id: this.user.userID
       }
@@ -198,9 +198,11 @@ export default {
         console.log('[sdfasdfasdf]', response)
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
           this.data = response.data
         }else{
           this.data = []
+          this.numPages = null
         }
       })
     },

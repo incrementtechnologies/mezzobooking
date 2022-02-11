@@ -165,7 +165,8 @@ export default {
           column: 'account_type',
           clause: '='
         }],
-        sort: sort !== null ? sort : this.currentSort
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('accounts/retrieve_accounts_admin', parameter).then(response => {
@@ -175,6 +176,7 @@ export default {
           this.data = response.data
         }else{
           this.data = null
+          this.numPages = null
         }
       })
     }

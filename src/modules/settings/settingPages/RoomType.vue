@@ -26,6 +26,18 @@
       ref="confirms"
       @onConfirm="remove"
     ></Confirmation>
+    <div class="modal fade" id="errorModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <p class="text-danger">{{errorMessage}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -88,7 +100,8 @@ export default {
       reservationStatus: false,
       click: false,
       numPages: null,
-      activePage: 1
+      activePage: 1,
+      errorMessage: null
     }
   },
   methods: {
@@ -108,8 +121,8 @@ export default {
           column: this.currentFilter.column,
           clause: 'like'
         }],
-        limit: flag ? this.limit : this.offset + this.limit,
-        offset: flag ? this.offset : 0,
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         sort: sort !== null ? sort : this.currentSort,
         payload: 'room_type'
       }
@@ -132,6 +145,10 @@ export default {
       $('#loading').css({'display': 'block'})
       this.APIRequest('payloads/delete_with_images', parameter).then(response => {
         $('#loading').css({'display': 'none'})
+        if(response.error !== null){
+          this.errorMessage = response.error
+          $('#errorModal').modal('show')
+        }
         this.retrieve({'created_at': 'asc'}, {column: 'created_at', value: ''}, false)
       })
     },
@@ -142,7 +159,7 @@ export default {
     },
     remove(e){
       console.log('remove', e)
-      this.$parent.delete(e.id)
+      this.delete(e.id)
     }
   }
 }

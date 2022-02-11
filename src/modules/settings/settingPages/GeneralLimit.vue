@@ -143,25 +143,30 @@ export default {
           column: this.currentFilter.column,
           clause: 'like'
         }],
-        limit: flag ? this.limit : this.offset + this.limit,
-        offset: flag ? this.offset : 0,
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         sort: sort != null ? sort : this.currentSort
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
       this.APIRequest('availabilities/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
-        this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
-        if(flag === true) {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-            this.data.push(element)
-          })
-        } else {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-          })
-          this.data = response.data
+        if(response.data.length > 0){
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          if(flag === true) {
+            response.data.forEach(element => {
+              element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+              this.data.push(element)
+            })
+          } else {
+            response.data.forEach(element => {
+              element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+            })
+            this.data = response.data
+          }
+        }else{
+          this.data = []
+          this.numPages = null
         }
       })
     },
