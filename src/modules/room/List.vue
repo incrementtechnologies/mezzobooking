@@ -128,8 +128,8 @@ export default {
           column: this.currentFilter.column,
           clause: 'like'
         }],
-        limit: flag ? this.limit : this.offset + this.limit,
-        offset: flag ? this.offset : 0,
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         account_id: this.user.userID,
         sort: this.currentSort
       }
@@ -141,6 +141,7 @@ export default {
           this.data = response.data
           this.retrievePrice()
         }else{
+          this.numPages = null
           this.data = []
         }
       })

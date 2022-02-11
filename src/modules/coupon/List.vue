@@ -159,8 +159,8 @@ export default {
           column: this.currentFilter.column,
           clause: 'like'
         }],
-        limit: flag ? this.limit : this.offset + this.limit,
-        offset: flag ? this.offset : 0,
+        limit: this.limit,
+        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         account_id: this.user.userID,
         sort: sort !== null ? sort : this.currentSort
       }
@@ -168,17 +168,22 @@ export default {
       console.log(flag)
       this.APIRequest('room_coupon/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
-        this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
-        if(flag === true) {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-            this.data.push(element)
-          })
-        } else {
-          response.data.forEach(element => {
-            element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
-          })
-          this.data = response.data
+        if(response.data.length > 0){
+          this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          if(flag === true) {
+            response.data.forEach(element => {
+              element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+              this.data.push(element)
+            })
+          } else {
+            response.data.forEach(element => {
+              element.date_time_at_human = moment(new Date(element.datetime)).format('MMMM Do YYYY, hh:mm a')
+            })
+            this.data = response.data
+          }
+        }else{
+          this.data = []
+          this.numPages = null
         }
       })
     },
