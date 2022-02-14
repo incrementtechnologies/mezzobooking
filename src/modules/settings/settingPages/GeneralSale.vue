@@ -28,7 +28,7 @@
               <div class="col-md-6 column">
                 <div class="box mr-1">
                   <p class="box-title">Total Sales</p>
-                  <span v-if="item.total_sale[0].total !== null"><b>PHP {{item.total_sale[0].total}}</b></span>
+                  <span><b>PHP {{item.total_sale[0].total !== null ? item.total_sale[0].total : 0}}</b></span>
                 </div>
                 <div class="box">
                   <p class="box-title">Total Bookings</p>
@@ -197,7 +197,7 @@ export default {
         decimalSeparator: '.',
         showLabels: true,
         showTitle: true,
-        title: 'Trackr',
+        title: 'Mezzo',
         useTextFile: false,
         useBom: true,
         // useKeysAsHeaders: true,

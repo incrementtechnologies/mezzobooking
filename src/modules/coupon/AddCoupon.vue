@@ -192,12 +192,16 @@ export default {
         this.errorMessage = 'Invalid date format'
         return
       }
+      if(this.end_date < this.start_date){
+        this.errorMessage = 'Invalid start-date or end-date'
+        return
+      }
       let parameter = {
         account_id: this.user.userID,
         code: this.code,
         description: this.description,
-        start_date: this.start_date,
-        end_date: this.end_date,
+        start_date: moment(this.start_date).format('YYYY-MM-DD'),
+        end_date: moment(this.end_date).format('YYYY-MM-DD'),
         limit: this.limit,
         limit_per_customer: this.limit_per_customer,
         currency: 'PHP',
@@ -209,7 +213,7 @@ export default {
       parameter.end_date = parameter.end_date + ' ' + '12:00:00'
       if(this.data !== null){
         parameter['id'] = this.data.id
-        this.APIRequest('room_coupon/update', parameter).then(response => {
+        this.APIRequest('room_coupon/', parameter).then(response => {
           if(response.data !== null){
             this.$router.push('/coupons')
           }
@@ -309,7 +313,8 @@ export default {
       if(this.start_date === null){
         return null
       }
-      return date < new Date(this.start_date)
+      var d = new Date(this.start_date)
+      return date < new Date(d.setDate(d.getDate() - 1))
     },
     disablePreviousDates(date) {
       var d = new Date()

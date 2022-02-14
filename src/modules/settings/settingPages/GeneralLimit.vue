@@ -81,7 +81,7 @@ export default {
           payload_value: 'asc',
           type: 'date'
         }, {
-          title: 'Start Date Ascending',
+          title: 'Start Date Descending',
           payload: 'start_date',
           payload_value: 'asc',
           type: 'date'

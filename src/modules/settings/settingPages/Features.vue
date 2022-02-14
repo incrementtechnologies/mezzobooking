@@ -51,7 +51,7 @@
     <errorModal
     ref="errorModal"
     :title="'Error Message'"
-    :message="'Please input feature.'"
+    :message="errorMessage"
     />
   </div>
 </template>
@@ -103,7 +103,8 @@ export default {
       data: [],
       validated: false,
       canUpdate: false,
-      item: null
+      item: null,
+      errorMessage: null
     }
   },
   components: {
@@ -142,6 +143,10 @@ export default {
               this.canUpdate = false
               this.retrieve(this.currentSort, this.currentFilter, false)
             }
+            if(response.error !== null){
+              this.errorMessage = response.error
+              this.$refs.errorModal.show()
+            }
           })
         }else{
           let parameter = {
@@ -159,6 +164,7 @@ export default {
           })
         }
       }else{
+        this.errorMessage = 'Please input feature'
         this.$refs.errorModal.show()
       }
     },
@@ -224,7 +230,7 @@ export default {
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
 .form-control{
-  width: 20%;
+  width: 40%;
   float: right;
   margin-right: 10px;
   height: 40px !important
