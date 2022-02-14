@@ -213,7 +213,7 @@ export default {
       parameter.end_date = parameter.end_date + ' ' + '12:00:00'
       if(this.data !== null){
         parameter['id'] = this.data.id
-        this.APIRequest('room_coupon/', parameter).then(response => {
+        this.APIRequest('room_coupon/update', parameter).then(response => {
           if(response.data !== null){
             this.$router.push('/coupons')
           }

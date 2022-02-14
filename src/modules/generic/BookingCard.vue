@@ -5,7 +5,7 @@
         <tr>
           <td class="status1">
             <i class="fas fa-circle"></i>
-            Pending
+            For Approval
           </td>
           <td class="status2">
             <i class="fas fa-circle"></i>
