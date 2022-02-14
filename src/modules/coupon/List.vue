@@ -37,7 +37,8 @@
               <div class="col-sm-7">
                 <div style="text-align:center;horizontal-alignment:center; color:#CBAB58">
                   <span>Revenue</span>
-                  <p style="font-size:16px;font-weight:bold;">PHP {{item.amount}}</p>
+                  <p style="font-size:16px;font-weight:bold;" v-if="item.type === 'fixed'">PHP {{item.amount}}</p>
+                  <p style="font-size:16px;font-weight:bold;" v-else>{{item.amount}}%</p>
                 </div>
               </div>
               <div class="col-md-4" style="width: 270px;">

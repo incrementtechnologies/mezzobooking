@@ -113,8 +113,12 @@ export default {
       if(this.data === null){
         this.APIRequest('payloads/create_with_images', parameter, response => {
           $('#loading').css({'display': 'none'})
-          this.$router.push('/room-types')
           this.errorMessage = null
+          if(response.error !== null){
+            this.errorMessage = response.error
+          }else{
+            this.$router.push('/room-types')
+          }
         })
       }else{
         parameter['id'] = this.data.id

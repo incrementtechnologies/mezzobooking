@@ -249,6 +249,10 @@ export default {
               this.canUpdate = false
               this.retrieve(this.currentSort, this.currentFilter, false)
             }
+            if(response.error !== null){
+              this.title = response.error
+              this.$refs.errorModal.show()
+            }
           })
         }else{
           let parameter = {
