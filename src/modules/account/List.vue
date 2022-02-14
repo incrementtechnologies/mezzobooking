@@ -136,7 +136,7 @@ export default {
         account_type: this.newAccountType
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('accounts/update_verification', parameter).then(response => {
+      this.APIRequest('accounts/update_type', parameter).then(response => {
         $('#loading').css({display: 'none'})
         this.setEditTypeIndex(index, item)
         this.retrieve(null, null)
