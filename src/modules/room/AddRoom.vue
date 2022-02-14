@@ -360,9 +360,7 @@ export default {
         status: this.status,
         images: this.images
       }
-      console.log('[parameter]', parameter)
       this.APIRequest('rooms/update_with_images', parameter).then(response => {
-        console.log('[response]', response)
         if(response.data >= 1 && this.price_id != null){
           let pricingParameter = {
             id: this.price_id,
@@ -373,9 +371,11 @@ export default {
             currency: this.type,
             tax: this.tax === true ? 1 : 0,
             label: this.price_terms,
-            addOnPrice: this.addOnPrice
+            addOnPrice: this.addOnPrice,
+            category_id: this.room_type
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
+            console.log('[response]', response)
             if(response.data === true){
               this.$router.push('/rooms')
             }else{
