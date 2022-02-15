@@ -94,6 +94,7 @@ class CouponController extends APIController
             'limit' => $data['limit'],
             'limit_per_customer' => $data['limit_per_customer'],
             'status' => $data['status'],
+            'type' => $data['type'],
             'updated_at' => Carbon::now(),
         ));
         $exist = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
@@ -127,19 +128,24 @@ class CouponController extends APIController
         $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->getByIds($data['account_id'], 'in_progress');
         $currDate = Carbon::now();
 		if($result !== null){
-            if($result['end_date'] > $currDate->format('Y-m-d H:i:s')){
-                if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
-                    if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
-                        $this->response['data'] = $result;
-                        app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation['id']);
+            $inTarget = RoomCoupon::where('payload_value', '=', $data['category'])->where('coupon_id', '=', $result['id'])->first();
+            if($inTarget !== null){
+                if($result['end_date'] > $currDate->format('Y-m-d H:i:s')){
+                    if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
+                        if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
+                            $this->response['data'] = $result;
+                            app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation['id']);
+                        }else{
+                            $this->response['error'] = "You've reach your maximum application of the same coupon";
+                        }
                     }else{
-                        $this->response['error'] = "You've reach your maximum application of the same coupon";
+                        $this->response['error'] = "Coupon is not available";
                     }
                 }else{
-                    $this->response['error'] = "Coupon is not available";
+                    $this->response['error'] = "Coupon was expired ";
                 }
             }else{
-                $this->response['error'] = "Coupon was expired ";
+                $this->response['error'] = "This code is not applicable with this room";
             }
 		}else{
 			$this->response['error'] = "Coupon code does not exist";

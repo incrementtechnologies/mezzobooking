@@ -274,10 +274,16 @@ export default {
     },
     remove(id){
       let parameter = {
-        id: id.id
+        condition: [
+          {
+            column: 'code',
+            clause: '=',
+            value: id.id
+          }
+        ]
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('rooms/delete', parameter).then(response => {
+      this.APIRequest('rooms/delete_rooms', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data > 0){
           this.$router.push('/rooms')
