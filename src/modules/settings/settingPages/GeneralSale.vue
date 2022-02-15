@@ -13,7 +13,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button v-if="data.length > 0" class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px;" @click="$router.push('/add-coupons')">Add Sale</button>
+    <button v-if="data.length > 0" class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px;" @click="$router.push('/add-coupons/sales')">Add Sale</button>
     <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">

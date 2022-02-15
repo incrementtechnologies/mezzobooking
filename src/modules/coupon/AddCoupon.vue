@@ -1,139 +1,139 @@
 <template>
   <div style="margin:56px">
-      <div>
-          <span>
-              <span @click="$router.push('/coupons')" class="backBtn">
-                  <i class="fas fa-chevron-left"></i>
-                  Back
-              </span>
-          </span>
-          <span style="float:right">
-              <span>
-                  <b class="mr-5 actionBtn" @click="$route.params.code !== undefined ? $router.push('/revenue/'+code + '/' + data.id) : $router.push('/bookings')">Go to revenue</b>
-                  <b class="actionBtn" @click="create()">Save</b>
-              </span>
-          </span>
-        <div class="mt-5">
-            <p  class="text-danger">{{errorMessage}}</p>
-            <label>Coupon Code</label>
-            <div class="input-group">
-                <input v-model="code" type="text" class="form-control-custom form-control">
-            </div>
-        </div>
-        <div class="mt-4">
-            <label>Description</label>
-            <div class="input-group">
-                <input v-model="description"  type="text" class="form-control-custom form-control">
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <label>Start Date</label>
-                <div class="input-group">
-                    <date-picker 
-                      v-model="start_date" 
-                      :type="'date'" 
-                      :disabled-date="disablePreviousDates"
-                      :format="'MMM D, YYYY'"
-                      :value-type="'YYYY-MM-DD'"
-                      style="width: 500px"></date-picker>
-                    <!-- <input v-model="start_date" type="datetime-local" class="form-control-custom form-control"> -->
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label>End Date</label>
-                <div class="input-group">
-                    <date-picker 
-                      v-model="end_date" 
-                      :type="'date'" 
-                      :disabled-date="afterPreviousDate"
-                      :format="'MMM D, YYYY'"
-                      :value-type="'YYYY-MM-DD'"
-                      style="width: 500px"></date-picker>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <label>Limit Customers</label>
-                <div class="input-group">
-                    <input v-model="limit" type="number" class="form-control-custom form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label>Limit per customer</label>
-                <div class="input-group">
-                    <input v-model="limit_per_customer"  type="number" class="form-control-custom form-control">
-                </div>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <label>Amount</label>
-                <div class="input-group">
-                    <input v-model="amount" type="number" class="form-control-custom form-control">
-                    <!-- <select v-model="currency" class="form-control" style="width:102px; height:40px">
-                        <option value="PHP">PHP</option>
-                    </select> -->
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label>Target</label>
-                <searchField
-                :test="'target'"
-                :placeholder="'Select Target'"
-                :items="roomTypes"
-                :isMultiple="isMultiple"
-                :styles="{
-                  background: 'none',
-                  color: '#84868B !important',
-                  width: '100% !important',
-                  height: '60% !important',
-                  borderRadius: '5px !important',
-                  border: 'none',
-                }"
-                :dropdownItemStyles="{
-                  borderRadius: '5px',
-                  overflow: 'hidden',
-                  width: 'calc(100% - 30px)'
-                }"
-                :class="'multiselect__tags1'"
-                :selectedIndex="selectedIndex"
-                @onSelectTarget="onSelect"
-                ref="searchField"
-              />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <label>Status</label>
-                <div class="input-group">
-                    <select v-model="status" type="text" class="form-control-custom form-control">
-                        <option value="draft">Draft</option>
-                        <option value="publish">Publish</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label>Type</label>
-                <div class="input-group">
-                    <select v-model="type" type="text" class="form-control-custom form-control">
-                        <option value="percentage">Percentage Discount</option>
-                        <option value="fixed">Fixed Discount</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="mt-4" v-if="data !== null">
-            <button class="btn btn-danger footerBtn" @click="confirmRemove">Delete</button>
-        </div>
+    <div>
+        <span>
+            <span @click="$route.params.code === 'sales' ? $router.push('/general-sales') : $router.push('/coupons')" class="backBtn">
+                <i class="fas fa-chevron-left"></i>
+                Back
+            </span>
+        </span>
+        <span style="float:right">
+            <span>
+                <b class="mr-5 actionBtn" @click="($route.params.code !== 'sales' && this.$route.params.code !== undefined) ? $router.push('/revenue/'+code + '/' + data.id) : $router.push('/bookings')">Go to revenue</b>
+                <b class="actionBtn" @click="create()">Save</b>
+            </span>
+        </span>
+      <div class="mt-5">
+          <p  class="text-danger">{{errorMessage}}</p>
+          <label>Coupon Code</label>
+          <div class="input-group">
+              <input v-model="code" type="text" class="form-control-custom form-control">
+          </div>
       </div>
-      <confirmation
-        :title="'Confirmation Modal'"
-        :message="'Are you sure you want to delete ?'"
-        ref="confirms"
-        @onConfirm="remove"
-      />
+      <div class="mt-4">
+          <label>Description</label>
+          <div class="input-group">
+              <input v-model="description"  type="text" class="form-control-custom form-control">
+          </div>
+      </div>
+      <div class="row mt-4">
+          <div class="col-md-6">
+              <label>Start Date</label>
+              <div class="input-group">
+                  <date-picker 
+                    v-model="start_date" 
+                    :type="'date'" 
+                    :disabled-date="disablePreviousDates"
+                    :format="'MMM D, YYYY'"
+                    :value-type="'YYYY-MM-DD'"
+                    style="width: 500px"></date-picker>
+                  <!-- <input v-model="start_date" type="datetime-local" class="form-control-custom form-control"> -->
+              </div>
+          </div>
+          <div class="col-md-6">
+              <label>End Date</label>
+              <div class="input-group">
+                  <date-picker 
+                    v-model="end_date" 
+                    :type="'date'" 
+                    :disabled-date="afterPreviousDate"
+                    :format="'MMM D, YYYY'"
+                    :value-type="'YYYY-MM-DD'"
+                    style="width: 500px"></date-picker>
+              </div>
+          </div>
+      </div>
+      <div class="row mt-4">
+          <div class="col-md-6">
+              <label>Limit Customers</label>
+              <div class="input-group">
+                  <input v-model="limit" type="number" min="1"  @input="event => limit = Math.abs(event.target.value)" class="form-control-custom form-control">
+              </div>
+          </div>
+          <div class="col-md-6">
+              <label>Limit per customer</label>
+              <div class="input-group">
+                  <input v-model="limit_per_customer" @input="event => limit_per_customer = Math.abs(event.target.value)" type="number" min="1" class="form-control-custom form-control">
+              </div>
+          </div>
+      </div>
+      <div class="row mt-4">
+          <div class="col-md-6">
+              <label>Amount</label>
+              <div class="input-group">
+                  <input v-model="amount" type="number" min="1" @input="event => amount = Math.abs(event.target.value)" class="form-control-custom form-control">
+                  <!-- <select v-model="currency" class="form-control" style="width:102px; height:40px">
+                      <option value="PHP">PHP</option>
+                  </select> -->
+              </div>
+          </div>
+          <div class="col-md-6">
+              <label>Target</label>
+              <searchField
+              :test="'target'"
+              :placeholder="'Select Target'"
+              :items="roomTypes"
+              :isMultiple="isMultiple"
+              :styles="{
+                background: 'none',
+                color: '#84868B !important',
+                width: '100% !important',
+                height: '60% !important',
+                borderRadius: '5px !important',
+                border: 'none',
+              }"
+              :dropdownItemStyles="{
+                borderRadius: '5px',
+                overflow: 'hidden',
+                width: 'calc(100% - 30px)'
+              }"
+              :class="'multiselect__tags1'"
+              :selectedIndex="selectedIndex"
+              @onSelectTarget="onSelect"
+              ref="searchField"
+            />
+          </div>
+      </div>
+      <div class="row mt-4">
+          <div class="col-md-6">
+              <label>Status</label>
+              <div class="input-group">
+                  <select v-model="status" type="text" class="form-control-custom form-control">
+                      <option value="draft">Draft</option>
+                      <option value="publish">Publish</option>
+                  </select>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <label>Type</label>
+              <div class="input-group">
+                  <select v-model="type" type="text" class="form-control-custom form-control">
+                      <option value="percentage">Percentage Discount</option>
+                      <option value="fixed">Fixed Discount</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+      <div class="mt-4" v-if="data !== null">
+          <button class="btn btn-danger footerBtn" @click="confirmRemove">Delete</button>
+      </div>
+    </div>
+    <confirmation
+      :title="'Confirmation Modal'"
+      :message="'Are you sure you want to delete ?'"
+      ref="confirms"
+      @onConfirm="remove"
+    />
   </div>
 </template>
 
@@ -171,7 +171,7 @@ export default {
     DatePicker
   },
   mounted(){
-    if(this.$route.params.code !== undefined){
+    if(this.$route.params.code !== 'sales' && this.$route.params.code !== undefined){
       this.retrieveByCode()
     }
     this.retrieveRoomTypes()
@@ -255,14 +255,12 @@ export default {
             this.isMultiple = true
           }
           this.$refs.searchField.targets = Object.values(this.data.target)
-          console.log('-------------', this.$refs.searchField.targets)
         }else{
           this.data = null
         }
       })
     },
     retrieveRoomTypes(){
-      console.log('========')
       this.APIRequest('payloads/retrieve_all', {}, response => {
         let defaultdata = {
           id: 'All',
@@ -286,7 +284,6 @@ export default {
       })
     },
     onSelect(data){
-      console.log('============', data)
       if(Array.isArray(data)){
         let isAll = data.filter(el => {
           return el.id === 'All'
