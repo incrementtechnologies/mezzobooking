@@ -272,6 +272,10 @@ export default {
               this.price = 0
               this.retrieve(this.currentSort, this.currentFilter, false)
             }
+            if(response.error !== null){
+              this.errorMessage = response.error
+              this.$refs.errorModal.show()
+            }
           })
         }
       }else{

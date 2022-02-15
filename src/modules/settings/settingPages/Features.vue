@@ -161,6 +161,10 @@ export default {
               this.title = null
               this.retrieve(this.currentSort, this.currentFilter, false)
             }
+            if(response.error !== null){
+              this.errorMessage = response.error
+              this.$refs.errorModal.show()
+            }
           })
         }
       }else{
