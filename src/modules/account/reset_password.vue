@@ -94,6 +94,8 @@ export default {
   methods: {
     reset(event) {
       console.log('Reset password:::', global.validateEmail(this.email))
+      this.showResponse = false
+      this.showError = false
       if(global.validateEmail(this.email)){
         this.isEmailError = true
         let parameter = {
