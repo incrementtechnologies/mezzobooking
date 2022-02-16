@@ -379,7 +379,8 @@ export default {
             currency: this.type,
             tax: this.tax === true ? 1 : 0,
             label: this.price_terms,
-            addOnPrice: this.addOnPrice
+            addOnPrice: this.addOnPrice,
+            category_id: this.room_type
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
             if(response.data === true){

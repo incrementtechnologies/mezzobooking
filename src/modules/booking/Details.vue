@@ -62,6 +62,9 @@
                     </span>
                 </div>
               </div>
+              <div class="actionBtns mt-3 ml-auto">
+                <button class="btn btn-primary" @click="updateChange">Apply changes</button>
+              </div>
           </div>
           <b>Payment Methods</b>
           <div v-if="reservations.details.payment_method === 'credit'">
@@ -85,7 +88,7 @@
                     <!-- <i class="fa fa-pencil actionBtn"></i> -->
                 </div>
                 <div class="col-md-6">
-                    <p>PHP {{each.rooms[0].regular * each.qty}}</p>
+                    <p>PHP {{each.price_with_number_of_days}}</p>
                 </div>
             </div>
             <div v-if="reservations.coupon.code !== null">
@@ -115,7 +118,7 @@
                     <span style="font-weight: bold; font-size:16px">Total</span>
                 </div>
                 <div class="col-md-6">
-                    <p style="font-weight: bold; font-size:16px">PHP {{total}}</p>
+                    <p style="font-weight: bold; font-size:16px">PHP {{reservations.total}}</p>
                 </div>
             </div>
         </section>
@@ -126,7 +129,7 @@
                 <div class="col-md-6">
                     <span style="font-size:12px">Customer ID: {{customer.id}}</span><br/>
                     <span style="font-weight:bold; font-size:16px">{{reservations.account_info.name}}</span>
-                    <p style="font-size:12px">{{reservations.account_info.cellular_number || 'N/A'}}</p>
+                    <p style="font-size:12px">{{reservations.account_info.contactNumber || 'N/A'}}</p>
                 </div>
                 <div class="col-md-6" style="padding: 10px 0px">
                     <span>Email Address: <b>{{reservations.account_info.email}}</b></span>
@@ -150,7 +153,7 @@
         </div>
       </section>
       <section class="actionBtns mt-3">
-          <div class="row" style="margin-left:auto; margin-right:auto;">
+          <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
                   <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false && reservations.details.refundable > 0">Refund</button>
@@ -197,7 +200,8 @@ export default {
     inputs: [],
     isDisable: false,
     roomAssignError: null,
-    errorMessage: null
+    errorMessage: null,
+    emptyAssignment: null
   }),
   methods: {
     retrieveCoupon(){
@@ -208,14 +212,6 @@ export default {
       this.APIRequest('room_coupon/retrieve_by_reservation', parameter, response => {
         if(response.data !== null){
           this.coupon = response.data
-          if(response.data.type === 'percentage'){
-            let tempAmount = parseInt(response.data.amount) / 100
-            this.total = this.subTotal - (this.subTotal * tempAmount)
-          }else if(response.data.type === 'fixed'){
-            this.total = this.subTotal - parseInt(response.data.amount)
-          }
-        }else{
-          this.total = this.subTotal
         }
       })
     },
@@ -236,24 +232,6 @@ export default {
           }else{
             this.isDisable = false
           }
-          this.summary.map((el, idx) => {
-            this.subTotal += el.rooms[0].regular * parseInt(el.checkoutQty)
-            if(this.summary.length - 1 === idx){
-              this.reservations.details.selectedAddOn.map((item, indx) => {
-                this.subTotal += item.price
-                if(this.reservations.details.selectedAddOn.length - 1 === indx){
-                  if(this.reservations.coupon !== null){
-                    if(this.reservations.coupon.type === 'percentage'){
-                      let tempAmount = (this.reservations.coupon.amount) / 100
-                      this.total = this.subTotal - (this.subTotal * tempAmount)
-                    }else if(this.reservations.coupon.type === 'fixed'){
-                      this.total = this.subTotal - parseInt(this.reservations.coupon.amount)
-                    }
-                  }
-                }
-              })
-            }
-          })
           this.retrieveCoupon()
           this.summary.map(el => {
             for (let index = 0; index < el.qty; index++) {
@@ -335,6 +313,24 @@ export default {
         this.emptyAssignment = null
         this.errorMessage = null
       }
+    },
+    updateChange(){
+      let categories = []
+      this.summary.map(el => {
+        categories.push({category_id: el.category_id})
+      })
+      let params = {
+        reservation_code: this.$route.params.id,
+        coupon: this.reservations.coupon.code,
+        check_in: this.summary[0].check_in,
+        check_out: this.summary[0].check_out,
+        heads: this.reservations.details.adults + this.reservations.details.child,
+        categories: categories,
+        additional: this.reservations.details.additionals
+      }
+      console.log(params)
+      // this.APIRequest('reservations/update_by_admin', params, response => {
+      // })
     }
   }
 }
