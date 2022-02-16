@@ -195,4 +195,48 @@ class CouponController extends APIController
         $this->response['data'] = $result;
         return $this->response();
     }
+
+    public function validCoupon($code, $category, $accountId){
+        $result = Coupon::where('code', '=', $code)->first();
+        $noOfCouponUsed = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds($accountId, $result['id']);
+        $noOfPersonUseCoupon = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds(null, $result['id']);
+        $currDate = Carbon::now();
+        $response = array(
+            'data' => null,
+            'error' => null
+        );
+		if($result !== null){
+            $inTarget = RoomCoupon::where('payload_value', '=', $category)->where('coupon_id', '=', $result['id'])->first();
+            if($inTarget !== null){
+                if($result['end_date'] > $currDate->format('Y-m-d H:i:s')){
+                    if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
+                        if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
+                            $response['data'] = $result;
+                            return $response;
+                        }else{
+                            $response['data'] = null;
+                            $response['error'] = "You've reach your maximum application of the same coupon";
+                            return $response;
+                        }
+                    }else{
+                        $response['data'] = null;
+                        $response['error'] = "Coupon is not available";
+                        return $response;
+                    }
+                }else{
+                    $response['data'] = null;
+                    $response['error'] = "Coupon was expired ";
+                    return $response;
+                }
+            }else{
+                $response['data'] = null;
+                $response['error'] = "This code is not applicable with this room";
+                return $response;
+            }
+		}else{
+            $response['data'] = null;
+			$response['error'] = "Coupon code does not exist";
+            return $response;
+		}
+    }
 }
