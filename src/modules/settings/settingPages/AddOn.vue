@@ -30,7 +30,7 @@
     <div>
       <button class="btn btn-primary pull-right" style="margin-bottom: 20px; padding-vertical: 4%; padding-top: 10px; padding-bottom: 27px" v-if="canUpdate === false" @click="create()">Add</button>
       <button class="btn btn-primary pull-right" style="margin-bottom: 25px; padding-top: 10px; padding-bottom: 27px" v-else @click="create()">Update</button>
-      <input type="number" class="form-control" placeholder="Type default price" v-model="price">
+      <input type="number" class="form-control" placeholder="Type default price" min="0" @input="event => price = Math.abs(event.target.value)" v-model="price">
       <input type="text" class="form-control addOns" placeholder="Type your add-ons here" v-model="addOns">
     </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">

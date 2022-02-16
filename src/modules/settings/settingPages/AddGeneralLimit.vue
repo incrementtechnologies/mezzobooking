@@ -28,7 +28,7 @@
           <div class="col-md-6">
             <label>Number Limits</label>
             <div class="input-group">
-                <input v-model="limit" type="number" class="form-control-custom form-control">
+                <input v-model="limit" type="number" min="1" @input="event => limit = Math.abs(event.target.value)" class="form-control-custom form-control">
             </div>
           </div>
         </div>

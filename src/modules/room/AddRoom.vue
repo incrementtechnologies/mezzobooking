@@ -108,7 +108,7 @@
       <div class="col-md-6">
           <label>Regular Price</label>
           <div class="input-group">
-            <input v-model="regular_price"  type="number" class="form-control-custom form-control">
+            <input v-model="regular_price" min="1" type="number"  @input="event => regular_price = Math.abs(event.target.value)" class="form-control-custom form-control">
             <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
             </select> -->
@@ -133,7 +133,7 @@
       <div class="col-md-6">
         <label>Refundable Price</label>
         <div class="input-group">
-          <input v-model="non_price" type="number" class="form-control-custom form-control">
+          <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control">
           <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
           </select> -->
@@ -153,7 +153,7 @@
       <div class="col-md-6">
         <label>Maximum Capacity</label>
         <div class="input-group">
-          <input v-model="maximum_capacity"  type="number" class="form-control-custom form-control">
+          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control">
         </div>
       </div>
     </div>
@@ -366,9 +366,7 @@ export default {
         status: this.status,
         images: this.images
       }
-      console.log('[parameter]', parameter)
       this.APIRequest('rooms/update_with_images', parameter).then(response => {
-        console.log('[response]', response)
         if(response.data >= 1 && this.price_id != null){
           let pricingParameter = {
             id: this.price_id,
@@ -383,6 +381,7 @@ export default {
             category_id: this.room_type
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
+            console.log('[response]', response)
             if(response.data === true){
               this.$router.push('/rooms')
             }else{
