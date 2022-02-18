@@ -24,13 +24,13 @@
       <div class="col-md-6">
         <label>Title</label>
         <div class="input-group">
-          <input v-model="title" type="text" class="form-control-custom form-control">
+          <input v-model="title" type="text" class="form-control-custom form-control" :disabled="status==='publish'">
         </div>
       </div>
       <div class="col-md-6">
         <label>Room Type</label>
         <div class="input-group">
-          <select v-model="room_type" class="form-control-custom form-control">
+          <select v-model="room_type" class="form-control-custom form-control" :disabled="status==='publish'">
             <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
             <!-- <option v-for="(type, idx) in types" :key="idx" :value="type.id" :selected="room_type.payload_value">{{type.payload_value}}</option> -->
           </select>
@@ -43,6 +43,7 @@
       :class="description == '' ? 'form-control mb-0' : 'form-control'" 
       placeholder="Add description here" 
       rows="10" 
+      :disabled="status==='publish'"
       :style="{
         ...description == '' ? {border: '1px solid red !important'} : '',
       }"
@@ -108,22 +109,21 @@
       <div class="col-md-6">
           <label>Regular Price</label>
           <div class="input-group">
-            <input v-model="regular_price" min="1" type="number"  @input="event => regular_price = Math.abs(event.target.value)" class="form-control-custom form-control">
+            <input v-model="regular_price" min="1" type="number"  @input="event => regular_price = Math.abs(event.target.value)" class="form-control-custom form-control" :disabled="status==='publish'">
             <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
             </select> -->
           </div>
           <div>
-            <input type="checkbox" id="checkbox" v-model="tax">
+            <input type="checkbox" id="checkbox" v-model="tax" :disabled="status==='publish'">
             <label style="font-weight: normal" for="checkbox">Including tax, utilities and all other fees.</label>
           </div>
       </div>
       <div class="col-md-6">
           <label>Price Terms</label>
           <div class="input-group">
-            <select v-model="price_terms" type="text" class="form-control-custom form-control">
+            <select v-model="price_terms" type="text" class="form-control-custom form-control" :disabled="status==='publish'">
               <option value="NIGHT">Per Night</option>
-              <option value="DAY">Per Day</option>
               <option value="MONTH">Per Month</option>
             </select>
           </div>
@@ -133,7 +133,7 @@
       <div class="col-md-6">
         <label>Refundable Price</label>
         <div class="input-group">
-          <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control">
+          <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control" :disabled="status==='publish'">
           <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
           </select> -->
@@ -153,7 +153,7 @@
       <div class="col-md-6">
         <label>Maximum Capacity</label>
         <div class="input-group">
-          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control">
+          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control" :disabled="status==='publish'">
         </div>
       </div>
     </div>

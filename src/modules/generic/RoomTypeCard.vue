@@ -9,7 +9,7 @@
           <div class="card-body">
             <div class="mb-3">
               <span style="float:right">
-                <i class="fas fa-pencil ml-2 actionBtn" @click="$router.push('/add-room-types/'+ data.id)"></i>
+                <i class="fas fa-pencil-alt ml-2 actionBtn" @click="$router.push('/add-room-types/'+ data.id)"></i>
                 <i class="fas fa-trash ml-2 actionBtn" @click="$parent.deleteConfirmation(data.id)"></i>
               </span>
               <span><b style="font-size:24px">{{data.payload_value}}</b><br>
