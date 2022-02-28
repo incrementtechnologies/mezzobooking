@@ -142,7 +142,7 @@
       <div class="col-md-6">
         <label>Status</label>
         <div class="input-group">
-          <select v-model="status" type="text" class="form-control-custom form-control">
+          <select v-model="roomStatus" type="text" class="form-control-custom form-control" :disabled="status === 'publish'">
             <option value="pending">Pending</option>
             <option value="publish">Publish</option>
           </select>
@@ -228,6 +228,7 @@ export default {
       isUpdate: false,
       price_id: null,
       maximum_capacity: null,
+      roomStatus: null,
       tax: 0,
       addOnPrice: []
     }
@@ -263,6 +264,7 @@ export default {
           this.non_price = response.data[0].refundable
           this.type = response.data[0].currency
           this.status = response.data[0].status
+          this.roomStatus = response.data[0].status
           this.tax = response.data[0].tax
           this.featured = response.data[0].images
           this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
@@ -419,7 +421,7 @@ export default {
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
-        status: this.status
+        status: this.roomStatus
       }
       this.APIRequest('rooms/create', roomParameter).then(response => {
         if(response.data > 0){
