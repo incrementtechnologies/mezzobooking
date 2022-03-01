@@ -187,10 +187,14 @@ export default {
         id: item.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/delete', parameter).then(response => {
+      this.APIRequest('payloads/delete_with_validation', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
           this.retrieve(this.currentSort, this.currentFilter, false)
+        }
+        if(response.error !== null){
+          this.errorMessage = response.error
+          this.$refs.errorModal.show()
         }
       })
     },
