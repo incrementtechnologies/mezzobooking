@@ -403,7 +403,7 @@ export default {
       })
     },
     create(){
-      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.status === null
+      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.roomStatus === null
       ){
         this.errorMessage = 'All fields are required'
         return
