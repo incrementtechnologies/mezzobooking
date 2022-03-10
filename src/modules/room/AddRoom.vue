@@ -123,8 +123,8 @@
           <label>Price Terms</label>
           <div class="input-group">
             <select v-model="price_terms" type="text" class="form-control-custom form-control" :disabled="status==='publish'">
-              <option value="NIGHT">Per Night</option>
-              <option value="MONTH">Per Month</option>
+              <option value="per night">Per Night</option>
+              <option value="per month">Per Month</option>
             </select>
           </div>
       </div>
