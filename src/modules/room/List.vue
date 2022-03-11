@@ -139,7 +139,7 @@ export default {
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
           this.data = response.data
-          this.retrievePrice()
+          // this.retrievePrice()
         }else{
           this.numPages = null
           this.data = []

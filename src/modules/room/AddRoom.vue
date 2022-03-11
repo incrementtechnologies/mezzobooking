@@ -347,7 +347,7 @@ export default {
     update(){
       this.$refs.searchField.returnAddOn()
       this.selectedAddOns = this.selectedAddOns.map(el => {
-        return ({title: el.title, id: el.id})
+        return ({title: el.title, id: el.id, price: el.price})
       })
       this.$refs.searchFieldFeature.returnFeature()
       this.selectedFeature = this.selectedFeature.map(el => {
