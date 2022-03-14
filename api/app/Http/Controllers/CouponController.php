@@ -130,7 +130,7 @@ class CouponController extends APIController
         if($result !== null){
             $noOfCouponUsed = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds($data['account_id'], $result['id']);
             $noOfPersonUseCoupon = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds(null, $result['id']);
-            $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->getByIds($data['account_id'], 'in_progress');
+            $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->retrieveReservationByParams('id', $data['reservation_id'], ['id']);
             $currDate = Carbon::now();
             if($result !== null){
                 $inTargeted = false;
@@ -149,7 +149,7 @@ class CouponController extends APIController
                         if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
                             if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
                                 $this->response['data'] = $result;
-                                app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation['id']);
+                                app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation[0]['id']);
                             }else{
                                 $this->response[''];
                                 $this->response['error'] = "You've reach your maximum application of the same coupon";
