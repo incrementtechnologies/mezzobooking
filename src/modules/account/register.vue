@@ -3,14 +3,8 @@
     <div class="row RowContainer">
       <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7 col-xs-7 QouteCardContainer mb-5">
         <div class="QouteCard">
-          <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 18%;height:auto;margin-left: 6%">
+          <img :src="require('src/assets/img/logo.png')" alt="Image" style="width: 50%;height:auto;margin-left: 6%">
           <div class="SubQoute" style="margin-top: 6%; color: white">
-            <h5 class="QouteText" style="color: white">Mezzo Hotel Admin App</h5>
-            <p class="SupportingText">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-              when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-              It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-              It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-              and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
           </div>
         </div>
       </div>

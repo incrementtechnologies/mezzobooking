@@ -24,7 +24,7 @@
       <div class="col-md-6">
         <label>Title</label>
         <div class="input-group">
-          <input v-model="title" type="text" class="form-control-custom form-control" :disabled="status==='publish'">
+          <input v-model="title" type="text" class="form-control-custom form-control">
         </div>
       </div>
       <div class="col-md-6">
@@ -43,7 +43,6 @@
       :class="description == '' ? 'form-control mb-0' : 'form-control'" 
       placeholder="Add description here" 
       rows="10" 
-      :disabled="status==='publish'"
       :style="{
         ...description == '' ? {border: '1px solid red !important'} : '',
       }"
@@ -153,7 +152,7 @@
       <div class="col-md-6">
         <label>Maximum Capacity</label>
         <div class="input-group">
-          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control" :disabled="status==='publish'">
+          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control">
         </div>
       </div>
     </div>
