@@ -123,6 +123,10 @@ class CouponController extends APIController
     public function apply(Request $request){
 		$data = $request->all();
 		$result = Coupon::where('code', '=', $data['code'])->first();
+        if($data['code'] === null){
+            $this->response['error'] = 'Field is empty';
+            return $this->response();
+        }
         if($result !== null){
             $noOfCouponUsed = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds($data['account_id'], $result['id']);
             $noOfPersonUseCoupon = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds(null, $result['id']);
