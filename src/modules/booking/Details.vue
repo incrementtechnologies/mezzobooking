@@ -53,7 +53,7 @@
                     <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"  :disabled="isDisable"></textarea>
                 </div>
               </div>
-               <div class="col-md-6">
+               <div class="col-md-6" v-if="reservations.coupon !== null">
                 <label>Coupon</label>
                 <div class="input-group">
                     <input type="text" v-model="reservations.coupon.code" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable">
@@ -91,7 +91,7 @@
                     <p>PHP {{each.price_with_number_of_days}}</p>
                 </div>
             </div>
-            <div v-if="reservations.coupon.code !== null">
+            <div v-if="reservations.coupon !== null">
               <span class="ml-2">Discount - {{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}} OFF({{reservations.coupon.code}})</span>
               <!-- <i class="fa fa-pencil actionBtn"></i>
               <i class="fa fa-trash actionBtn"></i> -->
@@ -216,7 +216,6 @@ export default {
       })
     },
     retrieve(){
-      console.log('========', this.$route.params.id)
       let params = {
         id: this.$route.params.id
       }
