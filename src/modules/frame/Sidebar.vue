@@ -2,7 +2,7 @@
   <div class="system-body"> 
      <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide" id="idfactory" >
       <div class="sidebar">
-        <ul class="sidebar-menu" :style="hide === 'hidden' ? 'margin-top: 50%;padding-right: 30px' : null">
+        <ul class="sidebar-menu" :style="hide === 'hidden' ? 'margin-top: 50%;padding-right: 35px' : null">
             <li class="header">
                 <span v-if="menuFlag === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
@@ -86,6 +86,7 @@
 .sidebar{
   min-height: 100vh;
   overflow-y: auto;
+  padding-right: 20px;
 }
 
 .sidebar-menu{
