@@ -85,6 +85,11 @@
                 width: 25%;
                 float: left;
             }
+            .content{
+                border-bottom: solid 1px #eee;
+                line-height: 50px;
+                padding-left: 10px;
+            }
             .button{
                 width: 300px;
                 height: 50px;
