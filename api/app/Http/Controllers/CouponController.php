@@ -204,7 +204,11 @@ class CouponController extends APIController
     }
 
     public function retrieveById($couponId){
-        return Coupon::where('id', '=', $couponId)->first();
+        $result = Coupon::where('id', '=', $couponId)->first();
+        if($result !== null){
+            $result['amount'] = number_format($result['amount'], 2);
+        }
+        return $result;
     }
     public function delete(Request $request){
         $data = $request->all();
