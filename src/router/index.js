@@ -7,6 +7,8 @@ import ModuleRoutes from './module_routes'
 import Helpers from './helpers'
 import Services from './services'
 import BootstrapVue from 'bootstrap-vue'
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 global.Tether = require('tether')
 global.jQuery = require('jquery')
 global.$ = global.jQuery
