@@ -157,15 +157,17 @@
 .menu-holder{
   width: 100%;
   float: left;
-  min-height: 40px;
+  display: flex;
   line-height: 40px;
   overflow: hidden;
 }
+
 
 .menu-holder .visible{
   width: 10%;
   float: left;
   text-align: right;
+  padding: 12px;
   line-height: 40px;
 }
 
