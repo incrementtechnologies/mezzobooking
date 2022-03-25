@@ -44,9 +44,15 @@
                 <br><br>
               </div>
               <div class="col-md-6 column">
-                <div class="actionBtn ml-2">
-                  <i class="fas fa-pencil-alt" @click="showUpdate(item)"></i>
-                  <span><i class="fas fa-trash"  @click="showDeleteConfirmation(item)"></i></span>
+                <div class="d-flex actionBtn ml-2">
+                  <div @click="showUpdate(item)">
+                    <i class="fas fa-pencil-alt"></i>
+                  </div>&nbsp;
+                  <span>
+                    <div @click="showDeleteConfirmation(item)">
+                      <i class="fas fa-trash"></i>
+                    </div>
+                  </span>
                 </div>
                 <div class="box mr-1">
                   <p class="box-title">Default Price</p>

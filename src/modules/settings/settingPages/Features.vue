@@ -25,9 +25,13 @@
                 <div class="card-horizontal">
                     <div class="card-body">
                         <div class="mb-3">
-                            <span style="float:right">
-                                <i class="fas fa-pencil-alt ml-2 actionBtn" @click="showUpdate(feature)"></i>
-                                <i class="fas fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(feature)"></i>
+                            <span class="d-flex" style="float:right">
+                              <div @click="showUpdate(feature)">
+                                <i class="fas fa-pencil-alt ml-2 actionBtn"></i>
+                              </div>
+                              <div @click="showDeleteConfirmation(feature)">
+                                <i class="fas fa-trash ml-2 actionBtn"></i>
+                              </div>
                             </span>
                             <span><b  style="font-size:24px">{{feature.payload_value}}</b><br>
                                 Date Created: {{feature.created_at}}

@@ -21,8 +21,12 @@
                   </p>
               </div>
               <div class="col-md-2 column">
-                  <i class="fas fa-toggle-on" v-if="isSwitch === true" @click="isSwitch = false"></i>
-                  <i class="fas fa-toggle-off" v-else @click="isSwitch = true"></i>
+                  <div @click="isSwitch = false" v-if="isSwitch === true">
+                    <i class="fas fa-toggle-on"></i>
+                  </div>
+                  <div @click="isSwitch = true" v-else>
+                    <i class="fas fa-toggle-off"></i>
+                  </div>
               </div>
           </div>
         </div>

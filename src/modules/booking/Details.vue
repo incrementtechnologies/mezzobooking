@@ -92,14 +92,14 @@
                 </div>
             </div>
             <div v-if="reservations.coupon !== null">
-              <span class="ml-2">Discount - {{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}} OFF({{reservations.coupon.code}})</span>
+              <span class="ml-2">Discount - {{reservations.coupon.code}} OFF({{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}})</span>
               <!-- <i class="fa fa-pencil actionBtn"></i>
               <i class="fa fa-trash actionBtn"></i> -->
               <div class="row ml-4">
                   <div class="col-md-6">
                   </div>
                   <div class="col-md-6">
-                      <p>PHP {{reservations.coupon.amount / 100}}</p>
+                      <p>PHP {{reservations.coupon.amount}}</p>
                   </div>
               </div>
             </div>
@@ -219,7 +219,9 @@ export default {
       let params = {
         id: this.$route.params.id
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('reservations/retrieve_all_details', params, response => {
+        $('#loading').css({display: 'none'})
         if(response.data !== null){
           this.reservations = response.data.reservation
           this.customer = response.data.customer
