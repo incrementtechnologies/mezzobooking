@@ -8,6 +8,9 @@
             <span style="float:right;color:#CBAB58">Status: {{reservations.status}}</span>
           </div>
           <p v-if="errorMessage !== null" style="color: red">{{errorMessage}}<br></p>
+          <ul v-if="responseErrors.length > 0">
+            <li v-for="(each, indx) in responseErrors" :key="indx" class="text-danger">{{each}}</li>
+          </ul>
           <div class="row">
               <div class="col-md-6">
                 <label>Start Date</label>
@@ -201,6 +204,7 @@ export default {
     isDisable: false,
     roomAssignError: null,
     errorMessage: null,
+    responseErrors: [],
     emptyAssignment: null
   }),
   methods: {
@@ -332,6 +336,9 @@ export default {
       $('#loading').css({display: 'block'})
       this.APIRequest('reservations/update_by_admin', params, response => {
         $('#loading').css({display: 'none'})
+        if(response.error.length > 0){
+          this.responseErrors = response.error
+        }
         this.retrieve()
       })
     }

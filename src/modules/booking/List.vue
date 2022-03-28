@@ -196,7 +196,7 @@ export default {
         decimalSeparator: '.',
         showLabels: true,
         showTitle: true,
-        title: 'Trackr',
+        title: 'Mezzo Booking',
         useTextFile: false,
         useBom: true,
         // useKeysAsHeaders: true,
