@@ -15,14 +15,14 @@
               <div class="col-md-6">
                 <label>Start Date</label>
                 <div class="input-group">
-                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control"  :disabled="isDisable">
+                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control"  :disabled="isDisable || reservations.status === 'cancelled'">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Adults</label>
                     <div class="input-group">
-                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;" :disabled="isDisable">
+                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;" :disabled="isDisable || reservations.status === 'cancelled'">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -34,14 +34,14 @@
               <div class="col-md-6">
                 <label>End Date</label>
                 <div class="input-group">
-                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control"  :disabled="isDisable">
+                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control"  :disabled="isDisable|| reservations.status === 'cancelled'">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Children</label>
                     <div class="input-group">
-                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable">
+                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable || reservations.status === 'cancelled'">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -53,7 +53,7 @@
               <div class="col-md-6">
                 <label>Additional information(Optional)</label>
                 <div class="input-group">
-                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"  :disabled="isDisable"></textarea>
+                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"  :disabled="isDisable || reservations.status === 'cancelled'"></textarea>
                 </div>
               </div>
                <div class="col-md-6" v-if="reservations.coupon !== null">
@@ -65,7 +65,7 @@
                     </span>
                 </div>
               </div>
-              <div class="actionBtns mt-3 ml-auto">
+              <div class="actionBtns mt-3 ml-auto" :hidden="reservations.status === 'cancelled'">
                 <button class="btn btn-primary" @click="updateChange">Apply changes</button>
               </div>
           </div>
@@ -147,7 +147,7 @@
             <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
               <div class="row">
               <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`" >
-                  <select class="form-control" v-model="item.category" :disabled="isDisable" @change="getSelectedRoom($event)">
+                  <select class="form-control" v-model="item.category" :disabled="isDisable || reservations.status === 'cancelled'" @change="getSelectedRoom($event)">
                     <option v-for="el in each.specificRooms" :key="el.id" :value="el.id">{{el.title}}</option>
                   </select>
               </div>
@@ -155,7 +155,7 @@
           </div>
         </div>
       </section>
-      <section class="actionBtns mt-3">
+      <section class="actionBtns mt-3" :hidden="reservations.status === 'cancelled'">
           <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
