@@ -104,6 +104,13 @@
             .button:hover{
                 cursor: pointer;
             }
+            .contents{
+                padding-left: 2%;
+            }
+            .subHeader{
+                font-style: italic;
+                font-size: 20px;
+            }
             .footer{
                 width: 100%;
                 margin: 25px 0 25px 0;
