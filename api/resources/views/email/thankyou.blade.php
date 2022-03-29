@@ -20,6 +20,9 @@
         <p>Christine Bernardo</p>
         <p>Hotel Manager</p>
 
+        <div class="icon">
+            <a href="https://www.facebook.com/mezzohotelcebu" target="__blank">@icon('facebook')</a>
+        </div>
         <p>[032 (231-0777) | info@mezzohotel.com]</p>
     </div>
 </div>
