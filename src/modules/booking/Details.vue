@@ -1,11 +1,11 @@
 <template>
   <div style="margin:56px">
-      <div><b>Booking Details {{reservations.status}}</b></div>
+      <div><b>Booking Details</b></div>
       <div style="background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
           <div class="mb-5">
             <span>Booking #:</span>
             <b>{{reservations.code}}</b>
-            <span style="float:right;color:#CBAB58">Status: {{reservations.status}}</span>
+            <span style="float:right;color:#CBAB58">Status: <span style="text-transform: capitalize">{{reservations.status}}</span></span>
           </div>
           <p v-if="errorMessage !== null" style="color: red">{{errorMessage}}<br></p>
           <ul v-if="responseErrors.length > 0">
@@ -65,7 +65,7 @@
                     </span>
                 </div>
               </div>
-              <div class="actionBtns mt-3 ml-auto" :hidden="reservations.status === 'cancelled'">
+              <div class="actionBtns mt-3 ml-auto mr-3" :hidden="reservations.status === 'cancelled'">
                 <button class="btn btn-primary" @click="updateChange">Apply changes</button>
               </div>
           </div>
