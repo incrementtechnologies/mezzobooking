@@ -5,7 +5,7 @@
        <system-header></system-header>
        <custom-sidebar></custom-sidebar>
        <!-- <support-messenger></support-messenger> -->
-       <system-footer></system-footer>
+       <!-- <system-footer></system-footer> -->
        <tutorial></tutorial>
        <guide></guide>
       </div>
@@ -15,7 +15,7 @@
       <div v-else-if="tokenData.token === null && parseInt(user.userID) <= 0 && tokenData.loading === false">
         <login-header></login-header>
         <system-content></system-content>
-        <landing-footer></landing-footer>
+        <!-- <landing-footer></landing-footer> -->
       </div>
     </div>
     <!-- <system-footer></system-footer> -->
