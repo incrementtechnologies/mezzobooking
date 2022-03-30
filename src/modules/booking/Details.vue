@@ -338,6 +338,8 @@ export default {
         $('#loading').css({display: 'none'})
         if(response.error.length > 0){
           this.responseErrors = response.error
+        }else{
+          this.responseErrors = []
         }
         this.retrieve()
       })
