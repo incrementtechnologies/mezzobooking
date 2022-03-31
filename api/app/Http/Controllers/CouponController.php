@@ -151,7 +151,7 @@ class CouponController extends APIController
                                 $this->response['data'] = $result;
                                 app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation[0]['id']);
                             }else{
-                                $this->response[''];
+                                $this->response['data'] = null;
                                 $this->response['error'] = "You've reach your maximum application of the same coupon";
                             }
                         }else{
