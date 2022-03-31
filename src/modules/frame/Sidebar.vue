@@ -102,6 +102,7 @@
   padding: 15px 2% 15px 2%;
   color: #000;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .header .switch{
@@ -124,6 +125,7 @@
   width: 100%;
   height: 100px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .profile-image-holder{
