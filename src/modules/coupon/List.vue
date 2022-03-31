@@ -41,7 +41,7 @@
                   <p style="font-size:16px;font-weight:bold;" v-else>{{item.amount}}%</p>
                 </div>
               </div>
-              <div class="col-md-4" style="width: 270px;">
+              <div class="col-md-4 d-flex" style="width: 270px;">
                 <div @click="$router.push('/add-coupons/'+ item.code)">
                   <i class="fas fa-pencil-alt" style="color:#003"></i>
                 </div>

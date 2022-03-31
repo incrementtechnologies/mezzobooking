@@ -12,20 +12,80 @@
                 <i class="fas fa-chevron-right"></i>
             </div>
         </div>
+        <div class="row cards">
+          <div class="col-md-10 column">
+                <p>
+                  <b>ChatBot Settings</b><br>
+                  Enable chatbot settings
+                </p>
+            </div>
+            <div class="col-md-2 column">
+              <div @click="toggleSwitch()">
+                <i class="icon fas " :class="{'fa-toggle-off': toggle === false, 'fa-toggle-on': toggle == true}"></i>
+              </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import COMMON from 'src/common.js'
+import AUTH from 'src/services/auth'
 export default {
+  mounted(){
+    this.retrieve()
+  },
   data(){
     return {
-      common: COMMON
+      common: COMMON,
+      toggle: false,
+      user: AUTH.user
+    }
+  },
+  computed: {
+    isToggle(){
+      return this.toggle
     }
   },
   methods: {
     redirect(route){
       this.$router.push(route)
+    },
+    toggleSwitch(){
+      this.toggle = !this.toggle
+      console.log(this.isToggle)
+      this.create()
+    },
+    create(){
+      let params = {
+        payload: 'chatbot',
+        payload_value: this.toggle,
+        account_id: this.user.userID
+      }
+      this.APIRequest('payloads/enable_toggle', params, response => {
+        this.retrieve()
+      })
+    },
+    retrieve(){
+      let params = {
+        condition: [
+          {
+            column: 'account_id',
+            clause: '=',
+            value: this.user.userID
+          },
+          {
+            column: 'payload',
+            clause: '=',
+            value: 'chatbot'
+          }
+        ]
+      }
+      this.APIRequest('payloads/retrieve', params, response => {
+        if(response.data.length > 0){
+          this.toggle = response.data[0].payload_value === 'true'
+        }
+      })
     }
   }
 }
@@ -50,5 +110,8 @@ export default {
       float: right;
       color: $secondary;
       font-size: 20px
+    }
+    .column .icon{
+      font-size: 30px;
     }
 </style>
