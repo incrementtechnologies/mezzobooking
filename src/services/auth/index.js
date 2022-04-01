@@ -160,6 +160,7 @@ export default {
     }else{
       this.tokenData.verifyingToken = false
       this.tokenData.loading = false
+      localStorage.clear()
       this.setUser(null)
       return false
     }
@@ -167,11 +168,7 @@ export default {
   },
   deaunthenticate(){
     this.tokenData.loading = false
-    localStorage.removeItem('usertoken')
-    localStorage.removeItem('account_id')
-    localStorage.removeItem('google_code')
-    localStorage.removeItem('google_scope')
-    localStorage.removeItem('xyzABCdefPayhiram')
+    localStorage.clear()
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
