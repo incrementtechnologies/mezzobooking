@@ -90,17 +90,17 @@ export default {
           title: 'Title Descending',
           payload: 'payload_value',
           payload_value: 'desc',
-          type: 'date'
+          type: 'text'
         }, {
           title: 'Created-At Ascending',
           payload: 'created_at',
           payload_value: 'asc',
-          type: 'text'
+          type: 'date'
         }, {
           title: 'Created-At Descending',
           payload: 'created_at',
           payload_value: 'desc',
-          type: 'text'
+          type: 'date'
         }]
       }],
       title: null,
