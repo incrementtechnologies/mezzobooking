@@ -22,11 +22,11 @@
     </div>
     <div class="row" style="width: 100%; margin-top: 40px;">
       <div class="column fourth card">
-        <p class="title">Average Bookings</p>
+        <p class="title">Average Bookings(Monthly)</p>
         <p class="data"><b>{{data.average_bookings}}</b></p>
       </div>
       <div class="column fifth card">
-        <p class="title">Average Revenue</p>
+        <p class="title">Average Revenue(Monthly)</p>
         <p class="data"><b>PHP {{data.average_revenue}}</b></p>
       </div>
     </div>
