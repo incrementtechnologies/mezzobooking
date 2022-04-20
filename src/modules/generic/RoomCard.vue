@@ -1,6 +1,5 @@
 <template>
-  <div class="row">
-    <div class="col-12 mt-3">
+    <table class="table table-bordered table-responsive">
       <div class="card" style="min-height: 240px">
         <div class="card-horizontal">
           <div class="img-square-wrapper">
@@ -37,8 +36,7 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </table>
 </template>
 
 <script>

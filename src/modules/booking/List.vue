@@ -10,15 +10,15 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
-    <div style="float:left">
+    <button v-if="data.length > 0" class="btn btn-primary pull-right" @click="exportData()">Export to CSV</button>
+    <BookingCard :data="data"/>
+    <div style="float:right">
     <Pager
       :pages="numPages"
       :active="activePage"
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
-    <BookingCard :data="data"/>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Bookings!'" :action="'No activity at the moment.'"></empty>
     <confirmation
