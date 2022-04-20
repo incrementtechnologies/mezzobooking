@@ -34,9 +34,13 @@
                   <p style="font-size:16px;font-weight:bold;" v-else>{{item.amount}}%</p>
                 </div>
               </div>
-              <div class="col-md-4" style="width: 270px;">
-                <i class="fas fa-pencil-alt" style="color:#003" @click="$router.push('/add-coupons/'+ item.code)"></i>
-                <i class="fas fa-trash text-danger" @click.prevent="confirmRemove(item.id)"></i>
+              <div class="col-md-4 d-flex" style="width: 270px;">
+                <div @click="$router.push('/add-coupons/'+ item.code)">
+                  <i class="fas fa-pencil-alt" style="color:#003"></i>
+                </div>
+                <div @click.prevent="confirmRemove(item.id)">
+                  <i class="fas fa-trash text-danger"></i>
+                </div>
               </div>
             </div>
           </td>

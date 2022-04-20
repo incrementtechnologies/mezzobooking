@@ -138,8 +138,13 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          for (let i = 0; i <= response.data.length - 1; i++) {
+            const element = response.data[i]
+            let temp = element.label.split(' ')
+            element.label = temp[temp.length - 1]
+          }
           this.data = response.data
-          this.retrievePrice()
+          // this.retrievePrice()
         }else{
           this.numPages = null
           this.data = []

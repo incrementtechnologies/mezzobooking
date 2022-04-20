@@ -141,6 +141,7 @@ export default {
             this.description = response.data.category
             this.type = response.data.payload_value
             this.featured = response.data.images
+            this.$refs.searchFieldFeature.features = Object.values(response.data.details)
           }
         })
       }

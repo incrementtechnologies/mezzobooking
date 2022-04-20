@@ -18,9 +18,13 @@
                 <div class="card-horizontal">
                     <div class="card-body">
                         <div class="mb-3">
-                            <span style="float:right">
-                                <i class="fas fa-pencil-alt ml-2 actionBtn" @click="showUpdate(feature)"></i>
-                                <i class="fas fa-trash ml-2 actionBtn" @click="showDeleteConfirmation(feature)"></i>
+                            <span class="d-flex" style="float:right">
+                              <div @click="showUpdate(feature)">
+                                <i class="fas fa-pencil-alt ml-2 actionBtn"></i>
+                              </div>
+                              <div @click="showDeleteConfirmation(feature)">
+                                <i class="fas fa-trash ml-2 actionBtn"></i>
+                              </div>
                             </span>
                             <span><b  style="font-size:24px">{{feature.payload_value}}</b><br>
                                 Date Created: {{feature.created_at}}
@@ -86,17 +90,17 @@ export default {
           title: 'Title Descending',
           payload: 'payload_value',
           payload_value: 'desc',
-          type: 'date'
+          type: 'text'
         }, {
           title: 'Created-At Ascending',
           payload: 'created_at',
           payload_value: 'asc',
-          type: 'text'
+          type: 'date'
         }, {
           title: 'Created-At Descending',
           payload: 'created_at',
           payload_value: 'desc',
-          type: 'text'
+          type: 'date'
         }]
       }],
       title: null,
@@ -187,10 +191,14 @@ export default {
         id: item.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/delete', parameter).then(response => {
+      this.APIRequest('payloads/delete_with_validation', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
           this.retrieve(this.currentSort, this.currentFilter, false)
+        }
+        if(response.error !== null){
+          this.errorMessage = response.error
+          this.$refs.errorModal.show()
         }
       })
     },

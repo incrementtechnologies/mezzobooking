@@ -123,33 +123,52 @@ class CouponController extends APIController
     public function apply(Request $request){
 		$data = $request->all();
 		$result = Coupon::where('code', '=', $data['code'])->first();
-        $noOfCouponUsed = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds($data['account_id'], $result['id']);
-        $noOfPersonUseCoupon = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds(null, $result['id']);
-        $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->getByIds($data['account_id'], 'in_progress');
-        $currDate = Carbon::now();
-		if($result !== null){
-            $inTarget = RoomCoupon::where('payload_value', '=', $data['category'])->where('coupon_id', '=', $result['id'])->first();
-            if($inTarget !== null){
-                if($result['end_date'] > $currDate->format('Y-m-d H:i:s')){
-                    if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
-                        if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
-                            $this->response['data'] = $result;
-                            app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation['id']);
+        if($data['code'] === null){
+            $this->response['error'] = 'Field is empty';
+            return $this->response();
+        }
+        if($result !== null){
+            $noOfCouponUsed = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds($data['account_id'], $result['id']);
+            $noOfPersonUseCoupon = app('Increment\Hotel\Reservation\Http\ReservationController')->countByIds(null, $result['id']);
+            $reservation = app('Increment\Hotel\Reservation\Http\ReservationController')->retrieveReservationByParams('id', $data['reservation_id'], ['id']);
+            $currDate = Carbon::now();
+            if($result !== null){
+                $inTargeted = false;
+                $inTarget = RoomCoupon::where('coupon_id', '=', $result['id'])->first();
+                if($inTarget !== null){
+                    if($inTarget['payload_value'] == 'All'){
+                        $inTargeted = true;
+                    }else if($inTarget['payload_value'] == $data['category']){
+                        $inTargeted = true;
+                    }else{
+                        $inTargeted = false;
+                    }
+                }
+                if($inTargeted === true){
+                    if($result['end_date'] > $currDate->format('Y-m-d H:i:s')){
+                        if((int)$result['limit'] > (int)$noOfPersonUseCoupon){
+                            if((int)$noOfCouponUsed < (int)$result['limit_per_customer']){
+                                $this->response['data'] = $result;
+                                app('Increment\Hotel\Reservation\Http\ReservationController')->updateByCouponCode($result['id'], $reservation[0]['id']);
+                            }else{
+                                $this->response['data'] = null;
+                                $this->response['error'] = "You've reach your maximum application of the same coupon";
+                            }
                         }else{
-                            $this->response['error'] = "You've reach your maximum application of the same coupon";
+                            $this->response['error'] = "Coupon is not available";
                         }
                     }else{
-                        $this->response['error'] = "Coupon is not available";
+                        $this->response['error'] = "Coupon was expired ";
                     }
                 }else{
-                    $this->response['error'] = "Coupon was expired ";
+                    $this->response['error'] = "This code is not applicable with this room";
                 }
             }else{
-                $this->response['error'] = "This code is not applicable with this room";
+                $this->response['error'] = "Coupon code does not exist";
             }
-		}else{
-			$this->response['error'] = "Coupon code does not exist";
-		}
+        }else{
+            $this->response['error'] = 'Coupon does not exist';
+        }
 		return $this->response();
 	}
     
@@ -185,7 +204,11 @@ class CouponController extends APIController
     }
 
     public function retrieveById($couponId){
-        return Coupon::where('id', '=', $couponId)->first();
+        $result = Coupon::where('id', '=', $couponId)->first();
+        if($result !== null){
+            $result['amount'] = number_format($result['amount'], 2);
+        }
+        return $result;
     }
     public function delete(Request $request){
         $data = $request->all();

@@ -196,24 +196,25 @@ export default {
         decimalSeparator: '.',
         showLabels: true,
         showTitle: true,
-        title: 'Trackr',
+        title: 'Mezzo Booking',
         useTextFile: false,
         useBom: true,
         // useKeysAsHeaders: true,
         filename: COMMON.APP_NAME,
-        headers: ['Name', 'Check_in', 'Check_out', 'No. of adults', 'No. of children', 'status', 'Amount']
+        headers: ['Name', 'Check-In', 'Check-Out', 'No. of adults', 'No. of children', 'Status', 'Amount']
       }
       var exportData = []
       if(this.data.length > 0){
         for (let index = 0; index < this.data.length; index++) {
           const item = this.data[index]
+          item.status = item.status.charAt(0).toUpperCase() + item.status.slice(1)
           let obj = {
-            name: item.email,
+            name: item.name,
             check_in: item.check_in,
             check_out: item.check_out,
             no_of_adults: item.details.adults,
             no_of_children: item.details.child,
-            status: item.status,
+            status: item.status.replace('_', ' '),
             amount: item.total
           }
           exportData.push(obj)

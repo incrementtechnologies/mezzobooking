@@ -30,7 +30,7 @@
       <div class="col-md-6">
         <label>Room Type</label>
         <div class="input-group">
-          <select v-model="room_type" class="form-control-custom form-control">
+          <select v-model="room_type" class="form-control-custom form-control" :disabled="status==='publish'">
             <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
             <!-- <option v-for="(type, idx) in types" :key="idx" :value="type.id" :selected="room_type.payload_value">{{type.payload_value}}</option> -->
           </select>
@@ -108,23 +108,22 @@
       <div class="col-md-6">
           <label>Regular Price</label>
           <div class="input-group">
-            <input v-model="regular_price" min="1" type="number"  @input="event => regular_price = Math.abs(event.target.value)" class="form-control-custom form-control">
+            <input v-model="regular_price" min="1" type="number"  @input="event => regular_price = Math.abs(event.target.value)" class="form-control-custom form-control" :disabled="status==='publish'">
             <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
             </select> -->
           </div>
           <div>
-            <input type="checkbox" id="checkbox" v-model="tax">
+            <input type="checkbox" id="checkbox" v-model="tax" :disabled="status==='publish'">
             <label style="font-weight: normal" for="checkbox">Including tax, utilities and all other fees.</label>
           </div>
       </div>
       <div class="col-md-6">
           <label>Price Terms</label>
           <div class="input-group">
-            <select v-model="price_terms" type="text" class="form-control-custom form-control">
-              <option value="NIGHT">Per Night</option>
-              <option value="DAY">Per Day</option>
-              <option value="MONTH">Per Month</option>
+            <select v-model="price_terms" type="text" class="form-control-custom form-control" :disabled="status==='publish'">
+              <option value="per night">Per Night</option>
+              <option value="per month">Per Month</option>
             </select>
           </div>
       </div>
@@ -133,7 +132,7 @@
       <div class="col-md-6">
         <label>Refundable Price</label>
         <div class="input-group">
-          <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control">
+          <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control" :disabled="status==='publish'">
           <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
               <option value="PHP">PHP</option>
           </select> -->
@@ -142,7 +141,7 @@
       <div class="col-md-6">
         <label>Status</label>
         <div class="input-group">
-          <select v-model="status" type="text" class="form-control-custom form-control">
+          <select v-model="roomStatus" type="text" class="form-control-custom form-control" :disabled="status === 'publish'">
             <option value="pending">Pending</option>
             <option value="publish">Publish</option>
           </select>
@@ -228,6 +227,7 @@ export default {
       isUpdate: false,
       price_id: null,
       maximum_capacity: null,
+      roomStatus: null,
       tax: 0,
       addOnPrice: []
     }
@@ -263,6 +263,7 @@ export default {
           this.non_price = response.data[0].refundable
           this.type = response.data[0].currency
           this.status = response.data[0].status
+          this.roomStatus = response.data[0].status
           this.tax = response.data[0].tax
           this.featured = response.data[0].images
           this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
@@ -345,7 +346,7 @@ export default {
     update(){
       this.$refs.searchField.returnAddOn()
       this.selectedAddOns = this.selectedAddOns.map(el => {
-        return ({title: el.title, id: el.id})
+        return ({title: el.title, id: el.id, price: el.price})
       })
       this.$refs.searchFieldFeature.returnFeature()
       this.selectedFeature = this.selectedFeature.map(el => {
@@ -401,7 +402,7 @@ export default {
       })
     },
     create(){
-      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.status === null
+      if(this.description === null || this.maximum_capacity === null || this.selectedAddOns === null || this.selectedFeature === null || this.regular_price === null || this.price_terms === null || this.title === null || this.roomStatus === null
       ){
         this.errorMessage = 'All fields are required'
         return
@@ -419,7 +420,7 @@ export default {
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
-        status: this.status
+        status: this.roomStatus
       }
       this.APIRequest('rooms/create', roomParameter).then(response => {
         if(response.data > 0){

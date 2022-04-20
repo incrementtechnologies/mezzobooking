@@ -10,6 +10,8 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
+        <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+
         <!-- Styles -->
         <style>
             html, body {
@@ -85,6 +87,11 @@
                 width: 25%;
                 float: left;
             }
+            .content{
+                border-bottom: solid 1px #eee;
+                line-height: 50px;
+                padding-left: 10px;
+            }
             .button{
                 width: 300px;
                 height: 50px;
@@ -98,6 +105,13 @@
             }
             .button:hover{
                 cursor: pointer;
+            }
+            .contents{
+                padding-left: 2%;
+            }
+            .subHeader{
+                font-style: italic;
+                font-size: 20px;
             }
             .footer{
                 width: 100%;

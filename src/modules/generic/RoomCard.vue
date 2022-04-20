@@ -8,7 +8,15 @@
           <div class="card-body">
             <div class="mb-4">
               <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%; font-size: 10px; padding: 3px;" v-if="list.category != null && list.category.payload_value !== undefined">{{list.category.payload_value}}</b></span>
-            <span style="float:right"><b>{{list.currency != null ? list.currency : 'PHP'}}{{list.regular != null ? list.regular : 0}}/{{list.label != null ? list.label : 'No Label'}}</b><i @click="$router.push('/add-rooms/'+ list.code)" class="fas fa-pencil-alt ml-2" v-if="!list.isUsed"></i></span>
+            <span style="float:right" class="d-flex">
+              <div>
+                <b>{{list.currency != null ? list.currency : 'PHP'}} {{list.tax_price != null ? list.tax_price : 0}}/<span style="text-transform: capitalize">{{list.label != null ? list.label : 'No Label'}}</span></b>
+                <p>{{list.tax === 1 ? '(Including tax & fees)' : null}}</p>
+              </div>
+              <div @click="$router.push('/add-rooms/'+ list.code)">
+                <i class="fas fa-pencil-alt ml-2" v-if="!list.isUsed"></i>
+              </div>
+            </span>
             </div>
             <p class="card-text">{{list.description !== null ? list.description : 'No description'}}</p>
             <div class="row mt-2" v-if="list.additional_info !== null">

@@ -48,12 +48,12 @@ export default {
     // },
     {
       title: 'General Rooms Limits Settings',
-      description: 'Receives email address every time there’s a login of the account.',
+      description: 'Add room limits per category',
       route: '/general-limit'
     },
     {
       title: 'General Sale Settings',
-      description: 'Receives email address every time there’s a login of the account.',
+      description: 'Shows general sale per coupon',
       route: '/general-sales'
     },
     {

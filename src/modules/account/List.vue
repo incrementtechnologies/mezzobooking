@@ -31,14 +31,20 @@
             </div>
           </td>
           <td>
-            <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information !== null ? item.account_information.cellular_number : 'N/A'}}</div>
+            <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information.cellular_number !== null ? item.account_information.cellular_number : 'N/A'}}</div>
           </td>
           <td>
             <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}
-              <i class="fas fa-pencil-alt text-darkPrimary" @click="setEditTypeIndex(index, item)" v-if="editTypeIndex !== index"></i>
+              <div @click="setEditTypeIndex(index, item)">
+                <i class="fas fa-pencil-alt text-darkPrimary" v-if="editTypeIndex !== index"></i>
+              </div>
               <span v-if="editTypeIndex === index">
-                <i class="fas fa-times text-danger" style="float: right;" @click="setEditTypeIndex(index, item)"></i>
-                <i class="fas fa-check text-primary" style="float: right;" @click="updateType(item, index)"></i>
+                <div @click="setEditTypeIndex(index, item)">
+                  <i class="fas fa-times text-danger" style="float: right;"></i>
+                </div>
+                <div @click="updateType(item, index)">
+                  <i class="fas fa-check text-primary" style="float: right;"></i>
+                </div>
                 <select class="form-control" v-model="newAccountType" style="float: right; width: 45%;">
                   <option v-for="(typeItem, typeIndex) in ['USER', 'ADMIN']" :key="typeIndex">{{typeItem}}</option>
                 </select>
@@ -67,7 +73,7 @@ import AUTH from 'src/services/auth'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'username': 'asc'}, {column: 'username', value: ''}, false)
   },
   data() {
     return {
@@ -157,7 +163,7 @@ export default {
       }
       let parameter = {
         condition: [{
-          value: filter.value + '%',
+          value: '%' + filter.value + '%',
           column: filter.column,
           clause: 'like'
         }, {
@@ -166,6 +172,7 @@ export default {
           clause: '='
         }],
         limit: this.limit,
+        sort: this.sort,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({display: 'block'})
@@ -175,7 +182,7 @@ export default {
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
           this.data = response.data
         }else{
-          this.data = null
+          this.data = []
           this.numPages = null
         }
       })

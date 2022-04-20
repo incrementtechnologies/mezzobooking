@@ -15,6 +15,7 @@ use App\Mail\NewMessage;
 use App\Mail\Ledger;
 use App\Mail\Deposit;
 use App\Mail\ReceiptSynqt;
+use App\Mail\ThankYou;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -112,7 +113,7 @@ class EmailController extends APIController
     public function receipt($accountId, $data){
         $user = $this->retrieveAccountDetails($accountId);
         if($user != null && sizeof($data) > 0){
-            Mail::to($user['email'])->send(new Receipt($user, $data[0], $this->response['timezone']));
+            Mail::to($user['email'])->send(new Receipt($user, $data, $this->response['timezone']));
             return true;
         }
         return false;
@@ -212,5 +213,17 @@ class EmailController extends APIController
         } else {
           echo $response;
         }
+    }
+
+    public function sendThankYou($accountId){
+        $user = $this->retrieveAccountDetails($accountId);
+        if($user !== null){
+            $data = array(
+                'name' => $this->retrieveNameOnly($accountId)
+            );
+            Mail::to($user['email'])->send(new ThankYou($data));
+            return true;
+        }
+        return false;
     }
 }

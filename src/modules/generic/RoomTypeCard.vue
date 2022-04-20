@@ -8,9 +8,13 @@
           </div>
           <div class="card-body">
             <div class="mb-3">
-              <span style="float:right">
-                <i class="fas fa-pencil ml-2 actionBtn" @click="$router.push('/add-room-types/'+ data.id)"></i>
-                <i class="fas fa-trash ml-2 actionBtn" @click="$parent.deleteConfirmation(data.id)"></i>
+              <span class="d-flex" style="float:right">
+                <div @click="$router.push('/add-room-types/'+ data.id)">
+                  <i class="fas fa-pencil-alt ml-2 actionBtn"></i>
+                </div>
+                <div @click="$parent.deleteConfirmation(data.id)">
+                  <i class="fas fa-trash ml-2 actionBtn"></i>
+                </div>
               </span>
               <span><b style="font-size:24px">{{data.payload_value}}</b><br>
                 Date Created: {{data.created_at}}

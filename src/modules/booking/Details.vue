@@ -1,25 +1,28 @@
 <template>
   <div style="margin:56px">
-      <div><b>Booking Details {{reservations.status}}</b></div>
+      <div><b>Booking Details</b></div>
       <div style="background-color:white; padding: 30px; margin-left:auto; margin-right:auto;">
           <div class="mb-5">
             <span>Booking #:</span>
             <b>{{reservations.code}}</b>
-            <span style="float:right;color:#CBAB58">Status: {{reservations.status}}</span>
+            <span style="float:right;color:#CBAB58">Status: <span style="text-transform: capitalize">{{reservations.status}}</span></span>
           </div>
           <p v-if="errorMessage !== null" style="color: red">{{errorMessage}}<br></p>
+          <ul v-if="responseErrors.length > 0">
+            <li v-for="(each, indx) in responseErrors" :key="indx" class="text-danger">{{each}}</li>
+          </ul>
           <div class="row">
               <div class="col-md-6">
                 <label>Start Date</label>
                 <div class="input-group">
-                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control"  :disabled="isDisable">
+                    <input type="date" v-model="reservations.check_in" class="form-control-custom form-control"  :disabled="isDisable || reservations.status === 'cancelled'">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Adults</label>
                     <div class="input-group">
-                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;" :disabled="isDisable">
+                        <input type="text" v-model="reservations.details.adults" class="form-control-custom form-control" style="border-right-style: none;" :disabled="isDisable || reservations.status === 'cancelled'">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -31,14 +34,14 @@
               <div class="col-md-6">
                 <label>End Date</label>
                 <div class="input-group">
-                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control"  :disabled="isDisable">
+                    <input type="date" v-model="reservations.check_out" class="form-control-custom form-control"  :disabled="isDisable|| reservations.status === 'cancelled'">
                 </div>
               </div>
                <div class="col-md-6">
                    <div>
                     <label>Number of Children</label>
                     <div class="input-group">
-                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable">
+                        <input type="text" v-model="reservations.details.child" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable || reservations.status === 'cancelled'">
                         <span style="background: white;" class="input-group-addon password">
                             <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         </span>
@@ -50,10 +53,10 @@
               <div class="col-md-6">
                 <label>Additional information(Optional)</label>
                 <div class="input-group">
-                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"  :disabled="isDisable"></textarea>
+                    <textarea class="form-control-custom form-control" v-model="reservations.details.additionals" style="height: 165px !important;"  :disabled="isDisable || reservations.status === 'cancelled'"></textarea>
                 </div>
               </div>
-               <div class="col-md-6">
+               <div class="col-md-6" v-if="reservations.coupon !== null">
                 <label>Coupon</label>
                 <div class="input-group">
                     <input type="text" v-model="reservations.coupon.code" class="form-control-custom form-control" style="border-right-style: none;"  :disabled="isDisable">
@@ -62,7 +65,7 @@
                     </span>
                 </div>
               </div>
-              <div class="actionBtns mt-3 ml-auto">
+              <div class="actionBtns mt-3 ml-auto mr-3" :hidden="reservations.status === 'cancelled'">
                 <button class="btn btn-primary" @click="updateChange">Apply changes</button>
               </div>
           </div>
@@ -91,15 +94,15 @@
                     <p>PHP {{each.price_with_number_of_days}}</p>
                 </div>
             </div>
-            <div v-if="reservations.coupon.code !== null">
-              <span class="ml-2">Discount - {{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}} OFF({{reservations.coupon.code}})</span>
+            <div v-if="reservations.coupon !== null">
+              <span class="ml-2">Discount - {{reservations.coupon.code}} OFF({{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}})</span>
               <!-- <i class="fa fa-pencil actionBtn"></i>
               <i class="fa fa-trash actionBtn"></i> -->
               <div class="row ml-4">
                   <div class="col-md-6">
                   </div>
                   <div class="col-md-6">
-                      <p>PHP {{reservations.coupon.amount / 100}}</p>
+                      <p>PHP {{reservations.coupon.amount}}</p>
                   </div>
               </div>
             </div>
@@ -144,7 +147,7 @@
             <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
               <div class="row">
               <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`" >
-                  <select class="form-control" v-model="item.category" :disabled="isDisable" @change="getSelectedRoom($event)">
+                  <select class="form-control" v-model="item.category" :disabled="isDisable || reservations.status === 'cancelled'" @change="getSelectedRoom($event)">
                     <option v-for="el in each.specificRooms" :key="el.id" :value="el.id">{{el.title}}</option>
                   </select>
               </div>
@@ -152,7 +155,7 @@
           </div>
         </div>
       </section>
-      <section class="actionBtns mt-3">
+      <section class="actionBtns mt-3" :hidden="reservations.status === 'cancelled'">
           <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
@@ -201,6 +204,7 @@ export default {
     isDisable: false,
     roomAssignError: null,
     errorMessage: null,
+    responseErrors: [],
     emptyAssignment: null
   }),
   methods: {
@@ -216,11 +220,12 @@ export default {
       })
     },
     retrieve(){
-      console.log('========', this.$route.params.id)
       let params = {
         id: this.$route.params.id
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('reservations/retrieve_all_details', params, response => {
+        $('#loading').css({display: 'none'})
         if(response.data !== null){
           this.reservations = response.data.reservation
           this.customer = response.data.customer
@@ -321,16 +326,23 @@ export default {
       })
       let params = {
         reservation_code: this.$route.params.id,
-        coupon: this.reservations.coupon.code,
+        coupon: this.reservations.coupon !== null ? this.reservations.coupon.code : null,
         check_in: this.summary[0].check_in,
         check_out: this.summary[0].check_out,
         heads: this.reservations.details.adults + this.reservations.details.child,
         categories: categories,
         additional: this.reservations.details.additionals
       }
-      console.log(params)
-      // this.APIRequest('reservations/update_by_admin', params, response => {
-      // })
+      $('#loading').css({display: 'block'})
+      this.APIRequest('reservations/update_by_admin', params, response => {
+        $('#loading').css({display: 'none'})
+        if(response.error.length > 0){
+          this.responseErrors = response.error
+        }else{
+          this.responseErrors = []
+        }
+        this.retrieve()
+      })
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="system-body"> 
      <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide" id="idfactory" >
       <div class="sidebar">
-        <ul class="sidebar-menu" :style="hide === 'hidden' ? 'margin-top: 50%;padding-right: 30px' : null">
+        <ul class="sidebar-menu" :style="hide === 'hidden' ? 'margin-top: 50%;padding-right: 35px' : null">
             <li class="header">
                 <span v-if="menuFlag === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
@@ -12,7 +12,6 @@
                   <i class="fas fa-check text-primary profile-status" v-if="user.status === 'VERIFIED'"></i>
                   Hi {{user.username}}!
                 </span>
-                <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="changeToggleSidebarIcon()" id="toggleIcon"></i>
             </li>
             <li v-for="(item, index) in menu" :key="index" :class="item.flag || $route.path === '/' + item.path ? ' active-menu' : ''" v-on:click="item.description === 'Logout'? logOut() : setActive(index)" v-if="(((item.accountType === user.type || item.accountType === 'ALL') && user.type !== 'ADMIN') || (user.type === 'ADMIN' && item.showOnAdmin === true)) && (item.accountStatus === 'ALL' || (user.subAccount === null || (user.subAccount !== null && user.subAccount.status === item.accountStatus))) && menuFlag === true" class="menu-holder">
               <i v-bind:class="item.icon" class=" visible" :style="item.flag || $route.path === '/' + item.path ? ' ' : ' color:gray'"></i> 
@@ -86,6 +85,7 @@
 .sidebar{
   min-height: 100vh;
   overflow-y: auto;
+  padding-right: 20px;
 }
 
 .sidebar-menu{
@@ -102,6 +102,7 @@
   padding: 15px 2% 15px 2%;
   color: #000;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .header .switch{
@@ -124,6 +125,7 @@
   width: 100%;
   height: 100px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .profile-image-holder{
@@ -156,10 +158,11 @@
 .menu-holder{
   width: 100%;
   float: left;
-  min-height: 40px;
+  display: flex;
   line-height: 40px;
   overflow: hidden;
 }
+
 
 .menu-holder .visible{
   width: 10%;

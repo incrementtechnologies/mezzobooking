@@ -157,13 +157,10 @@ export default {
       console.log('-----------', parameter)
       this.APIRequest(route, parameter, response => {
         $('#loading').css({'display': 'none'})
-        if(route === 'availabilities/create'){
-          if(response.error !== null && response.error.length > 0){
-            this.errorMessage = response.error
-          }else{
-            this.$router.push(`/${this.$route.params.parentRoute}`)
-          }
+        if(response.error !== null && response.error.length > 0){
+          this.errorMessage = response.error
         }else{
+          this.errorMessage = null
           this.$router.push(`/${this.$route.params.parentRoute}`)
         }
       })
