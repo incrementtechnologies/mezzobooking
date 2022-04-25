@@ -2,7 +2,7 @@
 @endcomponent
 <div class="holder">
     <div class="thank-you-header">
-        <h1 style="line-height: 70px;">Thank you for your order, {{$dataReceipt['reservee']}}!</h1>
+        <h1 style="line-height: 70px;">Thank you for making it Mezzo, {{$dataReceipt['reservee']}}!</h1>
         <h3>Order #: {{$dataReceipt['code']}}</h3>
         <p>Your reservation at <span style="font-weight: bold;">{{$dataReceipt['merchant']}}</span> is currently <span style="font-weight: bold;">waiting for approval</span>.</p>
     </div>
@@ -14,7 +14,7 @@
         <p>Way of Payment: <b>{{($dataReceipt['payment_method'] == 'credit' ? 'Credit/Debit Card' : $dataReceipt['payment_method'] == 'checkIn') ? 'Upon check-in' : 'Through bank'}}</b></p>
         <p>Total amount: <b>{{$dataReceipt['total']}}</b> - <b>{{$dataReceipt['payment_method'] == 'credit' ? 'Paid' : 'Not Yet Paid'}}</b></p>
         <p><i>NOTE: </i>Present this receipt upon arriving to Mezzo Hotel to verify or as your proof of transaction.</p>
-        <p><b>Thank you. God Bless</b></p>
+        <p><b>Thank you very much</b></p>
     </div>
 </div>
 @component('email.footer')
