@@ -6,15 +6,10 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
-    <div style="float:left">
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="data !== null"
-    /></div>
-    <button class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px; height: 40px !important;" @click="$router.push('/add-limits/general-limit')">Add Limits</button>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px; height: 40px !important;" @click="exportData()">Export to CSV</button>
+     <div style="float:right">
+      <button class="btn btn-secondary pull-right ml-5" style="height: 40px !important;" @click="$router.push('/add-limits/general-limit')">Add Limits</button>
+      <button v-if="data.length > 0" class="btn btn-primary pull-right" style="height: 40px !important;" @click="exportData()">Export to CSV</button>
+    </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect(item.id)">
@@ -31,6 +26,13 @@
         </tr>
       </tbody>
     </table>
+    <div style="float:right">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty General Limits!'" :action="'No activity at the moment.'"></empty>
     <confirmation

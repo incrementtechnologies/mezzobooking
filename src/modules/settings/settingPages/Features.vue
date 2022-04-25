@@ -6,16 +6,9 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
-    <div style="float:left">
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="data !== null"
-    /></div>
     <div>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-if="canUpdate === false" @click="create()">Add</button>
-      <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" v-else @click="create()">Update</button>
+      <button class="btn btn-primary pull-right" v-if="canUpdate === false" @click="create()">Add</button>
+      <button class="btn btn-primary pull-right" v-else @click="create()">Update</button>
       <input type="text" v-model="title" class="form-control" placeholder="Type feature here">
     </div>
     <table class="table table-responsive" v-if="data.length > 0">
@@ -43,6 +36,13 @@
         </div>
     </div>
     </table>
+    <div style="float:right">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
     <empty v-if="data === null || data.length === 0" :title="'Empty Features!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       ref="confirm"

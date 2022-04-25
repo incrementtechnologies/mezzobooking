@@ -1,19 +1,12 @@
 <template>
   <div style="margin: 56px;">
-    <div style="float:left">
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="data !== null"
-    /></div>
-    <button class="btn btn-primary pull-right" @click.prevent="$router.push('/add-coupons')">Add Coupon</button>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
+    <button class="btn btn-primary pull-right" @click.prevent="$router.push('/add-coupons')">Add Coupon</button>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row">
@@ -54,6 +47,13 @@
         </tr>
       </tbody>
     </table>
+    <div style="float:right">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty Coupons!'" :action="'No activity at the moment.'"></empty>
     <confirmation
@@ -259,7 +259,6 @@ $(function () {
     background-color: white;
   }
   .btn-primary{
-    margin-bottom: 25px;
     height: 40px !important;
   }
 </style>

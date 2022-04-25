@@ -6,19 +6,19 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
-    <div style="float:left">
+    <button class="btn btn-primary pull-right" @click="$router.push('/add-room-types')">Add New</button>
+    <table class="table table-responsive">
+      <div v-for="(room, idx) in data" :key="idx">
+        <RoomTypeCard :data="room"/>
+      </div>
+    </table>
+    <div style="float:right">
     <Pager
       :pages="numPages"
       :active="activePage"
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <button class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="$router.push('/add-room-types')">Add New</button>
-    <table class="table table-responsive">
-      <div v-for="(room, idx) in data" :key="idx">
-        <RoomTypeCard :data="room"/>
-      </div>
-    </table>
     <empty v-if="data.length === 0" :title="'Empty Customers!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       :title="'Confirmation Modal'"

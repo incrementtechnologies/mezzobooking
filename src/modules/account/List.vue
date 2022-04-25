@@ -1,13 +1,5 @@
 <template>
   <div>
-    <div style="float:left">
-      <Pager
-        :pages="numPages"
-        :active="activePage"
-        :limit="limit"
-        v-if="data !== null"
-      />
-    </div>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -65,6 +57,14 @@
         </tr>
       </tbody>
     </table>
+    <div style="float:right">
+      <Pager
+        :pages="numPages"
+        :active="activePage"
+        :limit="limit"
+        v-if="data !== null"
+      />
+    </div>
     <empty v-if="data.length <= 0" :title="'Empty Accounts!'" :action="'No activity at the moment.'"></empty>
   </div>
 </template>

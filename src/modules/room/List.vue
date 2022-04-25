@@ -1,22 +1,22 @@
 <template>
   <div style="margin: 56px;">
-    <div style="float:left">
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="data !== null"
-    /></div>
-    <button class="btn btn-primary pull-right" @click="$router.push('/add-rooms')">Add Room</button>
     <filter-product v-bind:category="category"
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
+    <button class="btn btn-primary pull-right" @click="$router.push('/add-rooms')">Add Room</button>
     <div v-if="data !== null && data.length > 0" v-for="(item, index) in data" :key="index">
       <RoomCard :list="item" :actionBtn="true" @isUpdate="isEdit($event)"></RoomCard>
     </div>
+    <div style="float:right">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
     <empty v-if="data === null || data.length === 0" :title="'Empty Rooms!'" :action="'No activity at the moment.'"></empty>
     <confirmation
     :title="'Confirmation Modal'"
@@ -213,7 +213,6 @@ $(function () {
     background-color: white;
   }
   .btn-primary{
-    margin-bottom: 25px;
     height: 40px !important;
   }
 </style>

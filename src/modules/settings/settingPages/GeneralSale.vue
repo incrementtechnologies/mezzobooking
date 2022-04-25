@@ -6,15 +6,10 @@
       @changeSortEvent="retrieve($event.sort, $event.filter)"
       :grid="['list']">
     </filter-product>
-    <div style="float:left">
-    <Pager
-      :pages="numPages"
-      :active="activePage"
-      :limit="limit"
-      v-if="data !== null"
-    /></div>
-    <button v-if="data.length > 0" class="btn btn-secondary pull-right ml-5" style="margin-bottom: 25px;" @click="$router.push('/add-coupons/sales')">Add Sale</button>
-    <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="exportData()">Export to CSV</button>
+    <div>
+      <button v-if="data.length > 0" class="btn btn-secondary pull-right ml-5"  @click="$router.push('/add-coupons/sales')">Add Sale</button>
+      <button v-if="data.length > 0" class="btn btn-primary pull-right" @click="exportData()">Export to CSV</button>
+    </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data">
         <tr v-for="(item, index) in data" :key="index" class="table-row" @click="redirect()">
@@ -40,6 +35,13 @@
         </tr>
       </tbody>
     </table>
+    <div style="float:right">
+    <Pager
+      :pages="numPages"
+      :active="activePage"
+      :limit="limit"
+      v-if="data !== null"
+    /></div>
     <!-- <button v-if="data.length > 0" class="btn btn-primary pull-right" style="margin-bottom: 25px;" @click="retrieve(currentSort, currentFilter, true)">See More</button> -->
     <empty v-if="data === null || data.length === 0" :title="'Empty General Sales!'" :action="'No activity at the moment.'"></empty>
     <confirmation
