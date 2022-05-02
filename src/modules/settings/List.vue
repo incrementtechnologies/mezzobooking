@@ -25,6 +25,24 @@
               </div>
             </div>
         </div>
+        <!-- <div class="row cards">
+          <div class="col-md-10 column">
+                <p>
+                  <b>Reservation can cater</b><br>
+                  Enter the number of reservation that you can cater per day
+                </p>
+            </div>
+            <div class="col-md-2 column">
+              <div class="d-flex" v-if="isEdit===false" style="justify-content:center;align-items:center">
+                <h5 class="text-warning">{{noOfReservations}}</h5>&nbsp;
+                <i class="fas fa-pencil-alt" @click="isEdit=true"></i>
+              </div>
+              <div v-else class="d-flex" style="justify-content:center;align-items:center">
+                <input class="form-control" type="number" v-model="noOfReservations"/>
+                <i class="fas fa-check" @click="handleUpdateReservations()"></i>
+              </div>
+            </div>
+        </div> -->
     </div>
 </template>
 
@@ -39,7 +57,9 @@ export default {
     return {
       common: COMMON,
       toggle: false,
-      user: AUTH.user
+      user: AUTH.user,
+      isEdit: false,
+      noOfReservations: 0
     }
   },
   computed: {
@@ -86,6 +106,38 @@ export default {
           this.toggle = response.data[0].payload_value === 'true'
         }
       })
+    },
+    handleUpdateReservations(){
+      let params = {
+        payload: 'reservations',
+        payload_value: this.noOfReservations,
+        account_id: this.user.userID
+      }
+      this.APIRequest('payloads/enable_toggle', params, response => {
+        this.isEdit = false
+        this.retrieve()
+      })
+    },
+    handleRetrieveNoOfReservations(){
+      let params = {
+        condition: [
+          {
+            column: 'account_id',
+            clause: '=',
+            value: this.user.userID
+          },
+          {
+            column: 'payload',
+            clause: '=',
+            value: 'reservations'
+          }
+        ]
+      }
+      this.APIRequest('payloads/retrieve', params, response => {
+        if(response.data.length > 0){
+          this.noOfReservations = response.data[0].payload_value
+        }
+      })
     }
   }
 }
@@ -113,5 +165,8 @@ export default {
     }
     .column .icon{
       font-size: 30px;
+    }
+    .text-warning{
+      color: $secondary !important;
     }
 </style>
