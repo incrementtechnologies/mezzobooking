@@ -364,7 +364,7 @@ export default {
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
-        status: this.status,
+        status: this.roomStatus,
         images: this.images
       }
       this.APIRequest('rooms/update_with_images', parameter).then(response => {
