@@ -60,7 +60,7 @@
                 height: 200px;
                 width: 100%;
                 float: left;
-                background: #005b96;
+                background: #003;
                 color: #fff;
                 text-align: center;
                 border-top-right-radius: 5px;
@@ -128,6 +128,6 @@
     </head>
     <body>
 		<span class="header">
-		    <img src="{{env('APP_URL')}}{{env('PACKAGE_ROUTE')}}/storage/logo/logo.png" height="60px" width="60px">
-		    <span><label class="text-secondary">{{env('APP_NAME')}}</label></span>
+		    <!-- <img src="{{env('APP_URL')}}{{env('PACKAGE_ROUTE')}}/storage/logo/logo.png" height="60px" width="60px"> -->
+		    <!-- <span><label class="text-secondary">{{env('APP_NAME')}}</label></span> -->
 		</span>

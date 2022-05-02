@@ -2,8 +2,10 @@
     <table class="table table-bordered table-responsive">
       <div class="card" style="min-height: 240px">
         <div class="card-horizontal">
-          <div class="img-square-wrapper">
-            <img class="" style="min-height: 240px; width:240px; height: 240px" :src="list.images.length > 0 ? config.BACKEND_URL + list.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
+          <div class="leftSide">
+            <div class="imageContainer">
+              <img class="image" :src="list.images.length > 0 ? config.BACKEND_URL + list.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
+            </div>
           </div>
           <div class="card-body">
             <div class="mb-4">
@@ -68,6 +70,23 @@ export default {
 
 <style lang="scss" scoped>
 @import "~assets/style/colors.scss";
+  .leftSide{
+    width: 50%;
+    height: auto;
+  }
+  .imageContainer{
+    // height: 100px;
+    position:relative;
+    overflow:hidden;
+    padding-bottom:100%;
+  }
+  .image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    position: absolute
+  }
   .card-body{
     width: 70%;
   }
