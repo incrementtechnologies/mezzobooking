@@ -98,6 +98,7 @@ Route::post($route.'/changed_password', 'EmailController@changedPassword');
 Route::post($route.'/referral', 'EmailController@referral');
 Route::post($route.'/trial', 'EmailController@trial');
 Route::post($route.'/test_sms', 'EmailController@testSMS');
+Route::post($route.'/test_temp', 'EmailController@sendTempPassword');
 
 //Notification Settings Controller
 $route = env('PACKAGE_ROUTE', '').'/notification_settings/';
