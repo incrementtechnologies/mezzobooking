@@ -16,6 +16,7 @@ use App\Mail\Ledger;
 use App\Mail\Deposit;
 use App\Mail\ReceiptSynqt;
 use App\Mail\ThankYou;
+use App\Mail\TempPassword;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -225,5 +226,17 @@ class EmailController extends APIController
             return true;
         }
         return false;
+    }
+
+    public function sendTempPassword($email, $password){
+        try {
+            $data = array(
+                'password' => $password
+            );
+            Mail::to($email)->send(new TempPassword($data));
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }
