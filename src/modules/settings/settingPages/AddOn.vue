@@ -56,7 +56,7 @@
                 </div>
                 <div class="box mr-1">
                   <p class="box-title">Default Price</p>
-                  <span><b>{{item.currency}} {{item.price}}</b></span>
+                  <span><b>{{item.currency}} {{$format.format(item.price)}}</b></span>
                 </div>
               </div>
             </div>

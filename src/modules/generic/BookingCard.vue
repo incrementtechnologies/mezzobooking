@@ -42,7 +42,7 @@
             <div style="text-align:center"><b>Children</b> <br/>{{item.details.child}}</div>
           </td>
           <td style="padding: 20px 0;">
-            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{item.total}}</div>
+            <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{$format.format(item.total)}}</div>
           </td>
         </tr>
       </tbody>

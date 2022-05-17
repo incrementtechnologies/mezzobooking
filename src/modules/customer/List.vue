@@ -24,7 +24,7 @@
                 </div>
                 <div class="box">
                   <p class="box-title">Total Spent</p>
-                  <span><b>PHP{{item.total_spent}}</b></span>
+                  <span><b>PHP{{$format.format(item.total_spent)}}</b></span>
                 </div>
               </div>
             </div>

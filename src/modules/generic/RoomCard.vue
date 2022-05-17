@@ -12,7 +12,7 @@
               <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%; font-size: 10px; padding: 3px;" v-if="list.category != null && list.category.payload_value !== undefined">{{list.category.payload_value}}</b></span>
             <span style="float:right" class="d-flex">
               <div>
-                <b>{{list.currency != null ? list.currency : 'PHP'}} {{list.tax_price != null ? list.tax_price : 0}}/<span style="text-transform: capitalize">{{list.label != null ? list.label : 'No Label'}}</span></b>
+                <b>{{list.currency != null ? list.currency : 'PHP'}} {{list.tax_price != null ? $format.format(list.tax_price) : 0}}/<span style="text-transform: capitalize">{{list.label != null ? list.label : 'No Label'}}</span></b>
                 <p>{{list.tax === 1 ? '(Including tax & fees)' : null}}</p>
               </div>
               <div @click="$router.push('/add-rooms/'+ list.code)">
