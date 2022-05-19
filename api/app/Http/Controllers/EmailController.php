@@ -17,6 +17,7 @@ use App\Mail\Deposit;
 use App\Mail\ReceiptSynqt;
 use App\Mail\ThankYou;
 use App\Mail\TempPassword;
+use App\Mail\Update;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -223,6 +224,16 @@ class EmailController extends APIController
                 'name' => $this->retrieveNameOnly($accountId)
             );
             Mail::to($user['email'])->send(new ThankYou($data));
+            return true;
+        }
+        return false;
+    }
+
+    public function sendUpdate($params){
+        $user = $this->retrieveAccountDetails($params['account_id']);
+        if($user !== null){
+            $params['name'] = $this->retrieveNameOnly($params['account_id']);
+            Mail::to($user['email'])->send(new Update($params));
             return true;
         }
         return false;
