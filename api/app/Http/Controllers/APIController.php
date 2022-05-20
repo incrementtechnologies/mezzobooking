@@ -675,6 +675,21 @@ class APIController extends Controller
     }
   }
 
+  public function retrieveName($accountId){
+    $result = app('Increment\Account\Http\AccountController')->retrieveById($accountId);
+    if(sizeof($result) > 0){
+      $result[0]['information'] = app('Increment\Account\Http\AccountInformationController')->getAccountInformation($accountId);
+      $name = null;
+      if($result[0]['information'] != null && $result[0]['information']['first_name'] !== null){
+        $name = $result[0]['information']['first_name'];
+        return $name;
+      }
+      return $result[0]['username'];
+    }else{
+      return null;
+    }
+  }
+
   public function retrieveAppDetails($result, $accountId){
     return $result;
   }

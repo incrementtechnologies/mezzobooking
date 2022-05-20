@@ -12,7 +12,7 @@
         <p>
             Your reservation is <b>{{$data['status']}}</b>        
         </p>
-        <p>Please contact us in <a href="reservation@mezzohotel.com" target="__blank">reservation@mezzohotel.com</a> for more information about your reservation.
+        <p>Please contact us in <a href="{{env('MAIL_TO_ADDRESS')}}" target="__blank">{{env('MAIL_TO_ADDRESS')}}</a> for more information about your reservation.
         <br/>
 
         <p>Christine Bernardo</p>
@@ -21,7 +21,7 @@
         <div class="icon">
             <a href="https://www.facebook.com/mezzohotelcebu" target="__blank">@icon('facebook')</a>
         </div>
-        <p>[032 (231-0777) | reservation@mezzohotel.com]</p>
+        <p>[032 (231-0777) | {{env('MAIL_TO_ADDRESS')}}]</p>
     </div>
 </div>
 

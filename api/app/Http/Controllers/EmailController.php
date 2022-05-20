@@ -17,6 +17,7 @@ use App\Mail\Deposit;
 use App\Mail\ReceiptSynqt;
 use App\Mail\ThankYou;
 use App\Mail\TempPassword;
+use App\Mail\NewReservation;
 use App\Mail\Update;
 use Illuminate\Http\Request;
 
@@ -249,5 +250,17 @@ class EmailController extends APIController
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function newReservation($accountId){
+        $user = $this->retrieveAccountDetails($accountId);
+        if($user !== null){
+            $data = array(
+                'name' => $this->retrieveName($accountId),
+            );
+            Mail::to(env('MAIL_TO_ADDRESS'))->send(new NewReservation($data));
+            return true;
+        }
+        return false;
     }
 }
