@@ -258,7 +258,7 @@ class EmailController extends APIController
             $data = array(
                 'name' => $this->retrieveName($accountId),
             );
-            Mail::to(env('MAIL_TO_ADDRESS'))->send(new NewReservation($data));
+            Mail::to(env('MAIL_TO_ADDRESS'))->cc([env('MAIL_CC_ADDRESS')])->send(new NewReservation($data));
             return true;
         }
         return false;
