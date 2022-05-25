@@ -15,8 +15,7 @@
         <p>Please contact us in <a href="{{env('MAIL_TO_ADDRESS')}}" target="__blank">{{env('MAIL_TO_ADDRESS')}}</a> for more information about your reservation.
         <br/>
 
-        <p>Christine Bernardo</p>
-        <p>Hotel Manager</p>
+        <p>Reservations</p>
 
         <div class="icon">
             <a href="https://www.facebook.com/mezzohotelcebu" target="__blank">@icon('facebook')</a>
