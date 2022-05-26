@@ -290,12 +290,16 @@ export default {
         return
       }
       if(status === 'confirmed' && temp.length > 0){
+        $('#loading').css({display: 'block'})
         this.APIRequest('reservations/update_reservation', params, response => {
+          $('#loading').css({display: 'none'})
           this.$router.push('/bookings')
           this.emptyAssignment = null
         })
       }else if(status === 'completed' || status === 'cancelled' || status === 'refunded'){
+        $('#loading').css({display: 'block'})
         this.APIRequest('reservations/update_reservation', params, response => {
+          $('#loading').css({display: 'none'})
           this.$router.push('/bookings')
           this.emptyAssignment = null
         })
