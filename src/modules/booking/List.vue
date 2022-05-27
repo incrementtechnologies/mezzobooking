@@ -39,7 +39,7 @@ import BookingCard from 'src/modules/generic/BookingCard.vue'
 import { ExportToCsv } from 'export-to-csv'
 export default {
   mounted() {
-    this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
+    this.retrieve({'created_at': 'desc'}, {column: 'created_at', value: ''}, false)
   },
   data() {
     return {

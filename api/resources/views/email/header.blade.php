@@ -57,7 +57,7 @@
                 margin-bottom: 50px;
             }
             .holder .thank-you-header{
-                height: 200px;
+                height: 100%;
                 width: 100%;
                 float: left;
                 background: #003;
@@ -65,7 +65,9 @@
                 text-align: center;
                 border-top-right-radius: 5px;
                 border-top-left-radius: 5px;
-            }
+                padding-top: 2%;
+                padding-bottom: 2%;
+            }   
             .holder .thank-you-header h1, .holder .thank-you-header h2{
                 width: 100%;
                 float: left;

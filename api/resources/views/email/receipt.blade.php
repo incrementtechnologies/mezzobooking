@@ -2,8 +2,8 @@
 @endcomponent
 <div class="holder">
     <div class="thank-you-header">
-        <img src="{{env('APP_URL')}}/public/{{env('PACKAGE_ROUTE')}}/storage/logo/logo.png" height="60px" width="60px">
-        <h1 style="line-height: 70px;">Thank you for making it Mezzo, {{$dataReceipt['reservee']}}!</h1>
+        <img src="{{env('APP_URL')}}/public/{{env('PACKAGE_ROUTE')}}/storage/logo/logo.png" height="auto" width="200px">
+        <h1 style="line-height: 40px;">Thank you for making it Mezzo, {{$dataReceipt['reservee']}}!</h1>
         <h3>Order #: {{$dataReceipt['code']}}</h3>
         <p>Your reservation at <span style="font-weight: bold;">{{$dataReceipt['merchant']}}</span> is currently <span style="font-weight: bold;">waiting for approval</span>.</p>
     </div>
