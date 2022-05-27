@@ -31,7 +31,7 @@
             </div>
           </td>
           <td>
-            <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information.cellular_number !== null ? item.account_information.cellular_number : 'N/A'}}</div>
+            <div style="text-align:center"><b>Contact Number</b> <br/>{{item.account_information.number_code}}{{item.account_information.cellular_number !== null ? item.account_information.cellular_number : 'N/A'}}</div>
           </td>
           <td>
             <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}

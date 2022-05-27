@@ -39,7 +39,7 @@ import BookingCard from 'src/modules/generic/BookingCard.vue'
 import { ExportToCsv } from 'export-to-csv'
 export default {
   mounted() {
-    this.retrieve({'created_at': 'desc'}, {column: 'created_at', value: ''}, false)
+    this.retrieve({'code': 'desc'}, {column: 'code', value: ''}, false)
   },
   data() {
     return {
@@ -54,14 +54,14 @@ export default {
       category: [{
         title: 'Sort By',
         sorting: [{
-          title: 'Code Ascending',
-          payload: 'code',
-          payload_value: 'asc',
-          type: 'text'
-        }, {
           title: 'Code Descending',
           payload: 'code',
           payload_value: 'desc',
+          type: 'text'
+        }, {
+          title: 'Code Ascending',
+          payload: 'code',
+          payload_value: 'asc',
           type: 'text'
         }, {
           title: 'CheckIn Ascending',

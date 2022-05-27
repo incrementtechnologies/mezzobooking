@@ -130,7 +130,7 @@
     </div>
     <div class="row mt-4">
       <div class="col-md-6">
-        <label>Refundable Price</label>
+        <label>Rebookable Price</label>
         <div class="input-group">
           <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control">
           <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">

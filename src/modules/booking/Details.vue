@@ -132,7 +132,7 @@
                 <div class="col-md-6">
                     <span style="font-size:12px">Customer ID: {{customer.id}}</span><br/>
                     <span style="font-weight:bold; font-size:16px">{{reservations.account_info.name}}</span>
-                    <p style="font-size:12px">{{reservations.account_info.contactNumber || 'N/A'}}</p>
+                    <p style="font-size:12px">{{reservations.account_info.number_code}}{{reservations.account_info.contactNumber || 'N/A'}}</p>
                 </div>
                 <div class="col-md-6" style="padding: 10px 0px">
                     <span>Email Address: <b>{{reservations.account_info.email}}</b></span>

@@ -15,7 +15,7 @@
               <div class="col-md-6" style="padding: 20px 0px">
                 <b><span style="font-size: 12px">Cutomer ID: {{item.id}}</span></b><br/>
                 <span style="font-size: 24px; font-weight: bold">{{item.name !== " " ? item.name : item.username}}</span><br/>
-                <span style="font-size: 12px">{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
+                <span style="font-size: 12px">{{item.number_code}}{{item.cellular_number !== null ? item.cellular_number : 'N/A'}} / {{item.email}}</span>
               </div>
               <div class="col-md-6 column">
                 <div class="box mr-1">
