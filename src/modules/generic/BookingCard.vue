@@ -21,7 +21,7 @@
           </td>
           <td class="status5">
             <i class="fas fa-circle"></i>
-            Refunded
+            Rebooked
           </td>
         </tr>
       </tbody>

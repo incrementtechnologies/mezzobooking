@@ -159,7 +159,7 @@
           <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
               <div class="col-md-6">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
-                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false && reservations.details.refundable > 0">Refund</button>
+                  <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false && reservations.details.refundable > 0">Rebook</button>
               </div>
               <div class="col-md-6">
                   <div style="float:right" >
