@@ -233,7 +233,7 @@ class EmailController extends APIController
     public function sendUpdate($params){
         $user = $this->retrieveAccountDetails($params['account_id']);
         if($user !== null){
-            $params['name'] = $this->retrieveNameOnly($params['account_id']);
+            $params['name'] = $this->retrieveName($params['account_id']);
             Mail::to($user['email'])->send(new Update($params));
             return true;
         }
