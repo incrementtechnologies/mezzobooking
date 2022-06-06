@@ -18,6 +18,7 @@ use App\Mail\ReceiptSynqt;
 use App\Mail\ThankYou;
 use App\Mail\TempPassword;
 use App\Mail\NewReservation;
+use App\Mail\BankDetails;
 use App\Mail\Update;
 use Illuminate\Http\Request;
 
@@ -262,5 +263,9 @@ class EmailController extends APIController
             return true;
         }
         return false;
+    }
+
+    public function sendBankDetails($params){
+        return Mail::to(env('MAIL_TO_ADDRESS'))->send(new BankDetails($params));
     }
 }
