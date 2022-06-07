@@ -16,7 +16,7 @@
                 <p>{{list.tax === 1 ? '(Including tax & fees)' : null}}</p>
               </div>
               <div @click="$router.push('/add-rooms/'+ list.code)">
-                <i class="fas fa-pencil-alt ml-2" v-if="!list.isUsed"></i>
+                <i class="fas fa-pencil-alt ml-2"></i>
               </div>
             </span>
             </div>
