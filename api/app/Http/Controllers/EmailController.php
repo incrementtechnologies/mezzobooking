@@ -266,6 +266,10 @@ class EmailController extends APIController
     }
 
     public function sendBankDetails($params){
-        return Mail::to(env('MAIL_TO_ADDRESS'))->send(new BankDetails($params));
+        $user = $this->retrieveAccountDetails($accountId);
+        if($user !== null){
+            return Mail::to($user['email'])->send(new BankDetails($params));
+        }
+        return false;
     }
 }
