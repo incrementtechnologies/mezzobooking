@@ -266,7 +266,7 @@ class EmailController extends APIController
     }
 
     public function sendBankDetails($params){
-        $user = $this->retrieveAccountDetails($accountId);
+        $user = $this->retrieveAccountDetails($params['account_id']);
         if($user !== null){
             return Mail::to($user['email'])->send(new BankDetails($params));
         }
