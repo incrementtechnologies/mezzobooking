@@ -8,13 +8,25 @@
     <br>
     Click the button below to:
     <br>
-    <a href="{{env('APP_FRONT_END_URL')}}/reset_password/{{$user->username}}/{{$user->code}}">
-        <button class="button">Reset</button>
-    </a>
+    @if($user->account_type === 'ADMIN')
+        <a href="{{env('APP_FRONT_END_URL_ADMIN')}}/reset_password/{{$user->username}}/{{$user->code}}">
+            <button class="button">Reset</button>
+        </a>
+    @else
+        <a href="{{env('APP_FRONT_END_URL_CUSTOMER')}}/reset_password/{{$user->username}}/{{$user->code}}">
+            <button class="button">Reset</button>
+        </a>
+    @endif
     <br>
 </span>
-<span class="text">
-    If you did not make this change, please <a href="{{env('APP_FRONT_END_URL')}}/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
-</span>
+@if($user->account_type === 'ADMIN')
+    <span class="text">
+        If you did not make this change, please <a href="{{env('APP_FRONT_END_URL_ADMIN')}}/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
+    </span>
+@else
+    <span class="text">
+        If you did not make this change, please <a href="{{env('APP_FRONT_END_URL_CUSTOMER')}}/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
+    </span>
+@endif
 @component('email.footer')
 @endcomponent
