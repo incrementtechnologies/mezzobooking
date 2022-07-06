@@ -35,8 +35,8 @@ class EmailController extends APIController
     public function resetPassword($id){
     	$user = $this->retrieveAccountDetails($id);
     	if($user != null){
-    		Mail::to($user['email'])->send(new ResetPassword($user, $this->response['timezone']));
-    		return true;
+    		$res = Mail::to($user['email'])->send(new ResetPassword($user, $this->response['timezone']));
+    		return $res;
     	}
     	return false;
     }
