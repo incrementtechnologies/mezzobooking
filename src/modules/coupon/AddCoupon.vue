@@ -171,8 +171,8 @@ export default {
     DatePicker
   },
   mounted(){
-    console.log(this.$route.params.code !== 'sales', this.$route.hash !== undefined)
-    if(this.$route.params.code !== 'sales' && this.$route.hash !== undefined){
+    console.log(this.$route.params.code !== 'sales', this.$route.hash)
+    if(this.$route.params.code !== 'sales' && this.$route.hash !== ''){
       this.retrieveByCode()
     }
     this.retrieveRoomTypes()
