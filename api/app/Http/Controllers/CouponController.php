@@ -134,14 +134,14 @@ class CouponController extends APIController
             $currDate = Carbon::now();
             if($result !== null){
                 $inTargeted = false;
-                $inTarget = RoomCoupon::where('coupon_id', '=', $result['id'])->first();
-                if($inTarget !== null){
+                for ($i=0; $i <= sizeof($data['category'])-1; $i++) { 
+                    $item = $data['category'][$i];
+                    $inTarget = RoomCoupon::where('coupon_id', '=', $result['id'])->first();
                     if($inTarget['payload_value'] == 'All'){
                         $inTargeted = true;
-                    }else if($inTarget['payload_value'] == $data['category']){
+                    }
+                    if($inTarget['payload_value']  == $item['category']){
                         $inTargeted = true;
-                    }else{
-                        $inTargeted = false;
                     }
                 }
                 if($inTargeted === true){

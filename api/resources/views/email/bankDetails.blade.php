@@ -2,6 +2,7 @@
 @endcomponent
 
 <div class="holder">
+    <img src="{{env('APP_URL')}}/public/{{env('PACKAGE_ROUTE')}}/storage/logo/logo.png" height="auto" width="200px">
     <div class="contents">
         <p>We have an update regarding your reservation with reservation code: {{$data['code']}} 
         </p><br/>
