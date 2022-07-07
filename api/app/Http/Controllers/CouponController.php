@@ -206,7 +206,9 @@ class CouponController extends APIController
     public function retrieveById($couponId){
         $result = Coupon::where('id', '=', $couponId)->first();
         if($result !== null){
-            $result['amount'] = number_format($result['amount'], 2);
+            if($result['type'] == 'fixed'){
+                $result['amount'] = number_format($result['amount'], 2);
+            }
         }
         return $result;
     }

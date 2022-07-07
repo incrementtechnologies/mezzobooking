@@ -205,8 +205,8 @@ export default {
           this.APIRequest('mezzo/update', {id: this.synqt, status: this.status}).then(response => {
             console.log(response)
           })
-          this.retrieve(this.currentSort, this.currentFilter, false)
         }
+        this.retrieve(this.currentSort, this.currentFilter, false)
       })
     },
     confirmRemove(id){
