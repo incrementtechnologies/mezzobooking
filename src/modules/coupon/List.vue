@@ -35,7 +35,7 @@
                 </div>
               </div>
               <div class="col-md-4 d-flex" style="width: 270px;">
-                <div @click="$router.push('/add-coupons/'+ item.code)">
+                <div @click="navigate(item.code)">
                   <i class="fas fa-pencil-alt" style="color:#003"></i>
                 </div>
                 <div @click.prevent="confirmRemove(item.id)">
@@ -70,6 +70,7 @@
 import AUTH from 'src/services/auth'
 import moment from 'moment'
 import Pager from 'src/components/increment/generic/pager/PagerEnhance.vue'
+import ROUTER from 'src/router'
 export default {
   mounted() {
     this.retrieve({'code': 'asc'}, {column: 'code', value: ''}, false)
@@ -231,6 +232,10 @@ export default {
           this.retrieve(this.currentSort, this.currentFilter, false)
         }
       })
+    },
+    navigate(code){
+      console.log('<><><<>>', code)
+      ROUTER.push('/add-coupons/' + code)
     }
   }
 }

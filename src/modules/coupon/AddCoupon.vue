@@ -171,7 +171,8 @@ export default {
     DatePicker
   },
   mounted(){
-    if(this.$route.params.code !== 'sales' && this.$route.params.code !== undefined){
+    console.log(this.$route.params.code !== 'sales', this.$route.hash !== undefined)
+    if(this.$route.params.code !== 'sales' && this.$route.hash !== undefined){
       this.retrieveByCode()
     }
     this.retrieveRoomTypes()
@@ -227,7 +228,7 @@ export default {
       }
     },
     retrieveByCode(){
-      let couponCode = this.$route.params.code
+      let couponCode = this.$route.hash
       let parameters = {
         condition: [{
           column: 'code', value: couponCode, clause: '='
