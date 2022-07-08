@@ -171,8 +171,8 @@ export default {
     DatePicker
   },
   mounted(){
-    console.log(this.$route.params.code !== 'sales', this.$route.hash)
-    if(this.$route.params.code !== 'sales' && this.$route.hash !== ''){
+    console.log(this.$route.params.code !== 'sales', this.$route.params)
+    if(this.$route.params.code !== 'sales' && this.$route.params.code !== undefined){
       this.retrieveByCode()
     }
     this.retrieveRoomTypes()
@@ -195,6 +195,11 @@ export default {
       }
       if(this.end_date < this.start_date){
         this.errorMessage = 'Invalid start-date or end-date'
+        return
+      }
+      let spChars = /^[0-9a-zA-Z]+$/g
+      if(!spChars.test(this.code)){
+        this.errorMessage = 'Invalid coupon code, must not contain special characters'
         return
       }
       let parameter = {
@@ -228,7 +233,7 @@ export default {
       }
     },
     retrieveByCode(){
-      let couponCode = this.$route.hash
+      let couponCode = this.$route.params.code
       let parameters = {
         condition: [{
           column: 'code', value: couponCode, clause: '='
