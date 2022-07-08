@@ -21,7 +21,7 @@
 </span>
 @if($user->account_type === 'ADMIN')
     <span class="text">
-        If you did not make this change, please <a href="{{env('APP_FRONT_END_URL_ADMIN')}}#/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
+        If you did not make this change, please <a href="{{env('APP_FRONT_END_URL_ADMIN')}}/reset_password/{{$user->username}}/{{$user->code}}">reset</a> your password to secure your account and reply to this message to notify us.
     </span>
 @else
     <span class="text">
