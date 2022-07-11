@@ -97,23 +97,27 @@ class CouponController extends APIController
             'type' => $data['type'],
             'updated_at' => Carbon::now(),
         ));
-        $exist = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
-        if(sizeOf($exist) > 0) {
-            $targets = json_decode($data['selectedType']);
-            for ($i=0; $i <= sizeof($targets) -1 ; $i++) { 
-                $item = $targets[$i];
-                $existTarget = RoomCoupon::where('payload_value', '=', $item->id)->where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->first();
-                if($existTarget === null){
-                    RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->update(array(
-                        'deleted_at' => Carbon::now()
-                    ));
-                    $parameter = array(
-                        'payload' => 'target_room',
-                        'payload_value' => $item->id,
-                        'coupon_id' => $data['id']
-                    );
-                    RoomCoupon::create($parameter);
-                }
+        $coupons = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
+        $targets = json_decode($data['selectedType']);
+        for ($i=0; $i <= sizeof($targets)-1 ; $i++) { 
+            $item = $targets[$i];
+            $temp = RoomCoupon::where('coupon_id', '=', $data['id'])->where('payload_value', '=', $item->id)->where('deleted_at', '=', null)->first();
+            if($temp == null){
+                $parameter = array(
+                    'payload' => 'target_room',
+                    'payload_value' => $item->id,
+                    'coupon_id' => $data['id']
+                );
+                RoomCoupon::create($parameter);
+            }
+        }
+        for ($a=0; $a <= sizeof($coupons)-1 ; $a++) { 
+            $each = $coupons[$a];
+            $exist = collect($targets)->where('id', $each['payload_value'])->all();
+            if(sizeof($exist) <= 0){
+                RoomCoupon::where('coupon_id', '=', $data['id'])->where('payload_value', '=', $each['payload_value'])->where('deleted_at', '=', null)->update(array(
+                    'deleted_at' => Carbon::now()
+                ));
             }
         }
         $this->response['data'] = $res;
