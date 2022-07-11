@@ -12,7 +12,7 @@ class DashboardController extends APIController
         $currDate  = Carbon::now();
         $months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         $totalBookings = app('Increment\Hotel\Room\Http\CartController')->getTotalBookings($currDate);
-        $totalSales = app('Increment\Hotel\Reservation\Http\ReservationController')->retrieveSaleByCoupon(null, null);
+        $totalSales = app('Increment\Hotel\Reservation\Http\ReservationController')->retrieveSaleByCoupon('status', 'completed');
         $dates = app('Increment\Hotel\Room\Http\CartController')->getMaxMinDates();
         $bookings = app('Increment\Hotel\Room\Http\CartController')->getTotalBookings(null);
         $totalBookingsOfYear = 0;
