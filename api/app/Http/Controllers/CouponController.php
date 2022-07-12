@@ -99,7 +99,7 @@ class CouponController extends APIController
         ));
         $coupons = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
         $targets = json_decode($data['selectedType']);
-        if(sizeof($data['selectedType']) > 0){
+        if(sizeof($targets) > 0){
             for ($i=0; $i <= sizeof($targets)-1 ; $i++) { 
                 $item = $targets[$i];
                 $temp = RoomCoupon::where('coupon_id', '=', $data['id'])->where('payload_value', '=', $item->id)->where('deleted_at', '=', null)->first();
