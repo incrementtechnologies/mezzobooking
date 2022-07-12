@@ -97,9 +97,9 @@ class CouponController extends APIController
             'type' => $data['type'],
             'updated_at' => Carbon::now(),
         ));
+        $coupons = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
+        $targets = json_decode($data['selectedType']);
         if(sizeof($data['selectedType']) > 0){
-            $coupons = RoomCoupon::where('coupon_id', '=', $data['id'])->where('deleted_at', '=', null)->get();
-            $targets = json_decode($data['selectedType']);
             for ($i=0; $i <= sizeof($targets)-1 ; $i++) { 
                 $item = $targets[$i];
                 $temp = RoomCoupon::where('coupon_id', '=', $data['id'])->where('payload_value', '=', $item->id)->where('deleted_at', '=', null)->first();
@@ -121,9 +121,9 @@ class CouponController extends APIController
                     ));
                 }
             }
+            $this->response['data'] = $res;
+            return $this->response();
         }
-        $this->response['data'] = $res;
-        return $this->response();
     }
 
     public function apply(Request $request){
