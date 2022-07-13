@@ -20,6 +20,7 @@ use App\Mail\TempPassword;
 use App\Mail\NewReservation;
 use App\Mail\BankDetails;
 use App\Mail\Update;
+use App\Mail\MyBookingUpdate;
 use Illuminate\Http\Request;
 
 class EmailController extends APIController
@@ -270,6 +271,16 @@ class EmailController extends APIController
         if($user !== null){
             return Mail::to($user['email'])->send(new BankDetails($params));
         }
+        return false;
+    }
+
+    public function sendMyBookingUpdate($params){
+        $user = $this->retrieveAccountDetails($params['account_id']);
+        if($use !== null){
+            $params['from_email'] = $user['email'];
+            Mail::to(env('MAIL_TO_ADDRESS'))->send(new MyBookingUpdate($params));
+            return true;
+        } 
         return false;
     }
 }
