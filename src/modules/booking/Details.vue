@@ -88,18 +88,15 @@
             <div class="row ml-4" v-for="(each, idx) in summary" :key="idx"> 
                 <div class="col-md-6">
                     <span>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</span>
-                    <!-- <i class="fa fa-pencil actionBtn"></i> -->
                 </div>
                 <div class="col-md-6">
                     <p>PHP {{each.price_with_number_of_days}}</p>
                 </div>
             </div>
             <div v-if="reservations.coupon !== null">
-              <span class="ml-2">Discount - {{reservations.coupon.code}} OFF({{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}})</span>
-              <!-- <i class="fa fa-pencil actionBtn"></i>
-              <i class="fa fa-trash actionBtn"></i> -->
               <div class="row ml-4">
                   <div class="col-md-6">
+                    <span>Discount - {{reservations.coupon.code}} OFF({{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}})</span>
                   </div>
                   <div class="col-md-6">
                       <p>PHP {{reservations.coupon.amount}}</p>
@@ -157,10 +154,10 @@
       </section>
       <section class="actionBtns mt-3" :hidden="reservations.status === 'cancelled'">
           <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
-              <div class="col-md-6">
+              <div class="col-md-6 d-flex">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
                   <div v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
-                    <button class="btn btn-danger  footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false &&  parseInt(each.rooms[0].refundable) > 0">Rebook</button>
+                    <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false &&  parseInt(each.rooms[0].refundable) > 0">Rebook</button>
                   </div>
               </div>
               <div class="col-md-6">
