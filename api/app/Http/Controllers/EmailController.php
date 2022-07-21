@@ -278,7 +278,8 @@ class EmailController extends APIController
         $user = $this->retrieveAccountDetails($params['account_id']);
         if($use !== null){
             $params['from_email'] = $user['email'];
-            Mail::to(env('MAIL_TO_ADDRESS'))->send(new MyBookingUpdate($params));
+            $subject = 'Reservation Code: '.$params['code'] - $params['status'];
+            Mail::to(env('MAIL_TO_ADDRESS'))->send(new MyBookingUpdate($params, $subject));
             return true;
         } 
         return false;

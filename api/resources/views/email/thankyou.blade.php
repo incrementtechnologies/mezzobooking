@@ -16,9 +16,11 @@
         <p>We hope you had a pleasant stay with Mezzo and that your next destination will likewise be wonderful. Until next time!</p>
         <br/>
 
-        <p>Your Mezzo Family</p><br/>
+        <!-- <p>Your Mezzo Family</p><br/>
         <p>Christine Bernardo</p>
-        <p>Hotel Manager</p>
+        <p>Hotel Manager</p> -->
+
+        <p>Reservations</p>
 
         <div class="icon">
             <a href="https://www.facebook.com/mezzohotelcebu" target="__blank">@icon('facebook')</a>

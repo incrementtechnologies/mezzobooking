@@ -3,22 +3,23 @@
 
 <div class="holder">
     <div class="contents">
-        <p>Dear {{$user['name']}},</p><br/>
-        
+        <p>Dear Admin,</p><br/>
         <p class="subHeader">Thank you for making it Mezzo!</p><br/>
-        <p>We are delighted that you chose Mezzo Hotel as your temporary home from [Date of Stay]. Our top priority is making sure our guests feel safe and comfortable during their stay—we hope Mezzo's above and beyond service helped achieve that. 
+        <p>We have an update regarding reservation code: {{$data['code']}}
         </p>
 
-        <p>If you loved your Mezzo experience, please rate us and <a href="https://www.tripadvisor.com.ph/Hotel_Review-g298460-d12301041-Reviews-Mezzo_Hotel-Cebu_City_Cebu_Island_Visayas.html" target="__blank">leave a review</a>. 
-            If we fell short on your expectations, kindly <a href="reservation@mezzohotel.com" target="__blank">send us a message</a> so we can make it up to you. Your feedback means the world to us.
-        </p>
+        <p>Your reservation is <b>{{$data['status']}}</b></p><br/>
+        <p>Booking Status: 	{{$data['booking_status']}}</p>
+        <p>Guest Name: 	{{$data['name']}}</p>
+        <p>Arrival Date: 	{{$data['check_in']}}</p>
+        <p>Departure Date: 	{{$data['check_out']}}</p>
+        <p>Number of Night(s): {{$data['nights']}}</p>
+        <p>Number of Guest(s): {{$data['adults']}} Adults, {{$data['children']}} Child</p>
+        <p>Room Type:		{{$data['room_types']}}</p>
+        <p>Room Charges: 	PHP {{$data['total']}}</p>
+        <p>Inclusions: 		{{$data['add_ons']}}</p><br/>
 
-        <p>We hope you had a pleasant stay with Mezzo and that your next destination will likewise be wonderful. Until next time!</p>
-        <br/>
-
-        <p>Your Mezzo Family</p><br/>
-        <p>Christine Bernardo</p>
-        <p>Hotel Manager</p>
+        <p>Reservations</p>
 
         <div class="icon">
             <a href="https://www.facebook.com/mezzohotelcebu" target="__blank">@icon('facebook')</a>

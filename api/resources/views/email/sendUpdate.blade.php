@@ -22,7 +22,7 @@
             <p>Inclusions: 		{{$data['add_ons']}}</p>
         @else
             <p>We have an update regarding your reservation with reservation code: {{$data['code']}}</p>
-            <p>This is to inform you that your refund request has been processed. Turnaround time varies per issuing bank. If not yet posted, kindly contact your issuing bank.</p>
+            <p>This is to inform you that your rebook request has been processed. Turnaround time varies per issuing bank. If not yet posted, kindly contact your issuing bank.</p>
             <p>If you need more information, please feel free to email us at <a href="reservation@mezzohotel.com" target="__blank">reservation@mezzohotel.com</a> or reach out through Viber/Whatsapp +63 917 139 7204 and we would be happy to assist.</p>
         @endif
 

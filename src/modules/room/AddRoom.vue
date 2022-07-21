@@ -22,7 +22,7 @@
     <p style="color:red">{{errorMessage}}</p>
     <div class="row mt-4">
       <div class="col-md-6">
-        <label>Title</label>
+        <label>Room Number</label>
         <div class="input-group">
           <input v-model="title" type="text" class="form-control-custom form-control">
         </div>
