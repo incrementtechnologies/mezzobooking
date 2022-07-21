@@ -31,6 +31,6 @@ class ThankYou extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->subject)->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))->view('email.myBookingUpdate');
+        return $this->subject('Cancelled Bookin')->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))->view('email.myBookingUpdate');
     }
 }
