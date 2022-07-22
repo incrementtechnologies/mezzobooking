@@ -169,7 +169,6 @@
 
         #table td,
         #table th {
-            padding: 8px;
             padding-left: 50px;
         }
         tr {

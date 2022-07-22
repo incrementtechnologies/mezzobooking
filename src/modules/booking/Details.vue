@@ -90,7 +90,7 @@
                     <span>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</span>
                 </div>
                 <div class="col-md-6">
-                    <p>PHP {{each.price_with_number_of_days}}</p>
+                    <p>PHP {{$format.format(each.price_with_number_of_days)}}</p>
                 </div>
             </div>
             <div v-if="reservations.coupon !== null">
@@ -99,7 +99,8 @@
                     <span>Discount - {{reservations.coupon.code}} OFF({{reservations.coupon.amount}}{{reservations.coupon.type === 'percentage' ? '%' : ''}})</span>
                   </div>
                   <div class="col-md-6">
-                      <p>PHP {{reservations.coupon.amount}}</p>
+                      <p v-if="reservations.coupon.type === 'percentage'">{{reservations.coupon.amount}}%</p>
+                      <p v-else>PHP {{$format.format(reservations.coupon.amount)}}</p>
                   </div>
               </div>
             </div>
@@ -118,7 +119,7 @@
                     <span style="font-weight: bold; font-size:16px">Total</span>
                 </div>
                 <div class="col-md-6">
-                    <p style="font-weight: bold; font-size:16px">PHP {{reservations.total}}</p>
+                    <p style="font-weight: bold; font-size:16px">PHP {{$format.format(reservations.total)}}</p>
                 </div>
             </div>
         </section>

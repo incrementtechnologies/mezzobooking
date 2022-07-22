@@ -26,12 +26,20 @@
             </div>
           </div>
           <div class="col-md-6">
-            <label>Number Limits</label>
+            <label>Number of Rooms</label>
             <div class="input-group">
                 <input v-model="limit" type="number" min="1" @input="event => limit = Math.abs(event.target.value)" class="form-control-custom form-control">
             </div>
           </div>
         </div>
+        <!-- <div class="row mb-3">
+          <div class="col-md-12">
+            <label>Limits of Reservations per day</label>
+            <div class="input-group">
+                <input v-model="limitPerday" type="number" min="1" @input="event => limitPerday = Math.abs(event.target.value)" class="form-control-custom form-control">
+            </div>
+          </div>
+        </div> -->
         <div class="row">
           <div class="col-md-6">
             <label>Start Date</label>
@@ -72,7 +80,8 @@ export default {
     limit: null,
     errorMessage: null,
     routeParams: null,
-    data: null
+    data: null,
+    limitPerday: null
   }),
   methods: {
     retrieve(){
@@ -129,14 +138,23 @@ export default {
         this.errorMessage = 'Invalid date range'
         return
       }
-      if(this.limit < 0){
-        this.errorMessage = 'Invalid limit'
+      if(this.limit <= 0){
+        this.errorMessage = 'Number of rooms must no be less that or equal to zero'
         return
       }
+      // if(this.limitPerday <= 0){
+      //   this.errorMessage = 'Limit of reservation per day must no be less than or equal to zero'
+      //   return
+      // }
+      // if(this.limitPerday > this.limit){
+      //   this.errorMessage = 'Limit of reservation per day must not be greater that number of rooms'
+      //   return
+      // }
       let parameter = {
         payload: 'room_type',
         payload_value: this.routeParams,
         limit: this.limit,
+        // limitPerDay: this.limitPerday,
         start_date: this.start_date,
         end_date: this.end_date,
         status: 'available'
