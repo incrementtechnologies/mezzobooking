@@ -1,4 +1,6 @@
 <template>
+<div>
+  <p class="text-danger">{{imageError}}</p>
   <div class="row ml-1">
       <div class="column" v-for="(image, idx) in features" :key="idx">
         <div class="container">
@@ -19,6 +21,7 @@
         </div>
       </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -61,6 +64,7 @@ export default {
         this.image = null
         return
       }
+      console.log('[IMAGE]', this.image)
       let formData = new FormData()
       formData.append('file', this.image)
       formData.append('file_url', this.image.name.replace(' ', '_'))
@@ -69,6 +73,7 @@ export default {
       $('#loading').css({'display': 'block'})
       axios.post(this.config.BACKEND_URL + '/images/upload?token=' + AUTH.tokenData.token, formData).then(response => {
         $('#loading').css({'display': 'none'})
+        this.imageError = null
         let temp = {
           url: URL.createObjectURL(this.image)
         }

@@ -13,16 +13,15 @@
         <b class="actionBtn" v-if="$route.params.code !== undefined && $route.params.name === undefined" @click="update()">Update</b>
       </span>
     </span>
-    <span style="float:right">
+    <!-- <span style="float:right">
       <span>
         <b class="mr-5 actionBtn" v-if="$route.params.code != undefined" @click="$router.push('/set-availability/' + $route.params.code + '/' + status)">Set Schedules & Limits</b>
-        <!-- <b class="mr-5 actionBtn" v-else @click="$router.push('/set-availability')">Set Schedules & Limits</b> -->
       </span>
-    </span>
+    </span> -->
     <p style="color:red">{{errorMessage}}</p>
     <div class="row mt-4">
       <div class="col-md-6">
-        <label>Room Number</label>
+        <label>Title</label>
         <div class="input-group">
           <input v-model="title" type="text" class="form-control-custom form-control">
         </div>
@@ -30,9 +29,8 @@
       <div class="col-md-6">
         <label>Room Type</label>
         <div class="input-group">
-          <select v-model="room_type" class="form-control-custom form-control" :disabled="status==='publish'">
+          <select v-model="room_type" class="form-control-custom form-control" :disabled="status==='publish'" @change="retrieveAvailability($event)">
             <option v-for="(type, idx) in types" :key="idx" :value="type.id">{{type.payload_value}}</option>
-            <!-- <option v-for="(type, idx) in types" :key="idx" :value="type.id" :selected="room_type.payload_value">{{type.payload_value}}</option> -->
           </select>
         </div>
       </div>
@@ -130,14 +128,25 @@
     </div>
     <div class="row mt-4">
       <div class="col-md-6">
+        <label>Maximum Capacity</label>
+        <div class="input-group">
+          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>Number of Rooms</label>
+        <div class="input-group">
+          <input v-model="numberOfRooms" min="1" type="number"  @input="event => numberOfRooms = Math.abs(event.target.value)" class="form-control-custom form-control">
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <!-- <div class="col-md-6">
         <label>Rebookable Price</label>
         <div class="input-group">
           <input v-model="non_price" type="number"  @input="event => non_price = Math.abs(event.target.value)" min="0" class="form-control-custom form-control">
-          <!-- <select v-model="type" class="form-control" style="width:102px; height:60px">
-              <option value="PHP">PHP</option>
-          </select> -->
         </div>
-      </div>
+      </div> -->
       <div class="col-md-6">
         <label>Status</label>
         <div class="input-group">
@@ -145,14 +154,6 @@
             <option value="pending">Pending</option>
             <option value="publish">Publish</option>
           </select>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <label>Maximum Capacity</label>
-        <div class="input-group">
-          <input v-model="maximum_capacity" min="1" type="number"  @input="event => maximum_capacity = Math.abs(event.target.value)" class="form-control-custom form-control">
         </div>
       </div>
     </div>
@@ -165,9 +166,6 @@
         <button class="btn btn-danger footerBtn" v-if="$route.params.code === undefined && $route.params.name === undefined" @click="$router.push('/rooms')">Cancel</button>
         <button class="btn btn-danger footerBtn" v-if="$route.params.code !== undefined && $route.params.name === undefined" @click="showDeleteConfirmation($route.params.code)">Delete</button>
       </div>
-      <!-- <div class="col-md-2" style="margin-left: 4%">
-        <button class="btn btn-secondary footerBtn" @click="create()">Save</button>
-      </div> -->
     </div>
     <Confirmation
       ref="confirm"
@@ -212,7 +210,6 @@ export default {
       title: null,
       room_type: null,
       type: null,
-      non_price: null,
       status: null,
       errorMessage: null,
       feature: [],
@@ -229,7 +226,8 @@ export default {
       maximum_capacity: null,
       roomStatus: null,
       tax: 0,
-      addOnPrice: []
+      addOnPrice: [],
+      numberOfRooms: 0
     }
   },
   components: {
@@ -260,10 +258,10 @@ export default {
           this.price_terms = response.data[0].label
           this.title = response.data[0].title
           this.type = response.data[0].label
-          this.non_price = response.data[0].refundable
           this.type = response.data[0].currency
           this.status = response.data[0].status
           this.roomStatus = response.data[0].status
+          this.numberOfRooms = response.data[0].room_qty
           this.tax = response.data[0].tax
           this.featured = response.data[0].images
           this.$refs.searchField.add_ons = Object.values(response.data[0].additional_info)[0]
@@ -330,6 +328,19 @@ export default {
         this.addOns = response.data
       })
     },
+    retrieveAvailability(event){
+      console.log('<><><<><>', event.target.value)
+      let params = {
+        id: event.target.value
+      }
+      $('#loading').css({'display': 'block'})
+      this.APIRequest('availabilities/retrieve_by_code', params, response => {
+        $('#loading').css({'display': 'none'})
+        if(response.data.length > 0){
+          this.numberOfRooms = response.data[0].limit
+        }
+      })
+    },
     // to be finalized
     onSelect(data) {
       this.selectedFeature = data.map(el => {
@@ -365,21 +376,24 @@ export default {
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
         status: this.roomStatus,
-        images: this.images
+        images: this.images,
+        room_qty: this.numberOfRooms
       }
       this.APIRequest('rooms/update_with_images', parameter).then(response => {
+        this.errorMessage = null
         if(response.data >= 1 && this.price_id != null){
           let pricingParameter = {
             id: this.price_id,
             account_id: this.user.userID,
             room_id: response.data,
             regular: this.regular_price,
-            refundable: this.non_price,
+            refundable: 0,
             currency: this.type,
             tax: this.tax === true ? 1 : 0,
             label: this.price_terms,
             addOnPrice: this.addOnPrice,
-            category_id: this.room_type
+            category_id: this.room_type,
+            room_qty: this.numberOfRooms
           }
           this.APIRequest('pricings/update', pricingParameter).then(response => {
             console.log('[response]', response)
@@ -389,6 +403,9 @@ export default {
               console.log('[Error in Updating Pricing]')
             }
           })
+        }
+        if(response.error !== null){
+          this.errorMessage = response.error
         }
       })
     },
@@ -420,7 +437,8 @@ export default {
         category: this.room_type,
         description: this.description,
         additional_info: JSON.stringify({add_ons: this.selectedAddOns, feature: this.selectedFeature}),
-        status: this.roomStatus
+        status: this.roomStatus,
+        room_qty: this.numberOfRooms
       }
       this.APIRequest('rooms/create', roomParameter).then(response => {
         if(response.data > 0){
@@ -428,12 +446,13 @@ export default {
             account_id: this.user.userID,
             room_id: response.data,
             regular: this.regular_price,
-            refundable: this.non_price,
+            refundable: 0,
             tax: this.tax === true ? 1 : 0,
             currency: 'PHP',
             label: this.price_terms,
             category: this.room_type,
-            addOnPrice: this.addOnPrice
+            addOnPrice: this.addOnPrice,
+            numberOfRooms: this.numberOfRooms
           }
           let imageParameter = {
             room_id: response.data,

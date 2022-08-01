@@ -32,14 +32,14 @@
             </div>
           </div>
         </div>
-        <!-- <div class="row mb-3">
+        <div class="row mb-3">
           <div class="col-md-12">
             <label>Limits of Reservations per day</label>
             <div class="input-group">
                 <input v-model="limitPerday" type="number" min="1" @input="event => limitPerday = Math.abs(event.target.value)" class="form-control-custom form-control">
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="row">
           <div class="col-md-6">
             <label>Start Date</label>
@@ -103,6 +103,7 @@ export default {
         if(response.data.length > 0){
           this.data = response.data[0]
           this.limit = this.data.limit
+          this.limitPerday = this.data.limit_per_day
           this.routeParams = parseInt(this.data.payload_value)
           this.start_date = moment(new Date(this.data.start_date)).format('YYYY-MM-DD')
           this.end_date = moment(new Date(this.data.end_date)).format('YYYY-MM-DD')
@@ -142,19 +143,19 @@ export default {
         this.errorMessage = 'Number of rooms must no be less that or equal to zero'
         return
       }
-      // if(this.limitPerday <= 0){
-      //   this.errorMessage = 'Limit of reservation per day must no be less than or equal to zero'
-      //   return
-      // }
-      // if(this.limitPerday > this.limit){
-      //   this.errorMessage = 'Limit of reservation per day must not be greater that number of rooms'
-      //   return
-      // }
+      if(this.limitPerday <= 0){
+        this.errorMessage = 'Limit of reservation per day must no be less than or equal to zero'
+        return
+      }
+      if(this.limitPerday > this.limit){
+        this.errorMessage = 'Limit of reservation per day must not be greater that number of rooms'
+        return
+      }
       let parameter = {
         payload: 'room_type',
         payload_value: this.routeParams,
         limit: this.limit,
-        // limitPerDay: this.limitPerday,
+        limit_per_day: this.limitPerday,
         start_date: this.start_date,
         end_date: this.end_date,
         status: 'available'

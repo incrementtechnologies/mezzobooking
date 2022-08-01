@@ -137,7 +137,7 @@
                 </div>
             </div>
       </section>
-      <section>
+      <!-- <section>
         <div><b>Room Assigning</b></div>
         <div style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
           <p v-if="emptyAssignment !== null" style="color: red">{{emptyAssignment}}<br></p>
@@ -152,7 +152,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
       <section class="actionBtns mt-3" :hidden="reservations.status === 'cancelled'">
           <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
               <div class="col-md-6 d-flex">

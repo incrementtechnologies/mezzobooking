@@ -109,7 +109,7 @@
 
         .content {
             border-bottom: solid 1px #eee;
-            line-height: 50px;
+            line-height: 40px;
             padding-left: 10px;
         }
 

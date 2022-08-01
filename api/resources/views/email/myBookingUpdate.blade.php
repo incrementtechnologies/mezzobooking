@@ -3,13 +3,11 @@
 
 <div class="holder">
     <div class="contents">
-        <p>Dear Admin,</p><br/>
-        <p class="subHeader">Thank you for making it Mezzo!</p><br/>
-        <p>We have an update regarding reservation code: {{$data['code']}}
+        <p>We have an update regarding the reservation code: {{$data['code']}}
         </p>
 
-        <p>Your reservation is <b>{{$data['status']}}</b></p><br/>
-        <p>Booking Status: 	{{$data['booking_status']}}</p>
+        <p>The reservation is <b>{{$data['status']}} on {{$data['date_cancelled']}}</b></p><br/>
+        <p>Booking Status: 	{{$data['status']}}</p>
         <p>Guest Name: 	{{$data['name']}}</p>
         <p>Arrival Date: 	{{$data['check_in']}}</p>
         <p>Departure Date: 	{{$data['check_out']}}</p>
