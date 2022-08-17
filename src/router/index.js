@@ -22,9 +22,13 @@ require('assets/style/theme.css')
 require('assets/style/select2.min.css')
 require('assets/js/min/select2.full.min.js')
 import 'font-awesome/css/font-awesome.css'
+import VCalendar from 'v-calendar'
 AUTH.checkAuthentication()
 Vue.use(BootstrapVue)
 Vue.use(Router)
+Vue.use(VCalendar, {
+  componentPrefix: 'vc'
+})
 export default new Router({
   routes: ModuleRoutes.routes
 })

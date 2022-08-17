@@ -217,6 +217,13 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/calendar',
+    name: 'calendar',
+    component: resolve => require(['modules/calendar/index.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }
