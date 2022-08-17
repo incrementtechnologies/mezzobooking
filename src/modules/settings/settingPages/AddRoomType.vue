@@ -51,6 +51,18 @@
                 <label for="name">Description</label>
                 <textarea class="form-control" v-model="description" placeholder="type description" style="height: 165px !important;"></textarea>
             </div>
+            <div class="mt-4">
+                <label for="name">Max Capacity</label>
+                <input type="number" v-model="capacity" class="form-control form-control-custom" placeholder="add max capacity">
+            </div>
+             <div class="mt-4 toggleSwitch">
+                <label for="name">Apply Extra person's rate:</label>
+                <i :class="`icon fas ${personsRate ? 'fa-toggle-on' : 'fa-toggle-off'}`" @click="personsRate=!personsRate"></i>
+            </div>
+             <div class="mt-4 toggleSwitch">
+                <label for="name">Apply Tax:</label>
+                <i :class="`icon fas ${taxRate ? 'fa-toggle-on' : 'fa-toggle-off'}`" @click="taxRate=!taxRate"></i>
+            </div>
         </section>
         <section class="imageUpload">
           <label for="images">Featured Images</label>
@@ -81,7 +93,10 @@ export default {
       selectedIndex: null,
       feature: [],
       selectedFeatures: [],
-      isEmpty: false
+      isEmpty: false,
+      personsRate: true,
+      taxRate: true,
+      capacity: null
     }
   },
   components: {
@@ -107,11 +122,14 @@ export default {
         payload_value: this.type,
         images: this.images,
         status: 'create',
-        details: JSON.stringify(this.selectedFeatures)
+        details: JSON.stringify(this.selectedFeatures),
+        capacity: this.capacity,
+        tax: this.taxRate,
+        person_rate: this.personsRate
       }
       $('#loading').css({'display': 'block'})
       if(this.data === null){
-        this.APIRequest('payloads/create_with_images', parameter, response => {
+        this.APIRequest('room_types/create_with_images', parameter, response => {
           $('#loading').css({'display': 'none'})
           this.errorMessage = null
           if(response.error !== null){
@@ -123,7 +141,7 @@ export default {
       }else{
         parameter['id'] = this.data.id
         parameter['status'] = 'update'
-        this.APIRequest('payloads/update_with_images', parameter, response => {
+        this.APIRequest('room_types/update_with_images', parameter, response => {
           $('#loading').css({'display': 'none'})
           this.$router.push('/room-types')
           this.errorMessage = null
@@ -135,7 +153,7 @@ export default {
         let parameter = {
           id: this.$route.params.id
         }
-        this.APIRequest('payloads/retrieve_by_id', parameter, response => {
+        this.APIRequest('room_types/retrieve_by_id', parameter, response => {
           if(response.data !== null){
             this.data = response.data
             this.description = response.data.category
@@ -197,5 +215,13 @@ label{
 .imageUpload{
   margin-top: 2%;
   margin-bottom: 10%;
+}
+.icon{
+  font-size: 30px;
+}
+.toggleSwitch{
+  align-items: center;
+  display: flex;
+  gap: 5px;
 }
 </style>
