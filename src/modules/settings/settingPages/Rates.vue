@@ -22,8 +22,8 @@
         </div>
         <div id="rate1" class="collapse">
 					<div class="d-flex">
-            <input class="form-control form-control-custom"  placeholder="Enter your rate" v-model="extra">
-						<button class="btn btn-primary">Save</button>
+            <input type="number" class="form-control form-control-custom"  placeholder="Enter your rate" v-model="person_rate">
+						<button class="btn btn-primary" @click="hasPerson ? update('person_rate') : create('person_rate')">Save</button>
 					</div>
         </div>
     </div>
@@ -41,8 +41,8 @@
         </div>
         <div id="rate2" class="collapse">
 					<div class="d-flex">
-            <input class="form-control form-control-custom"  placeholder="Enter your rate" v-model="tax">
-						<button class="btn btn-primary">Save</button>
+            <input type="number" class="form-control form-control-custom"  placeholder="Enter your rate" v-model="tax_rate">
+						<button class="btn btn-primary" @click="hasTax ? update('tax_rate') : create('tax_rate')">Save</button>
 					</div>
         </div>
     </div>
@@ -50,11 +50,100 @@
 </template>
 
 <script>
+import AUTH from 'src/services/auth'
 export default {
   data: () => ({
     toggle1: false,
-    toggle2: false
-  })
+    toggle2: false,
+    person_rate: 0,
+    tax_rate: 0,
+    user: AUTH.user,
+    hasTax: false,
+    hasPerson: false,
+    data: []
+  }),
+  mounted(){
+    this.retrieve()
+  },
+  methods: {
+    retrieve(){
+      let params = {
+        condition: [
+          {
+            column: 'payload',
+            clause: '=',
+            value: 'person_rate'
+          },
+          {
+            column: 'payload',
+            clause: 'or',
+            value: 'tax_rate'
+          }
+        ]
+      }
+      this.APIRequest('payloads/retrieve', params, response => {
+        this.data = response.data
+        if(this.data.length > 0){
+          let temp1 = this.data.filter(el => {return el.payload === 'tax_rate'})
+          let temp2 = this.data.filter(el => {return el.payload === 'person_rate'})
+          if(temp1.length > 0){
+            this.tax_rate = temp1[0].payload_value
+            this.hasTax = true
+          }else{
+            this.hasTax = false
+          }
+          if(temp2.length > 0){
+            this.person_rate = temp2[0].payload_value
+            this.hasPerson = true
+          }else{
+            this.hasPerson = false
+          }
+        }
+      })
+    },
+    create(rate){
+      let params = null
+      if(rate === 'person_rate'){
+        params = {
+          payload: 'person_rate',
+          payload_value: this.person_rate,
+          account_id: this.user.userID
+        }
+      }else{
+        params = {
+          payload: 'tax_rate',
+          payload_value: this.tax_rate,
+          account_id: this.user.userID
+        }
+      }
+      this.APIRequest('payloads/create', params, response => {
+        this.retrieve()
+      })
+    },
+    update(rate){
+      let params = null
+      if(rate === 'person_rate'){
+        params = {
+          payload_value: this.person_rate
+        }
+        let temp1 = this.data.filter(el => {return el.payload === 'person_rate'})
+        if(temp1.length > 0){
+          params['id'] = temp1[0].id
+        }
+      }else{
+        params = {
+          payload_value: this.tax_rate
+        }
+        let temp2 = this.data.filter(el => {return el.payload === 'tax_rate'})
+        if(temp2.length > 0){
+          params['id'] = temp2[0].id
+        }
+      }
+      this.APIRequest('payloads/update', params, response => {
+        this.retrieve()
+      })
+    }
+  }
 }
 </script>
 

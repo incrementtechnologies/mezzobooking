@@ -19,7 +19,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <empty v-if="data.length === 0" :title="'Empty Customers!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data.length === 0" :title="'Empty Room Types!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       :title="'Confirmation Modal'"
       :message="'Are you sure you want to delete ?'"
