@@ -50,7 +50,12 @@
 
       <div class="content-holder" v-bind:class="hide">
         <!-- <system-notification></system-notification> -->
-        <div class="content">
+        <div class="content2" v-if="$route.path.includes('calendar')"> 
+          <transition>
+            <router-view ></router-view>
+          </transition>
+        </div>
+        <div class="content" v-else>
           <transition >
             <router-view ></router-view>
           </transition>
@@ -82,6 +87,10 @@
   width: 55%;
   padding-top: 4%
 }
+.content2{
+  padding-top: 4%
+}
+
 .sidebar{
   min-height: 100vh;
   overflow-y: auto;
@@ -416,6 +425,7 @@ import COMMON from 'src/common.js'
 import ROUTER from 'src/router'
 export default {
   mounted(){
+    console.log(this.$route.path);
   },
   data(){
     return{
