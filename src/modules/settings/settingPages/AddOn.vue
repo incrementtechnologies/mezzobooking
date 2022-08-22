@@ -7,12 +7,12 @@
               Back
           </span>
       </span>
-      <span style="float:right">
+      <!-- <span style="float:right">
           <span>
               <b :class="active ? 'mr-5 actionBtn btn1' : 'mr-5 actionBtn btn2'" @click="room()">Room Add-ons</b>
               <b :class="active1 ? 'actionBtn btn2' : 'actionBtn btn1'" @click="room1()">Checkout Add-ons</b>
           </span>
-      </span>
+      </span> -->
     </div>
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
@@ -31,7 +31,7 @@
       <button class="btn btn-primary pull-right" style="margin-bottom: 20px; padding-vertical: 4%; padding-top: 10px; padding-bottom: 27px" v-if="canUpdate === false" @click="create()">Add</button>
       <button class="btn btn-primary pull-right" style="margin-bottom: 25px; padding-top: 10px; padding-bottom: 27px" v-else @click="create()">Update</button>
       <input type="number" class="form-control" placeholder="Type default price" min="0" @input="event => price = Math.abs(event.target.value)" v-model="price">
-      <input type="text" class="form-control addOns" placeholder="Type your add-ons here" v-model="addOns">
+      <input type="text" class="form-control addOns" placeholder="Enter your customer add-ons" v-model="addOns">
     </div>
     <table v-if="data !== null && data.length > 0" class="table table-bordered table-responsive">
       <tbody v-if="data" style="height:102px;">

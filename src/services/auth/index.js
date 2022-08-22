@@ -108,6 +108,7 @@ export default {
         })
       }, 1000 * 60 * 60) // 50min
     }
+    localStorage.setItem('account_id', null)
   },
   authenticate(username, password, callback, errorCallback){
     let vue = new Vue()

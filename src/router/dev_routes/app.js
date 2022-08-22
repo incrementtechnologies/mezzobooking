@@ -210,6 +210,20 @@ export default{
     meta: {
       tokenRequired: true
     }
+  }, {
+    path: '/rates',
+    name: 'rates',
+    component: resolve => require(['modules/settings/settingPages/Rates.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  }, {
+    path: '/calendar',
+    name: 'calendar',
+    component: resolve => require(['modules/calendar/index.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

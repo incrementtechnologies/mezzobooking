@@ -19,7 +19,7 @@
       :limit="limit"
       v-if="data !== null"
     /></div>
-    <empty v-if="data.length === 0" :title="'Empty Customers!'" :action="'No activity at the moment.'"></empty>
+    <empty v-if="data.length === 0" :title="'Empty Room Types!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       :title="'Confirmation Modal'"
       :message="'Are you sure you want to delete ?'"
@@ -128,7 +128,7 @@ export default {
         payload: 'room_type'
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/retrieve_with_images', parameter).then(response => {
+      this.APIRequest('room_types/retrieve_with_images', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)

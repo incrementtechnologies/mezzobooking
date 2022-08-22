@@ -45,6 +45,7 @@
     "style-resources-loader": "^1.4.1",
     "tether": "^1.4.4",
     "tooltip.js": "^1.2.0",
+    "v-calendar": "^1.0.8",
     "vue-chartjs": "^3.3.2",
     "vue-clip": "^1.0.0",
     "vue-directive-tooltip": "^1.4.5",
