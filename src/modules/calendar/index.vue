@@ -1,4 +1,16 @@
 <template>
+<div>
+  <div style="display: flex; justify-content: flex-end; margin-bottom: 30px">
+    <select class="form-control" style="width: 25%">
+      <option></option>
+    </select>
+    <select class="form-control" style="width: 25%">
+      <option></option>
+    </select>&nbsp;&nbsp;
+    <button class="btn btn-primary">
+      <i class="fas fa-bars"/>
+    </button>
+  </div>
   <div class="text-center section">
     <vc-calendar
       class="custom-calendar max-w-full"
@@ -29,10 +41,13 @@
       </div>
     </vc-calendar>
   </div>
+</div>
 </template>
 
 <script>
+import Input from '../../components/increment/generic/form/Input.vue';
 export default {
+  components: { Input },
   name: "home",
   data() {
     const now = new Date();
