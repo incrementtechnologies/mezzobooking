@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="position: relative">
   <div style="display: flex; justify-content: flex-end; margin-bottom: 30px">
     <select class="form-control" style="width: 25%">
       <option></option>
@@ -7,7 +7,7 @@
     <select class="form-control" style="width: 25%">
       <option></option>
     </select>&nbsp;&nbsp;
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" @click="openPanel()">
       <i class="fas fa-bars"/>
     </button>
   </div>
@@ -41,20 +41,66 @@
       </div>
     </vc-calendar>
   </div>
+  <div class="sidepanel" id="sidepanel">
+    <div class="panelheader" id="panelheader">
+      <button class="btn btn-primary closeIcon" @click="closePanel()">
+        <i class="fas fa-close" />
+      </button>
+      <section class="panelBody">
+        <div class="dates" style="display: flex;">
+          <div class="form-group" style="width: 100%">
+            <label style="color: white">Start Date:</label>
+            <input type="date" class="form-control"/>
+          </div>
+          <div class="form-group" style="width: 100%">
+            <label style="color: white">End Date:</label>
+            <input type="date" class="form-control"/>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="panelContent" id="panelContent">
+      <div class="form-group" style="width: 100%">
+        <label>Availabilty:</label>
+        <input type="number" class="form-control"/>
+      </div>
+      <div>
+        <i class="fas `${toggle1 ? fa-toggle-off : fa-toggle-on}` toggle"/>
+      </div>
+      <div class="form-group" style="width: 100%">
+        <label>Room Only:</label>
+        <input type="number" class="form-control"/>
+      </div>
+      <div>
+        <i class="fas `${toggle2 ? fa-toggle-off : fa-toggle-on}` toggle"/>
+      </div>
+       <div class="form-group" style="width: 100%">
+        <label>Breakfast:</label>
+        <input type="number" class="form-control"/>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
 <script>
 import Input from '../../components/increment/generic/form/Input.vue';
+import Label from '../../components/increment/imarketvue/installment/label.vue';
 export default {
-  components: { Input },
+  components: { Input, Label },
   name: "home",
+  mounted(){
+    document.getElementById("sidepanel").style.width = "0%";
+    document.getElementById("panelheader").style.display = "none";
+  },
   data() {
     const now = new Date();
     const month = now.getMonth();
     const year = now.getFullYear();
     const day = now.getDate();
     return {
+      toggle1: false,
+      toggle2: false,
       today: new Date(year, month, day) * 1,
       masks: {
         weekdays: "WWW"
@@ -153,7 +199,18 @@ export default {
     dayClick(a) {
       // eslint-disable-next-line no-console
       console.log("origin DOM click", a);
+    },
+    openPanel(){
+      document.getElementById("sidepanel").style.width = "50%";
+      document.getElementById("panelheader").style.display = "block";
+      document.getElementById("panelContent").style.display = "block";
+    },
+    closePanel(){
+      document.getElementById("sidepanel").style.width = "0%";
+      document.getElementById("panelheader").style.display = "none";
+      document.getElementById("panelContent").style.display = "none";
     }
+
   }
 };
 </script>
@@ -303,5 +360,46 @@ export default {
 }
 .day-label{
   color: $primary
+}
+
+
+.sidepanel{
+  height: 1000px;
+  // display: flex;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  top: 65px;
+  right: 0;
+  width: 0%;
+  // padding-top: 200px;
+  transition: width 0.5s;
+  box-shadow: -5px 0px 2px -2px rgba($color: $secondary, $alpha: 1.0);
+  border-right: none;
+}
+
+.closeIcon{
+  position: relative;
+  top: 0;
+  border-radius: 30px;
+}
+.panelheader{
+  background-color: $secondary;
+  width: 100%;
+  height: 200px;
+  display: none;
+}
+.panelBody{
+  padding-top: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.panelContent{
+  padding: 30px;
+  display: none;
+}
+.toggle{
+  font-size: 30px;
+  float: right
 }
 </style>
