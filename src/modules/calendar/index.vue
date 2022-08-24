@@ -1,12 +1,14 @@
 <template>
-<div style="position: relative">
-  <div style="display: flex; justify-content: flex-end; margin-bottom: 30px">
-    <select class="form-control" style="width: 25%">
-      <option></option>
-    </select>
-    <select class="form-control" style="width: 25%">
-      <option></option>
-    </select>&nbsp;&nbsp;
+<div style="position: relative; margin-bottom: 30px">
+  <div style="display: flex; justify-content: space-between; margin-bottom: 30px">
+    <div style="display: flex; width: 100%">
+      <select class="form-control" style="width: 25%">
+        <option v-for="item in roomTypes" :key="item.id">{{item.payload_value}}</option>
+      </select>
+      <select class="form-control" style="width: 25%">
+        <option v-for="item in addOns" :key="item.id">{{item.title}}</option>
+      </select>
+    </div>&nbsp;&nbsp;
     <button class="btn btn-primary" @click="openPanel()">
       <i class="fas fa-bars"/>
     </button>
@@ -64,19 +66,25 @@
         <label>Availabilty:</label>
         <input type="number" class="form-control"/>
       </div>
-      <div>
-        <i class="fas `${toggle1 ? fa-toggle-off : fa-toggle-on}` toggle"/>
+      <div @click="toggle1 = !toggle1">
+        <i :class="`fas ${toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
       </div>
       <div class="form-group" style="width: 100%">
         <label>Room Only:</label>
         <input type="number" class="form-control"/>
       </div>
-      <div>
-        <i class="fas `${toggle2 ? fa-toggle-off : fa-toggle-on}` toggle"/>
+      <div @click="toggle2 = !toggle2">
+        <i :class="`fas ${toggle2 ? 'fa-toggle-off' : 'fa-toggle-on' } toggle`"/>
       </div>
        <div class="form-group" style="width: 100%">
         <label>Breakfast:</label>
         <input type="number" class="form-control"/>
+      </div>
+    </div>
+    <div class="panelFooter" id="panelFooter">
+      <div style="display:flex; justify-content:space-between">
+        <button class="btn btn-secondary">Reset</button>
+        <button class="btn btn-primary">Update</button>
       </div>
     </div>
   </div>
@@ -90,6 +98,7 @@ export default {
   components: { Input, Label },
   name: "home",
   mounted(){
+    this.retrieve()
     document.getElementById("sidepanel").style.width = "0%";
     document.getElementById("panelheader").style.display = "none";
   },
@@ -99,6 +108,8 @@ export default {
     const year = now.getFullYear();
     const day = now.getDate();
     return {
+      roomTypes: [],
+      addOns: [],
       toggle1: false,
       toggle2: false,
       today: new Date(year, month, day) * 1,
@@ -204,13 +215,27 @@ export default {
       document.getElementById("sidepanel").style.width = "50%";
       document.getElementById("panelheader").style.display = "block";
       document.getElementById("panelContent").style.display = "block";
+      document.getElementById("panelFooter").style.display = "block";
     },
     closePanel(){
       document.getElementById("sidepanel").style.width = "0%";
       document.getElementById("panelheader").style.display = "none";
       document.getElementById("panelContent").style.display = "none";
+      document.getElementById("panelFooter").style.display = "none";
+    },
+    retrieve(){
+      $('#loading').css({display: 'block'})
+      this.APIRequest('room_types/retrieve_with_availability', {}, response => {
+        let temp = response.data[0]
+        $('#loading').css({display: 'none'})
+        if(temp.room_types.length > 0){
+          this.roomTypes = temp.room_types
+        }
+        if(temp.add_ons.length > 0){
+          this.addOns = temp.add_ons
+        }
+      })
     }
-
   }
 };
 </script>
@@ -322,8 +347,6 @@ export default {
 .text-center {
   text-align: center;
 }
-.section {
-}
 .max-w-full {
   max-width: 100%;
 }
@@ -364,12 +387,12 @@ export default {
 
 
 .sidepanel{
-  height: 1000px;
+  height: 100vh;
   // display: flex;
   background-color: white;
   position: absolute;
   z-index: 1;
-  top: 65px;
+  top: -20px;
   right: 0;
   width: 0%;
   // padding-top: 200px;
@@ -394,7 +417,7 @@ export default {
   padding-left: 30px;
   padding-right: 30px;
 }
-.panelContent{
+.panelContent, .panelFooter{
   padding: 30px;
   display: none;
 }

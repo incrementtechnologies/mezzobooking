@@ -88,7 +88,8 @@
   padding-top: 4%
 }
 .content2{
-  padding-top: 4%
+  padding-top: 4%;
+  width: 90%;
 }
 
 .sidebar{
