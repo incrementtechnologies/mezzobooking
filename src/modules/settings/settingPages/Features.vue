@@ -140,7 +140,7 @@ export default {
             status: 'create'
           }
           $('#loading').css({'display': 'block'})
-          this.APIRequest('payloads/create_with_images', parameter, response => {
+          this.APIRequest('features/create', parameter, response => {
             $('#loading').css({'display': 'none'})
             if(response.data != null){
               this.title = null
@@ -158,14 +158,14 @@ export default {
             payload_value: this.title
           }
           $('#loading').css({'display': 'block'})
-          this.APIRequest('payloads/update', parameter).then(response => {
+          this.APIRequest('features/update', parameter).then(response => {
             $('#loading').css({'display': 'none'})
             if(response.data === true){
               this.canUpdate = false
               this.title = null
               this.retrieve(this.currentSort, this.currentFilter, false)
             }
-            if(response.error !== null){
+            if(response.error !== null && response.error.length > 0){
               this.errorMessage = response.error
               this.$refs.errorModal.show()
             }
@@ -191,7 +191,7 @@ export default {
         id: item.id
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/delete_with_validation', parameter).then(response => {
+      this.APIRequest('features/delete_with_validation', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data !== null){
           this.retrieve(this.currentSort, this.currentFilter, false)
@@ -224,7 +224,7 @@ export default {
         payload: 'feature'
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/retrieve_with_images', parameter).then(response => {
+      this.APIRequest('features/retrieve_with_images', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)

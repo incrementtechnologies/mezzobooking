@@ -2,10 +2,10 @@
 <div style="position: relative; margin-bottom: 30px">
   <div style="display: flex; justify-content: space-between; margin-bottom: 30px">
     <div style="display: flex; width: 100%">
-      <select class="form-control" style="width: 25%">
-        <option v-for="item in roomTypes" :key="item.id">{{item.payload_value}}</option>
+      <select class="form-control" style="width: 25%" v-model="selectedRoomType" @change="retrieve()">
+        <option v-for="item in roomTypes" :key="item.id" :value="item.id">{{item.payload_value}}</option>
       </select>
-      <select class="form-control" style="width: 25%">
+      <select class="form-control" style="width: 25%" v-model="selectedAddOn"  @change="retrieve()">
         <option v-for="item in addOns" :key="item.id">{{item.title}}</option>
       </select>
     </div>&nbsp;&nbsp;
@@ -25,7 +25,7 @@
         v-on="dayEvents"
         @click="dayClick"
         slot-scope="{ day, attributes }"
-        class="flex flex-col h-full z-10 overflow-hidden"
+        class="flex flex-col h-full z-10 overflow-hidden box"
         :class="day.year"
       >
         <span
@@ -33,12 +33,15 @@
           :class="[day.dateTime === today ? 'today rounded-sm' : '' ]"
         >{{ day.day }}</span>
         <div class="flex-grow overflow-y-scroll overflow-x-auto">
-          <p
+          <div
             v-for="attr in attributes"
             :key="attr.key"
-            class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1"
+            class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1 customData"
             :class="attr.customData.class"
-          >{{ attr.customData.title }}</p>
+          >
+            <p class="limit">{{ attr.customData.limit }} Total</p>
+            <p class="price" v-if="attr.customData.limit > 0">PHP {{ attr.customData.price}}</p>
+          </div>
         </div>
       </div>
     </vc-calendar>
@@ -52,11 +55,11 @@
         <div class="dates" style="display: flex;">
           <div class="form-group" style="width: 100%">
             <label style="color: white">Start Date:</label>
-            <input type="date" class="form-control"/>
+            <input type="date" class="form-control" v-model="start_date"/>
           </div>
           <div class="form-group" style="width: 100%">
             <label style="color: white">End Date:</label>
-            <input type="date" class="form-control"/>
+            <input type="date" class="form-control" v-model="end_date"/>
           </div>
         </div>
       </section>
@@ -64,27 +67,27 @@
     <div class="panelContent" id="panelContent">
       <div class="form-group" style="width: 100%">
         <label>Availabilty:</label>
-        <input type="number" class="form-control"/>
+        <input type="number" class="form-control" v-model="available"/>
       </div>
       <div @click="toggle1 = !toggle1">
         <i :class="`fas ${toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
       </div>
       <div class="form-group" style="width: 100%">
         <label>Room Only:</label>
-        <input type="number" class="form-control"/>
+        <input type="number" class="form-control" v-model="room_price"/>
       </div>
       <div @click="toggle2 = !toggle2">
         <i :class="`fas ${toggle2 ? 'fa-toggle-off' : 'fa-toggle-on' } toggle`"/>
       </div>
        <div class="form-group" style="width: 100%">
         <label>Breakfast:</label>
-        <input type="number" class="form-control"/>
+        <input type="number" class="form-control" v-model="break_fast"/>
       </div>
     </div>
     <div class="panelFooter" id="panelFooter">
       <div style="display:flex; justify-content:space-between">
         <button class="btn btn-secondary">Reset</button>
-        <button class="btn btn-primary">Update</button>
+        <button class="btn btn-primary" @click="update()">Update</button>
       </div>
     </div>
   </div>
@@ -92,10 +95,8 @@
 </template>
 
 <script>
-import Input from '../../components/increment/generic/form/Input.vue';
-import Label from '../../components/increment/imarketvue/installment/label.vue';
+import moment from 'moment'
 export default {
-  components: { Input, Label },
   name: "home",
   mounted(){
     this.retrieve()
@@ -110,94 +111,21 @@ export default {
     return {
       roomTypes: [],
       addOns: [],
+      availability: null,
+      selectedRoomType: null,
+      selectedAddOn: null,
+      start_date: null,
+      end_date: null,
+      break_fast: null,
+      room_price: null,
+      available: 0,
       toggle1: false,
       toggle2: false,
       today: new Date(year, month, day) * 1,
       masks: {
         weekdays: "WWW"
       },
-      attributes: [
-        {
-          key: 1,
-          customData: {
-            title: "Lunch with mom.",
-            class: "bg-red-600 text-white"
-          },
-          dates: new Date(year, month, 1)
-        },
-        {
-          key: 2,
-          customData: {
-            title: "Take Noah to basketball practice",
-            class: "bg-blue-500 text-white"
-          },
-          dates: new Date(year, month, 2)
-        },
-        {
-          key: 3,
-          customData: {
-            title: "Noah's basketball game.",
-            class: "bg-blue-500 text-white"
-          },
-          dates: new Date(year, month, 5)
-        },
-        {
-          key: 4,
-          customData: {
-            title: "Take car to the shop",
-            class: "bg-indigo-500 text-white"
-          },
-          dates: new Date(year, month, 5)
-        },
-        {
-          key: 4,
-          customData: {
-            title: "Meeting with new client.",
-            class: "bg-teal-500 text-white"
-          },
-          dates: new Date(year, month, 7)
-        },
-        {
-          key: 5,
-          customData: {
-            title: "Mia's gymnastics practice.",
-            class: "bg-pink-500 text-white"
-          },
-          dates: new Date(year, month, 11)
-        },
-        {
-          key: 6,
-          customData: {
-            title: "Cookout with friends.",
-            class: "bg-orange-500 text-white"
-          },
-          dates: { months: 5, ordinalWeekdays: { 2: 1 } }
-        },
-        {
-          key: 7,
-          customData: {
-            title: "Mia's gymnastics recital.",
-            class: "bg-pink-500 text-white"
-          },
-          dates: new Date(year, month, 22)
-        },
-        {
-          key: 8,
-          customData: {
-            title: "Visit great grandma.",
-            class: "bg-red-600 text-white"
-          },
-          dates: new Date(year, month, 25)
-        },
-        {
-          key: "today",
-          customData: {
-            title: "Visit great grandma.",
-            class: "bg-red-600 text-white"
-          },
-          dates: new Date()
-        }
-      ],
+      attributes: [],
       dayEvents: {
         click: a => {
           // eslint-disable-next-line no-console
@@ -210,12 +138,14 @@ export default {
     dayClick(a) {
       // eslint-disable-next-line no-console
       console.log("origin DOM click", a);
+      this.openPanel()
     },
     openPanel(){
       document.getElementById("sidepanel").style.width = "50%";
       document.getElementById("panelheader").style.display = "block";
       document.getElementById("panelContent").style.display = "block";
       document.getElementById("panelFooter").style.display = "block";
+      this.retrieveAvailability();
     },
     closePanel(){
       document.getElementById("sidepanel").style.width = "0%";
@@ -224,9 +154,14 @@ export default {
       document.getElementById("panelFooter").style.display = "none";
     },
     retrieve(){
+      this.attributes = [];
       $('#loading').css({display: 'block'})
-      this.APIRequest('room_types/retrieve_with_availability', {}, response => {
-        let temp = response.data[0]
+      let params = {
+        room_type: this.selectedRoomType,
+        add_on: this.selectedAddOn
+      }
+      this.APIRequest('room_types/retrieve_with_availability', params, response => {
+        let temp = response.data
         $('#loading').css({display: 'none'})
         if(temp.room_types.length > 0){
           this.roomTypes = temp.room_types
@@ -234,7 +169,58 @@ export default {
         if(temp.add_ons.length > 0){
           this.addOns = temp.add_ons
         }
+        if(temp.availability.length > 0){
+          for (let i = 0; i <=  temp.availability.length-1; i++) {
+            const item = temp.availability[i];
+            let obj = {
+              key: item.id,
+              customData: {
+                limit: item.limit_per_day,
+                price: item.price,
+              },
+              dates: {start: new Date(item.start_date), end: new Date(item.end_date)}
+            } 
+            if(item.limit_per_day === 0){
+              obj.customData['class'] = 'text-danger'
+            }
+            this.attributes.push(obj)
+          }
+          console.log('>>>>>>>>>>>>>', this.attributes);
+        }
       })
+    },
+    retrieveAvailability(){
+      let _params = {
+        payload: 'room_type',
+        payload_value: this.selectedRoomType
+      }
+      this.APIRequest('availabilities/retrieve_by_room_type', _params, response => {
+        this.availability = response.data
+        this.start_date = moment(new Date(this.availability.start_date)).format('YYYY-MM-DD')
+        this.end_date = moment(new Date(this.availability.end_date)).format('YYYY-MM-DD')
+        this.available = this.availability.limit_per_day
+        this.room_price = this.availability.description.room_price
+        this.break_fast = this.availability.description.break_fast
+      })
+    },
+    update(){
+      let params = {
+        payload: 'room_type',
+        payload_value: this.selectedRoomType,
+        start_date: this.start_date,
+        end_date: this.end_date,
+        limit_per_day: this.available,
+        description: JSON.stringify({
+          room_price: this.room_price,
+          break_fast: this.break_fast
+        }),
+        status: 'available'
+      }
+      // if(this.availability == null){
+        this.APIRequest('availabilities/create', params, response => {
+          this.retrieve()
+        })
+      // }
     }
   }
 };
@@ -305,7 +291,7 @@ export default {
   grid-template-rows: 33px repeat(6, 1fr);
 }
 .custom-calendar.vc-container .vc-header {
-  background-color: #f1f5f8;
+  // background-color: #f1f5f8;
   padding: 10px 0;
 }
 .custom-calendar.vc-container .vc-weekday {
@@ -326,7 +312,7 @@ export default {
 }
 .custom-calendar.vc-container .vc-day.weekday-1,
 .custom-calendar.vc-container .vc-day.weekday-7 {
-  background-color: #eff8ff;
+  // background-color: #eff8ff;
 }
 
 .custom-calendar.vc-container .vc-day {
@@ -353,12 +339,22 @@ export default {
 .bg-blue-500 {
   background-color: #4299e1;
 }
+.box{
+  cursor: pointer;
+}
+.box:hover{
+  background: rgba($color: #000000, $alpha: 0.1);
+}
 
 .text-xs {
   font-size: 0.75rem;
 }
-.text-white {
+.text-white{
   color: #fff;
+}
+
+.text-danger p{
+  color: $danger;
 }
 .p-1 {
   padding: 0.25rem;
@@ -424,5 +420,23 @@ export default {
 .toggle{
   font-size: 30px;
   float: right
+}
+
+
+.limit{
+  color: $primary
+}
+.price{
+  color: $secondary;
+  line-height: 0;
+}
+
+.limit, .price{
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+}
+.customData{
+  margin-top: 10% !important;
 }
 </style>
