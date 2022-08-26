@@ -199,11 +199,19 @@ export default {
         this.start_date = moment(new Date(this.availability.start_date)).format('YYYY-MM-DD')
         this.end_date = moment(new Date(this.availability.end_date)).format('YYYY-MM-DD')
         this.available = this.availability.limit_per_day
-        this.room_price = this.availability.description.room_price
+        this.room_price = this.availability.room_price
         this.break_fast = this.availability.description.break_fast
       })
     },
     update(){
+      let finalPrice = 0
+      if(this.toggle1 && this.toggle2){
+        finalPrice = this.room_price + this.break_fast
+      }else if(!this.toggle1 && this.toggle2){
+        finalPrice = this.break_fast
+      }else if(this.toggle1 && !this.toggle2){
+        finalPrice = this.room_price
+      }
       let params = {
         payload: 'room_type',
         payload_value: this.selectedRoomType,
@@ -211,9 +219,10 @@ export default {
         end_date: this.end_date,
         limit_per_day: this.available,
         description: JSON.stringify({
-          room_price: this.room_price,
-          break_fast: this.break_fast
+          break_fast: this.break_fast,
+          room_price: this.room_price
         }),
+        room_price: finalPrice,
         status: 'available'
       }
       // if(this.availability == null){
