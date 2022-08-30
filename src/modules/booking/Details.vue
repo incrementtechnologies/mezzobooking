@@ -87,7 +87,7 @@
             <span class="ml-2">Rooms</span>
             <div class="row ml-4" v-for="(each, idx) in summary" :key="idx"> 
                 <div class="col-md-6">
-                    <span>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</span>
+                    <span>{{each.rooms.room_type}}</span>
                 </div>
                 <div class="col-md-6">
                     <p>PHP {{$format.format(each.price_with_number_of_days)}}</p>
@@ -158,7 +158,7 @@
               <div class="col-md-6 d-flex">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
                   <div v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
-                    <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false &&  parseInt(each.rooms[0].refundable) > 0">Rebook</button>
+                    <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false">Rebook</button>
                   </div>
               </div>
               <div class="col-md-6">
@@ -230,7 +230,7 @@ export default {
           this.reservations = response.data.reservation
           this.customer = response.data.customer
           this.reservations.check_in = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
-          this.reservations.check_out = moment(new Date(this.reservations.check_in)).format('YYYY-MM-DD')
+          this.reservations.check_out = moment(new Date(this.reservations.check_out)).format('YYYY-MM-DD')
           this.summary = response.data.cart
           if(this.reservations.status === 'confirmed' || this.reservations.status === 'completed'){
             this.isDisable = true
