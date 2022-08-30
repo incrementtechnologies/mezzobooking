@@ -87,7 +87,11 @@
             <span class="ml-2">Rooms</span>
             <div class="row ml-4" v-for="(each, idx) in summary" :key="idx"> 
                 <div class="col-md-6">
-                    <span>{{each.rooms.room_type}}</span>
+                    <span>{{each.rooms.room_type}}
+                      <span v-if="each.rooms.description.room_price != 0 && each.rooms.description.break_fast != 0"> (with Breakfast)</span>
+                      <span v-if="each.rooms.description.room_price == 0 && each.rooms.description.break_fast != 0"> (Breakfast only)</span>
+                      <span v-if="each.rooms.description.room_price != 0 && each.rooms.description.break_fast == 0"> (Room only)</span>
+                    </span>
                 </div>
                 <div class="col-md-6">
                     <p>PHP {{$format.format(each.price_with_number_of_days)}}</p>
