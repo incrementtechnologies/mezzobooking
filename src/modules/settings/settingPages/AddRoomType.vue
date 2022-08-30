@@ -51,9 +51,18 @@
                 <label for="name">Description</label>
                 <textarea class="form-control" v-model="description" placeholder="type description" style="height: 165px !important;"></textarea>
             </div>
-            <div class="mt-4">
+            <div class="mt-4" style="display: flex; justify-content: space-between">
+              <div style="width: 45%">
                 <label for="name">Max Capacity</label>
                 <input type="number" v-model="capacity" class="form-control form-control-custom" placeholder="add max capacity">
+              </div>
+              <div style="width: 45%">
+                <label for="name">Pricing Label</label>
+                <select class="form-control form-control-custom" v-model="price_label">
+                  <option value="Per night">Per night</option>
+                  <option value="Per month">Per month</option>
+                </select>
+              </div>
             </div>
              <div class="mt-4 toggleSwitch">
                 <label for="name">Apply Extra person's rate:</label>
@@ -96,7 +105,8 @@ export default {
       isEmpty: false,
       personsRate: true,
       taxRate: true,
-      capacity: null
+      capacity: null,
+      price_label: null
     }
   },
   components: {
@@ -125,7 +135,8 @@ export default {
         details: JSON.stringify(this.selectedFeatures),
         capacity: this.capacity,
         tax: this.taxRate,
-        person_rate: this.personsRate
+        person_rate: this.personsRate,
+        price_label: this.price_label
       }
       $('#loading').css({'display': 'block'})
       if(this.data === null){
@@ -151,14 +162,18 @@ export default {
     retrieve(){
       if(this.$route.params.id !== undefined){
         let parameter = {
-          id: this.$route.params.id
+          code: this.$route.params.id
         }
-        this.APIRequest('room_types/retrieve_by_id', parameter, response => {
+        this.APIRequest('room_types/retrieve_details_by_code', parameter, response => {
           if(response.data !== null){
             this.data = response.data
             this.description = response.data.category
             this.type = response.data.payload_value
             this.featured = response.data.images
+            this.capacity = response.data.capacity,
+            this.personsRate = response.data.person_rate,
+            this.taxRate = response.data.tax,
+            this.price_label = response.data.price_label
             this.$refs.searchFieldFeature.features = Object.values(response.data.details)
           }
         })

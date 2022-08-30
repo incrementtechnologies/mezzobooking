@@ -9,7 +9,7 @@
           <div class="card-body">
             <div class="mb-3">
               <span class="d-flex" style="float:right">
-                <div @click="$router.push('/add-room-types/'+ data.id)">
+                <div @click="$router.push('/add-room-types/'+ data.code)">
                   <i class="fas fa-pencil-alt ml-2 actionBtn"></i>
                 </div>
                 <div @click="$parent.deleteConfirmation(data.id)">
