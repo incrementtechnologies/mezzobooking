@@ -7,6 +7,8 @@
       </select>
       <select class="form-control" style="width: 25%" v-model="selectedAddOn"  @change="retrieve()">
         <option v-for="item in addOns" :key="item.id">{{item.title}}</option>
+        <option value="Room Only">Room Only</option>
+        <option value="Breakfast Only">Breakfast Only</option>
       </select>
     </div>&nbsp;&nbsp;
     <button class="btn btn-primary" @click="openPanel()">
@@ -51,6 +53,7 @@
       <button class="btn btn-primary closeIcon" @click="closePanel()">
         <i class="fas fa-close" />
       </button>
+      {{errorMessage}}
       <section class="panelBody">
         <div class="dates" style="display: flex;">
           <div class="form-group" style="width: 100%">
@@ -86,7 +89,7 @@
     </div>
     <div class="panelFooter" id="panelFooter">
       <div style="display:flex; justify-content:space-between">
-        <button class="btn btn-secondary">Reset</button>
+        <button class="btn btn-secondary" @click="resetData()">Reset</button>
         <button class="btn btn-primary" @click="update()">Update</button>
       </div>
     </div>
@@ -121,6 +124,7 @@ export default {
       available: 0,
       toggle1: false,
       toggle2: false,
+      errorMessage: null,
       today: new Date(year, month, day) * 1,
       masks: {
         weekdays: "WWW"
@@ -160,7 +164,9 @@ export default {
         room_type: this.selectedRoomType,
         add_on: this.selectedAddOn
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('room_types/retrieve_with_availability', params, response => {
+        $('#loading').css({display: 'none'})
         let temp = response.data
         $('#loading').css({display: 'none'})
         if(temp.room_types.length > 0){
@@ -194,7 +200,9 @@ export default {
         payload: 'room_type',
         payload_value: this.selectedRoomType
       }
+      $('#loading').css({display: 'block'})
       this.APIRequest('availabilities/retrieve_by_room_type', _params, response => {
+        $('#loading').css({display: 'none'})
         this.availability = response.data
         this.start_date = moment(new Date(this.availability.start_date)).format('YYYY-MM-DD')
         this.end_date = moment(new Date(this.availability.end_date)).format('YYYY-MM-DD')
@@ -204,6 +212,28 @@ export default {
       })
     },
     update(){
+      if(this.start_date == null && this.end_date == null){
+        this.errorMessage = 'Dates must no be null'
+        return
+      }
+      if(this.available > 0 && this.available !== null){
+        if(this.end_date > this.start_date){
+          this.errorMessage = 'Invalid date range'
+          return
+        }
+        if(this.toggle1 && this.room_price == null){
+          this.errorMessage = 'Room is enabled, field must not be empty or zero'
+          return
+        }
+        if(this.toggle2 && this.break_fast == null){
+          this.errorMessage = 'Break fast is enabled, field  must not be empty of zero'
+          return
+        }
+        if(this.room_price == null && this.break_fast == null){
+          this.errorMessage = 'Atleast one price field should have a value'
+          return
+        }
+      }
       let finalPrice = 0
       if(this.toggle1 && this.toggle2){
         finalPrice = this.room_price + this.break_fast
@@ -230,6 +260,9 @@ export default {
           this.retrieve()
         })
       // }
+    },
+    resetData(){
+      this.retrieveAvailability()
     }
   }
 };
