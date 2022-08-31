@@ -11,9 +11,9 @@
         <option value="Breakfast Only">Breakfast Only</option>
       </select>
     </div>&nbsp;&nbsp;
-    <button class="btn btn-primary" @click="openPanel()">
+    <!-- <button class="btn btn-primary" @click="openPanel()">
       <i class="fas fa-bars"/>
-    </button>
+    </button> -->
   </div>
   <div class="text-center section">
     <vc-calendar
@@ -76,7 +76,7 @@
         <i :class="`fas ${toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
       </div>
       <div class="form-group" style="width: 100%">
-        <label>Room Only:</label>
+        <label>Room Only (+ tax rate, if enabled):</label>
         <input type="number" class="form-control" v-model="room_price"/>
       </div>
       <div @click="toggle2 = !toggle2">
