@@ -5,10 +5,10 @@
       <select class="form-control" style="width: 25%" v-model="selectedRoomType" @change="retrieve()">
         <option v-for="item in roomTypes" :key="item.id" :value="item.id">{{item.payload_value}}</option>
       </select>
-      <select class="form-control" style="width: 25%" v-model="selectedAddOn"  @change="retrieve()">
+      <select class="form-control" style="width: 25%" v-model="selectedAddOn"  @change="retrieve()" v-on="checkSelection">
         <option v-for="item in addOns" :key="item.id">{{item.title}}</option>
         <option value="Room Only">Room Only</option>
-        <option value="Breakfast Only">Breakfast Only</option>
+        <!-- <option value="Breakfast Only">Breakfast Only</option> -->
       </select>
     </div>&nbsp;&nbsp;
     <!-- <button class="btn btn-primary" @click="openPanel()">
@@ -25,10 +25,10 @@
       <div
         slot="day-content"
         v-on="dayEvents"
-        @click="dayClick"
         slot-scope="{ day, attributes }"
         class="flex flex-col h-full z-10 overflow-hidden box"
         :class="day.year"
+        @click="dayClick(day, attributes)"
       >
         <span
           class="day-label text-sm text-gray-900"
@@ -72,19 +72,19 @@
         <label>Availabilty:</label>
         <input type="number" class="form-control" v-model="available"/>
       </div>
-      <div @click="toggle1 = !toggle1">
-        <i :class="`fas ${toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
-      </div>
+      <!-- <div @click="toggle1 = !toggle1">
+        <i :class="`fas ${!toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
+      </div> -->
       <div class="form-group" style="width: 100%">
         <label>Room Only (+ tax rate, if enabled):</label>
         <input type="number" class="form-control" v-model="room_price"/>
       </div>
       <div @click="toggle2 = !toggle2">
-        <i :class="`fas ${toggle2 ? 'fa-toggle-off' : 'fa-toggle-on' } toggle`"/>
+        <i :class="`fas ${!toggle2 ? 'fa-toggle-off' : 'fa-toggle-on' } toggle`"/>
       </div>
        <div class="form-group" style="width: 100%">
         <label>Breakfast:</label>
-        <input type="number" class="form-control" v-model="break_fast"/>
+        <input type="number" class="form-control" v-model="break_fast" :disabled="disable"/>
       </div>
     </div>
     <div class="panelFooter" id="panelFooter">
@@ -122,9 +122,12 @@ export default {
       break_fast: null,
       room_price: null,
       available: 0,
-      toggle1: false,
-      toggle2: false,
+      toggle1: true,
+      toggle2: true,
       errorMessage: null,
+      selectedDate: null,
+      selectedId: null,
+      disable: false,
       today: new Date(year, month, day) * 1,
       masks: {
         weekdays: "WWW"
@@ -135,13 +138,26 @@ export default {
           // eslint-disable-next-line no-console
           console.log("dayEvents:", a);
         }
+      },
+      checkSelection: {
+        change: a => {
+          if(this.selectedAddOn == 'Room Only'){
+            this.toggle2 = false
+            this.disable = true
+          }else{
+            this.toggle2 = true
+            this.disable = false
+          }
+        }
       }
     };
   },
   methods: {
-    dayClick(a) {
+    dayClick(a, attr) {
       // eslint-disable-next-line no-console
-      console.log("origin DOM click", a);
+      console.log("origin DOM click", a, attr);
+      this.selectedDate = moment(new Date(a.date)).format('YYYY-MM-DD')
+      this.selectedId = attr !== undefined && attr.length > 0 ? attr[0].key : null
       this.openPanel()
     },
     openPanel(){
@@ -198,17 +214,29 @@ export default {
     retrieveAvailability(){
       let _params = {
         payload: 'room_type',
-        payload_value: this.selectedRoomType
+        payload_value: this.selectedRoomType,
+        start_date: this.selectedDate,
+        addOn: this.selectedAddOn,
+        id: this.selectedId
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('availabilities/retrieve_by_room_type', _params, response => {
         $('#loading').css({display: 'none'})
-        this.availability = response.data
-        this.start_date = moment(new Date(this.availability.start_date)).format('YYYY-MM-DD')
-        this.end_date = moment(new Date(this.availability.end_date)).format('YYYY-MM-DD')
-        this.available = this.availability.limit_per_day
-        this.room_price = this.availability.room_price
-        this.break_fast = this.availability.description.break_fast
+        if(response.data){
+          this.availability = response.data
+          this.start_date = moment(new Date(this.selectedDate)).format('YYYY-MM-DD')
+          this.end_date = moment(new Date(this.selectedDate)).format('YYYY-MM-DD')
+          this.available = this.availability.limit_per_day
+          this.room_price = this.availability.description.room_price
+          this.break_fast = this.availability.description.break_fast
+        }else{
+          this.availability = null
+          this.start_date = moment(new Date(this.selectedDate)).format('YYYY-MM-DD')
+          this.end_date = moment(new Date(this.selectedDate)).format('YYYY-MM-DD')
+          this.available = 0
+          this.room_price = null
+          this.break_fast = null
+        }
       })
     },
     update(){
@@ -217,7 +245,7 @@ export default {
         return
       }
       if(this.available > 0 && this.available !== null){
-        if(this.end_date > this.start_date){
+        if(this.end_date < this.start_date){
           this.errorMessage = 'Invalid date range'
           return
         }
@@ -236,11 +264,11 @@ export default {
       }
       let finalPrice = 0
       if(this.toggle1 && this.toggle2){
-        finalPrice = this.room_price + this.break_fast
+        finalPrice = parseFloat(this.room_price) + parseFloat(this.break_fast)
       }else if(!this.toggle1 && this.toggle2){
-        finalPrice = this.break_fast
+        finalPrice =  parseFloat(this.break_fast)
       }else if(this.toggle1 && !this.toggle2){
-        finalPrice = this.room_price
+        finalPrice = parseFloat(this.room_price)
       }
       let params = {
         payload: 'room_type',
@@ -252,6 +280,7 @@ export default {
           break_fast: this.break_fast,
           room_price: this.room_price
         }),
+        add_on: this.selectedAddOn,
         room_price: finalPrice,
         status: 'available'
       }
@@ -263,7 +292,7 @@ export default {
     },
     resetData(){
       this.retrieveAvailability()
-    }
+    },
   }
 };
 </script>
