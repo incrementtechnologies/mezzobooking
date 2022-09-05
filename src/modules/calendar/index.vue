@@ -53,8 +53,8 @@
       <button class="btn btn-primary closeIcon" @click="closePanel()">
         <i class="fas fa-close" />
       </button>
-      {{errorMessage}}
       <section class="panelBody">
+        <p class="text-danger">{{errorMessage}}</p>
         <div class="dates" style="display: flex;">
           <div class="form-group" style="width: 100%">
             <label style="color: white">Start Date:</label>
