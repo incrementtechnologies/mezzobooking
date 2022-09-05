@@ -454,7 +454,7 @@ export default {
 
 
 .sidepanel{
-  height: 100vh;
+  height: 1000px;
   // display: flex;
   background-color: white;
   position: absolute;
