@@ -316,9 +316,9 @@ export default {
 .bg-red-600 {
   background-color: #e53e3e;
 }
-.today {
-  background-color: #d2e1ec;
-}
+// .today {
+//   background-color: #d2e1ec;
+// }
 .bg-teal-500 {
   background-color: #38b2ac;
 }
@@ -385,14 +385,18 @@ export default {
 .custom-calendar.vc-container .vc-day.weekday-7 {
   // background-color: #eff8ff;
 }
-
 .custom-calendar.vc-container .vc-day {
   padding: 0 5px 3px;
   text-align: right;
   /*min-height: var(--day-height);*/
   min-width: var(--day-width);
   background-color: #fff;
-
+}
+.custom-calendar.vc-container .vc-day.is-today{
+  background-color:  #d2e1ec !important;
+}
+.custom-calendar.vc-container .vc-day.in-month:hover{
+  background: rgba($color: #000000, $alpha: 0.1);
 }
 .vc-day {
   position: relative;
@@ -413,10 +417,6 @@ export default {
 .box{
   cursor: pointer;
 }
-.box:hover{
-  background: rgba($color: #000000, $alpha: 0.1);
-}
-
 .text-xs {
   font-size: 0.75rem;
 }
