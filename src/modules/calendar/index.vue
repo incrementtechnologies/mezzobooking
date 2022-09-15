@@ -6,7 +6,7 @@
         <option v-for="item in roomTypes" :key="item.id" :value="item.id">{{item.payload_value}}</option>
       </select>
       <select class="form-control" style="width: 25%" v-model="selectedAddOn"  @change="retrieve()" v-on="checkSelection">
-        <option v-for="item in addOns" :key="item.id">{{item.title}}</option>
+        <option value="With Breakfast">With Breakfast</option>
         <option value="Room Only">Room Only</option>
         <!-- <option value="Breakfast Only">Breakfast Only</option> -->
       </select>

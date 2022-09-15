@@ -68,11 +68,11 @@ export default {
       description: 'Add or edit room features',
       route: 'features'
     },
-    {
-      title: 'Add-on Settings',
-      description: 'Add or edit checkout and room add-ons',
-      route: 'add-ons'
-    },
+    // {
+    //   title: 'Add-on Settings',
+    //   description: 'Add or edit checkout and room add-ons',
+    //   route: 'add-ons'
+    // },
     {
       title: 'Rates',
       description: 'Add or edit your rates in room-types',
