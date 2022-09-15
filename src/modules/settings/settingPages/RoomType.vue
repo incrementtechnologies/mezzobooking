@@ -144,7 +144,7 @@ export default {
         id: data
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('payloads/delete_with_images', parameter).then(response => {
+      this.APIRequest('room_types/delete_with_images', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.error !== null){
           this.errorMessage = response.error
