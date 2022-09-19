@@ -282,7 +282,7 @@ export default {
         }),
         add_on: this.selectedAddOn,
         room_price: finalPrice,
-        status: 'available'
+        status: this.availability <= 0 ? 'not_available' : 'available'
       }
       // if(this.availability == null){
         this.APIRequest('availabilities/create', params, response => {
