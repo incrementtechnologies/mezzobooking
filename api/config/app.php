@@ -169,7 +169,6 @@ return [
 
         Increment\Account\AccountServiceProvider::class,
         Increment\Account\Merchant\MerchantServiceProvider::class,
-        Increment\Common\Comment\CommentServiceProvider::class,
         Increment\Common\Image\ImageServiceProvider::class,
         Increment\Common\System\SystemNotificationServiceProvider::class,
         Increment\Common\Notification\NotificationServiceProvider::class,
