@@ -45,7 +45,22 @@
             "Increment\\Hotel\\Room\\":"packages/increment/hotel/room/src/",
             "Increment\\Hotel\\AddOn\\":"packages/increment/hotel/addon/src/",
             "Increment\\Hotel\\Payment\\":"packages/increment/hotel/payment/src/"
-        }
+        },
+        "classmap": [
+            "database/seeders",
+            "database/factories",
+            "packages/increment/account/src/",
+            "packages/increment/account/merchant/src/",
+            "packages/increment/common/image/src/",
+            "packages/increment/common/payload/src/",
+            "packages/increment/common/system/src/",
+            "packages/increment/common/payload/src/",
+            "packages/increment/common/notification/src/",
+            "packages/increment/hotel/reservation/src/",
+            "packages/increment/hotel/room/src/",
+            "packages/increment/hotel/addon/src/",
+            "packages/increment/hotel/payment/src/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -55,16 +70,16 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate"
+            "@php artisan key:generate --ansi"
         ]
     },
     "extra": {
