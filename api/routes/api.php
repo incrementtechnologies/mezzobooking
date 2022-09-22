@@ -30,5 +30,6 @@ Route::post('authenticate/invalidate', 'AuthenticateController@deauthenticate');
 /*Queue Card*/
 Route::get("getAverageQueueTime", "QueueCardController@getAverageQueueTime");
 /*API Router*/
+
 require_once 'routes_fn.php';
 require_once 'api_routes.php';
