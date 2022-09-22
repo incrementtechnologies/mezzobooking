@@ -4,5 +4,4 @@ $apiResources = [
   'modules'
 ];
 api_resource($apiResources);
-
 ?>
