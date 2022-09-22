@@ -11,7 +11,7 @@ return [
     | framework when an event needs to be broadcast. You may set this to
     | any of the connections defined in the "connections" array below.
     |
-    | Supported: "pusher", "ably", "redis", "log", "null"
+    | Supported: "pusher", "redis", "log", "null"
     |
     */
 
@@ -29,21 +29,25 @@ return [
     */
 
     'connections' => [
-
         'pusher' => [
             'driver' => 'pusher',
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
-            'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true,
+            'key' => env('PUSHER_TYPE') == 'self' ? env('PUSHER_APP_KEY') : env('OTHER_PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_TYPE') == 'self' ? env('PUSHER_APP_SECRET') : env('OTHER_PUSHER_APP_SECRET'),
+            'app_id' => env('PUSHER_TYPE') == 'self' ? env('PUSHER_APP_ID') : env('OTHER_PUSHER_APP_ID'),
+            'options' => env('PUSHER_TYPE') == 'self' ? [
+                'cluster'   => 'ap1',
+                'encrypted' => true,
+                'host'      => env('PUSHER_HOST'),
+                'port'      => env('PUSHER_PORT'),
+                'scheme'    => env('PUSHER_SCHEME'),
+                'curl_options' => [
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                ]
+            ] : [
+                'cluster'   => 'ap1',
+                'encrypted' => true,
             ],
-        ],
-
-        'ably' => [
-            'driver' => 'ably',
-            'key' => env('ABLY_KEY'),
         ],
 
         'redis' => [

@@ -15,6 +15,7 @@ return [
 
     'paths' => [
         resource_path('views'),
+        base_path('packages/increment/finance/report/src/views')
     ],
 
     /*
@@ -28,9 +29,6 @@ return [
     |
     */
 
-    'compiled' => env(
-        'VIEW_COMPILED_PATH',
-        realpath(storage_path('framework/views'))
-    ),
+    'compiled' => realpath(storage_path('framework/views')),
 
 ];
