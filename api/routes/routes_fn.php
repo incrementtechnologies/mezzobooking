@@ -12,6 +12,7 @@ function api_resource($apiReource){
     Route::get($apiResourceValue."/retrieve",$pascalCase."@retrieve");
     Route::post($apiResourceValue."/update",$pascalCase."@update");
     Route::post($apiResourceValue."/delete",$pascalCase."@delete");
+    
   }
 }
 
