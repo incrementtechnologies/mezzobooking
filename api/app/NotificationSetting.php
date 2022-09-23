@@ -28,4 +28,5 @@ class NotificationSetting extends APIModel
   public function getAccountIdAttribute($value){
     return intval($value);
   }
+  
 }

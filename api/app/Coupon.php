@@ -24,4 +24,5 @@ class Coupon extends APIModel
         'payload_value',
         'status'
     ];
+    
 }
