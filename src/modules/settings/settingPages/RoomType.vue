@@ -22,7 +22,7 @@
     <empty v-if="data.length === 0" :title="'Empty Room Types!'" :action="'No activity at the moment.'"></empty>
     <Confirmation
       :title="'Confirmation Modal'"
-      :message="'Are you sure you want to delete ?'"
+      :message="'Are you sure you want to delete this room type?'"
       ref="confirms"
       @onConfirm="remove"
     ></Confirmation>

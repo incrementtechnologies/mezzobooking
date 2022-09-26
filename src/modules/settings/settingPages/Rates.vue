@@ -116,7 +116,7 @@ export default {
           account_id: this.user.userID
         }
       }
-      this.APIRequest('payloads/create', params, response => {
+      this.APIRequest('room_types/create', params, response => {
         this.retrieve()
       })
     },
