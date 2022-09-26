@@ -203,6 +203,7 @@ export default {
       })
     },
     retrieve(sort, filter, flag){
+      console.log('>>>>>>', flag, filter)
       if(flag === true) {
         this.offset += this.limit
       }
@@ -219,7 +220,7 @@ export default {
           clause: 'like'
         }],
         limit: this.limit,
-        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
+        offset: flag === undefined && filter != null ? 0 : (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         sort: sort !== null ? sort : this.currentSort,
         payload: 'feature'
       }
@@ -228,6 +229,8 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          this.activePage = 1
+          console.log('>>>>>', this.numPages)
           this.data = response.data
         }else{
           this.data = []
