@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="customModal" id="loading">
+      
       <span class="loading">
         <i class="fas fa-circle-o-notch fa-spin"></i>
       </span>
