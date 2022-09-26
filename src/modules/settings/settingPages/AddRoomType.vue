@@ -125,6 +125,10 @@ export default {
         this.errorMessage = 'Type field is required'
         return
       }
+      if(this.capacity <= 0 || this.capacity == null){
+         this.errorMessage = 'Invalid capcity value'
+         return
+      }
       let parameter = {
         account_id: this.user.userID,
         payload: 'room_type',
