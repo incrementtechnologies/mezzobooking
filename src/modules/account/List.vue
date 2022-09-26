@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 56px;">
     <filter-product v-bind:category="category" 
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
@@ -22,10 +22,10 @@
           </td>
           <td>
             <div style="text-align:center"><b>Name</b><br/>
-              <div v-if="item.account_information !== null">
-                {{item.account_information.first_name}} - {{item.account_information.last_name}}
+              <div v-if="item.account_information !== null && item.account_information.first_name !== null">
+                {{item.account_information.first_name}}
               </div>
-              <div>
+              <div v-else>
                 N/A
               </div>
             </div>
@@ -35,20 +35,22 @@
           </td>
           <td>
             <div style="text-align:center"><b>Type</b> <br/>{{ editTypeIndex !== index ? item.account_type : ''}}
-              <div @click="setEditTypeIndex(index, item)">
-                <i class="fas fa-pencil-alt text-darkPrimary" v-if="editTypeIndex !== index"></i>
-              </div>
-              <span v-if="editTypeIndex === index">
-                <div @click="setEditTypeIndex(index, item)">
-                  <i class="fas fa-times text-danger" style="float: right;"></i>
-                </div>
-                <div @click="updateType(item, index)">
-                  <i class="fas fa-check text-primary" style="float: right;"></i>
-                </div>
-                <select class="form-control" v-model="newAccountType" style="float: right; width: 45%;">
+              <span @click="setEditTypeIndex(index, item)">
+                &nbsp;&nbsp;<i class="fas fa-pencil-alt text-darkPrimary" v-if="editTypeIndex !== index"></i>
+              </span>
+              <div v-if="editTypeIndex === index">
+                <select class="form-control" v-model="newAccountType">
                   <option v-for="(typeItem, typeIndex) in ['USER', 'ADMIN']" :key="typeIndex">{{typeItem}}</option>
                 </select>
-              </span>
+                <div>
+                  <div @click="setEditTypeIndex(index, item)">
+                    <i class="fas fa-times text-danger" style="float: right;"></i>
+                  </div>
+                  <div @click="updateType(item, index)">
+                    <i class="fas fa-check text-primary" style="float: left;"></i>
+                  </div>
+                </div>
+              </div>
             </div>
           </td>
           <td>
@@ -98,6 +100,22 @@ export default {
         }, {
           title: 'Email descending',
           payload: 'email',
+          payload_value: 'desc'
+        }, {
+          title: 'Type ascending',
+          payload: 'type',
+          payload_value: 'asc'
+        }, {
+          title: 'Type descending',
+          payload: 'type',
+          payload_value: 'desc'
+        }, {
+          title: 'Status ascending',
+          payload: 'status',
+          payload_value: 'asc'
+        }, {
+          title: 'Status descending',
+          payload: 'status',
           payload_value: 'desc'
         }]
       }],
@@ -166,17 +184,13 @@ export default {
           value: '%' + filter.value + '%',
           column: filter.column,
           clause: 'like'
-        }, {
-          value: 'ADMIN',
-          column: 'account_type',
-          clause: '='
         }],
         limit: this.limit,
         sort: this.sort,
         offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
       }
       $('#loading').css({display: 'block'})
-      this.APIRequest('accounts/retrieve_accounts_admin', parameter).then(response => {
+      this.APIRequest('accounts/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)

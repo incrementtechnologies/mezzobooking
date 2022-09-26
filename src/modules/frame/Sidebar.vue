@@ -50,7 +50,7 @@
 
       <div class="content-holder" v-bind:class="hide">
         <!-- <system-notification></system-notification> -->
-        <div class="content2" v-if="$route.path.includes('calendar')"> 
+        <div class="content2" v-if="$route.path.includes('calendar') || $route.path.includes('accounts')"> 
           <transition>
             <router-view ></router-view>
           </transition>
