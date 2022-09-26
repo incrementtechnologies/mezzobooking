@@ -3,6 +3,7 @@ export const Stripe = {
   createToken: null,
   createSource: null,
   retrieveSource: null,
+  
   elements: null
 }
 

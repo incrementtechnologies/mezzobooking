@@ -24,5 +24,4 @@ if (typeof Object.assign !== 'function') {
     return to
   }
 }
-
 module.exports = Object.assign

@@ -1,6 +1,6 @@
 export default {
   stripe: {
-    type: [String, Object], // stripe key or instance
+    type: [String, Object], // stripe key or instanc
     required: true
   },
   value: {
