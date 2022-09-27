@@ -77,6 +77,7 @@ export default {
         let temp = {
           url: URL.createObjectURL(this.image)
         }
+        console.log('><>>>>>', temp)
         this.features.push(temp)
         if(response.data !== null){
           this.$emit('setImage', response.data)

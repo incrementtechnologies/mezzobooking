@@ -159,11 +159,9 @@
       </section> -->
       <section class="actionBtns mt-3" :hidden="reservations.status === 'cancelled'">
           <div class="row" style="margin-left:auto; margin-right:auto;" v-if="reservations.status !== 'refunded' || reservations.status !== 'cancelled' || reservations.status !== 'completed'">
-              <div class="col-md-6 d-flex">
+              <div class="col-md-6 d-flex" style="gap:2px">
                   <button class="btn btn-danger footerBtn" @click="updateRoom('cancelled')" v-if="isDisable === false">Cancel</button>
-                  <div v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
-                    <button class="btn btn-danger footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false">Rebook</button>
-                  </div>
+                  <button class="btn btn-primary footerBtn"  @click="updateRoom('refunded')" v-if="isDisable===false">Rebook</button>
               </div>
               <div class="col-md-6">
                   <div style="float:right" >
