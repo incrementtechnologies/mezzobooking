@@ -4,7 +4,7 @@
   <div class="row ml-1">
       <div class="column" v-for="(image, idx) in features" :key="idx">
         <div class="container">
-          <img :src="image.url.includes('blob') === true ? image.url : config.BACKEND_URL + image.url" class="image">
+          <img :src="image.url.includes('blob') === true ? image.url : image.url.includes('https') ? image.url : config.BACKEND_URL + image.url" class="image">
           <div class="overlay" v-if="con === undefined">
             <label class="removeIcon">
               <i class="fas fa-close removeImage" @click="removeImage(image)"></i>

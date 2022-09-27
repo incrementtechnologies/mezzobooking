@@ -4,15 +4,15 @@
         <div class="card-horizontal">
           <div class="leftSide">
             <div class="imageContainer">
-              <img class="image" :src="list.images.length > 0 ? config.BACKEND_URL + list.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
+              <img class="image" :src="list.images.length > 0 ? list.images[0].url.includes('https') ? list.images[0].url : config.BACKEND_URL + list.images[0].url : 'http://via.placeholder.com/300x180'" alt="Card image cap">
             </div>
           </div>
           <div class="card-body">
             <div class="mb-4">
-              <span style="text-transform: uppercase;"><b>{{list.title}}</b><b style="border-style: ridge; color: gray; margin-left: 1%; font-size: 10px; padding: 3px;" v-if="list.category != null && list.category.payload_value !== undefined">{{list.category.payload_value}}</b></span>
-            <span style="float:right" class="d-flex">
+              <span style="text-transform: uppercase;"><b>{{list.room_type}}</b></span>
+            <span style="float:right;" class="d-flex">
               <div>
-                <b>{{list.currency != null ? list.currency : 'PHP'}} {{list.tax_price != null ? $format.format(list.tax_price) : 0}}/<span style="text-transform: capitalize">{{list.label != null ? list.label : 'No Label'}}</span></b>
+                <b>{{list.currency != null ? list.currency : 'PHP'}} {{$format.format(list.room_price)}}/<span style="text-transform: capitalize">{{list.price_label != null ? list.price_label : 'No Label'}}</span></b>
                 <p>{{list.tax === 1 ? '(Including tax & fees)' : null}}</p>
               </div>
               <div @click="$router.push('/add-rooms/'+ list.code)">
@@ -20,16 +20,10 @@
               </div>
             </span>
             </div>
-            <p class="card-text">{{list.description !== null ? list.description : 'No description'}}</p>
-            <div class="row mt-2" v-if="list.additional_info !== null">
-              <div v-if="list.additional_info.feature.length > 0" class="col-md-6" v-for="(item, index) in list.additional_info.feature" :key="index">
-                  <i class="fas fa-check checkIcon" ></i>
-                  <span>{{item.title || item.payload_value}}</span>
-              </div>
-              <div v-if="list.additional_info.add_ons.length > 0" class="col-md-6" v-for="(item, index) in list.additional_info.add_ons" :key="index">
-                  <i class="fas fa-check checkIcon" ></i>
-                  <span>{{item.title || item.payload_value}}</span>
-              </div>
+            <p class="card-text" style="margin-top: 3%">{{list.general_description !== null ? list.general_description : 'No description'}}</p>
+            <div v-if="list.general_features.length > 0" class="col-md-6" v-for="(item, index) in list.general_features" :key="index">
+                <i class="fas fa-check checkIcon" ></i>
+                <span>{{item.title || item.payload_value}}</span>
             </div>
             <!-- <div class="row" v-if="Object.values(list.additional_info).length > 0">
               <div class="col-md-6" v-for="(item, index) in Object.vadlues(list.additional_info)" :key="index">

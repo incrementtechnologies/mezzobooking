@@ -165,7 +165,7 @@
               </div>
               <div class="col-md-6">
                   <div style="float:right" >
-                    <button class="btn btn-secondary footerBtn"  @click="updateRoom('confirmed')" v-if="isDisable===false">Confirm</button>
+                    <button class="btn btn-secondary footerBtn"  @click="validateUpdate('confirmed')" v-if="isDisable===false">Confirm</button>
                     <button class="btn btn-primary footerBtn"  @click="updateRoom('completed')" v-show="reservations.status === 'confirmed'">Complete</button>
                   </div>
               </div>
@@ -173,19 +173,22 @@
       </section>
 			<section  style="margin-left:auto; margin-right:auto;">
         <div v-for="(selected, idx) in summary" :key="idx">
-				  <RoomCard :list="selected.rooms[0]"/>
+				  <RoomCard :list="selected.rooms"/>
         </div>
 			</section>
+      <Confirmation ref="confirmation" :message="confirmationMessage" title="Warning"/>
   </div>
 </template>
 
 <script>
 import RoomCard from 'src/modules/generic/RoomCard.vue'
 import AUTH from 'src/services/auth'
-import moment from 'moment'
+import moment, { max } from 'moment'
+import Confirmation from 'components/increment/generic/modal/Confirmation'
 export default {
   components: {
-    RoomCard
+    RoomCard,
+    Confirmation
   },
   mounted(){
     this.retrieve()
@@ -207,7 +210,8 @@ export default {
     roomAssignError: null,
     errorMessage: null,
     responseErrors: [],
-    emptyAssignment: null
+    emptyAssignment: null,
+    confirmationMessage: null
   }),
   methods: {
     retrieveCoupon(){
@@ -281,10 +285,6 @@ export default {
             }
           })
         })
-        if(hasEmpty === true){
-          this.emptyAssignment = 'Missing a room assignment'
-          return
-        }
       }
       console.log(status, this.emptyAssignment !== null)
       if(status === 'confirmed' && this.emptyAssignment !== null){
@@ -349,6 +349,19 @@ export default {
         }
         this.retrieve()
       })
+    },
+    validateUpdate(status){
+      let maxCapacity = 0;
+      for (let i = 0; i < this.summary.length-1; i++) {
+        const item = this.summary[i];
+        maxCapacity += item.rooms.capacity
+      }
+      if(parseInt(this.reservations.details.adults) > maxCapacity){
+        this.confirmationMessage = 'The number of guests are greater then the total max capacity of the reserved category. Are you sure you want to continue?'
+        this.$refs.confirmation.show()
+      }else{
+        this.updateRoom(status)
+      }
     }
   }
 }
