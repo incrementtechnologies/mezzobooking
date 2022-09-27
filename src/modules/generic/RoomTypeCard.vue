@@ -4,7 +4,7 @@
       <div class="card" style="min-height: 150px">
         <div class="card-horizontal">
           <div class="img-square-wrapper">
-            <img class="" style="min-height: 150px; width:150px; height: 150px" :src="data.image !== null ? config.BACKEND_URL + data.image : 'http://via.placeholder.com/300x180'" alt="Card image cap">
+            <img class="" style="min-height: 150px; width:150px; height: 150px" :src="data.image !== null ? data.image.includes('https://') ? data.image : config.BACKEND_URL + data.image : 'http://via.placeholder.com/300x180'" alt="Card image cap">
           </div>
           <div class="card-body">
             <div class="mb-3">
