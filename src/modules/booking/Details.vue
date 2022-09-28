@@ -335,7 +335,8 @@ export default {
         coupon: this.reservations.coupon !== null ? this.reservations.coupon.code : null,
         check_in: this.summary[0].check_in,
         check_out: this.summary[0].check_out,
-        heads: this.reservations.details.adults + this.reservations.details.child,
+        adults: this.reservations.details.adults,
+        children: this.reservations.details.child,
         categories: categories,
         additional: this.reservations.details.additionals
       }

@@ -18,11 +18,11 @@
         <section class="form mt-5">
              <label class="text-danger">{{errorMessage}}</label>
             <div>
-                <label for="name">Room Type Name</label>
+                <label for="name">Room Type Name<span class="text-danger">*</span></label>
                 <input type="text" v-model="type" class="form-control form-control-custom" placeholder="add room type name">
             </div>
              <div class="mt-4">
-                <label for="name">Set Default Features</label>
+                <label for="name">Set Default Features<span class="text-danger">*</span></label>
                 <searchField
                   :test="'payload'"
                   :placeholder="'Set Default Features'"
@@ -53,11 +53,11 @@
             </div>
             <div class="mt-4" style="display: flex; justify-content: space-between">
               <div style="width: 45%">
-                <label for="name">Max Capacity</label>
+                <label for="name">Max Capacity<span class="text-danger">*</span></label>
                 <input type="number" v-model="capacity" class="form-control form-control-custom" placeholder="add max capacity">
               </div>
               <div style="width: 45%">
-                <label for="name">Pricing Label</label>
+                <label for="name">Pricing Label<span class="text-danger">*</span></label>
                 <select class="form-control form-control-custom" v-model="price_label">
                   <option value="Per night">Per night</option>
                   <option value="Per month">Per month</option>
