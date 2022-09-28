@@ -207,14 +207,14 @@ export default {
       if(this.data.length > 0){
         for (let index = 0; index < this.data.length; index++) {
           const item = this.data[index]
-          item.status = item.status.charAt(0).toUpperCase() + item.status.slice(1)
+          let status =  item.status.charAt(0).toUpperCase() + item.status.slice(1)
           let obj = {
             name: item.name,
             check_in: item.check_in,
             check_out: item.check_out,
             no_of_adults: item.details.adults,
             no_of_children: item.details.child,
-            status: item.status.replace('_', ' '),
+            status: status.replace('_', ' '),
             amount: item.total
           }
           exportData.push(obj)
