@@ -123,7 +123,7 @@ export default {
           clause: 'like'
         }],
         limit: this.limit,
-        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
+        offset: flag === undefined && filter != null ? 0 : (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         sort: sort !== null ? sort : this.currentSort,
         payload: 'room_type'
       }
@@ -132,6 +132,7 @@ export default {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          this.activePage = filter !== null ? 1 : this.activePage
           this.data = response.data
         }else{
           this.data = []

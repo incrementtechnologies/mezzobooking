@@ -128,13 +128,14 @@ export default {
           clause: 'like'
         }],
         limit: this.limit,
-        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
+        offset: flag === undefined && filter != null ? 0 : (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
         sort: sort !== null ? sort : this.currentSort
       }
       $('#loading').css({'display': 'block'})
       console.log(flag)
       this.APIRequest('accounts/retrieve_accounts_mezzo', parameter).then(response => {
         $('#loading').css({'display': 'none'})
+        this.activePage = filter !== null ? 1 : this.activePage
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
           if(flag === true) {

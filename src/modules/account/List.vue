@@ -166,34 +166,33 @@ export default {
         this.retrieve(null, null)
       })
     },
-    retrieve(sort, filter){
-      if(sort !== null){
-        this.sort = sort
+    retrieve(sort, filter, flag){
+       if(flag === true) {
+        this.offset += this.limit
       }
       if(filter !== null){
-        this.filter = filter
+        this.currentFilter = filter
       }
-      if(sort === null && this.sort !== null){
-        sort = this.sort
-      }
-      if(filter === null && this.filter !== null){
-        filter = this.filter
+      if(sort !== null){
+        this.currentSort = sort
       }
       let parameter = {
         condition: [{
-          value: '%' + filter.value + '%',
-          column: filter.column,
+          value: this.currentFilter.value ? '%' + this.currentFilter.value + '%' : '%%',
+          column: this.currentFilter.column,
           clause: 'like'
         }],
         limit: this.limit,
-        sort: this.sort,
-        offset: (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage
+        offset: flag === undefined && filter != null ? 0 : (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
+        sort: sort !== null ? sort : this.currentSort,
+        offset: flag === undefined && filter != null ? 0 : (this.activePage > 0) ? ((this.activePage - 1) * this.limit) : this.activePage,
       }
       $('#loading').css({display: 'block'})
       this.APIRequest('accounts/retrieve', parameter).then(response => {
         $('#loading').css({display: 'none'})
         if(response.data.length > 0){
           this.numPages = parseInt(response.size / this.limit) + (response.size % this.limit ? 1 : 0)
+          this.activePage = filter !== null ? 1 : this.activePage
           this.data = response.data
         }else{
           this.data = []
