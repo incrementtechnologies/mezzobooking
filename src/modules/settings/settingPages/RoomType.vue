@@ -82,12 +82,12 @@ export default {
           type: 'date'
         }, {
           title: 'Type Ascending',
-          payload: 'category',
+          payload: 'payload_value',
           payload_value: 'asc',
           type: 'text'
         }, {
           title: 'Type Descending',
-          payload: 'category',
+          payload: 'payload_value',
           payload_value: 'desc',
           type: 'text'
         }]
