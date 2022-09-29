@@ -48,7 +48,7 @@
                   />
              </div>
             <div class="mt-4">
-                <label for="name">Description</label>
+                <label for="name">Description<span class="text-danger">*</span></label>
                 <textarea class="form-control" v-model="description" placeholder="type description" style="height: 165px !important;"></textarea>
             </div>
             <div class="mt-4" style="display: flex; justify-content: space-between">
@@ -121,6 +121,10 @@ export default {
       this.images.push(temp)
     },
     saveType(){
+      if(this.type === null || this.description === null || this.price_label === null){
+        this.errorMessage = 'Fields are required'
+        return 
+      }
       if(this.type === null){
         this.errorMessage = 'Type field is required'
         return
