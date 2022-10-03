@@ -272,40 +272,12 @@ export default {
         reservation_id: this.reservations.id,
         status: status
       }
-      if(status === 'confirmed'){
-        let hasEmpty = false
-        this.summary.map(el => {
-          el.inputs.map((item, idx) => {
-            if(item.category === null){
-              console.log('----------', item.category)
-              hasEmpty = true
-            }else{
-              item['room_id'] = el.rooms[0].id
-              temp.push(item)
-            }
-          })
-        })
-      }
-      console.log(status, this.emptyAssignment !== null)
-      if(status === 'confirmed' && this.emptyAssignment !== null){
-        this.errorMessage = 'You have an existing error, please fix it before proceeding'
-        return
-      }
-      if(status === 'confirmed' && temp.length > 0){
-        $('#loading').css({display: 'block'})
-        this.APIRequest('reservations/update_reservation', params, response => {
-          $('#loading').css({display: 'none'})
-          this.$router.push('/bookings')
-          this.emptyAssignment = null
-        })
-      }else if(status === 'completed' || status === 'cancelled' || status === 'refunded'){
-        $('#loading').css({display: 'block'})
-        this.APIRequest('reservations/update_reservation', params, response => {
-          $('#loading').css({display: 'none'})
-          this.$router.push('/bookings')
-          this.emptyAssignment = null
-        })
-      }
+      $('#loading').css({display: 'block'})
+      this.APIRequest('reservations/update_reservation', params, response => {
+        $('#loading').css({display: 'none'})
+        this.$router.push('/bookings')
+        this.emptyAssignment = null
+      })
     },
     getSelectedRoom(event){
       let counter = 0
@@ -353,10 +325,11 @@ export default {
     },
     validateUpdate(status){
       let maxCapacity = 0;
-      for (let i = 0; i < this.summary.length-1; i++) {
+      for (let i = 0; i <= this.summary.length-1; i++) {
         const item = this.summary[i];
         maxCapacity += item.rooms.capacity
       }
+      console.log(parseInt(this.reservations.details.adults), maxCapacity)
       if(parseInt(this.reservations.details.adults) > maxCapacity){
         this.confirmationMessage = 'The number of guests are greater then the total max capacity of the reserved category. Are you sure you want to continue?'
         this.$refs.confirmation.show()
