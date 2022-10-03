@@ -4,7 +4,7 @@
       <b v-if="$route.params.category === undefined">Current Bookings</b>
       <span v-else class="backAction" @click="$router.push('/room-types')"><i class="fas fa-chevron-left"></i>&nbsp;Back / {{$route.params.category}}</span>
     </p>
-    <filter-product v-bind:category="category" 
+    <filter-product v-bind:category="category"
       :activeCategoryIndex="0"
       :activeSortingIndex="0"
       @changeSortEvent="retrieve($event.sort, $event.filter)"
@@ -12,7 +12,7 @@
     </filter-product>
     <button v-if="data.length > 0" class="btn btn-primary pull-right" @click="exportData()">Export to CSV</button>
     <BookingCard :data="data"/>
-    <div style="float:right">
+    <div style="float:right"> 
     <Pager
       :pages="numPages"
       :active="activePage"
