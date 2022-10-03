@@ -50,6 +50,7 @@
               <input
                 type="number"
                 v-model="reservations.details.adults"
+                min="1"
                 class="form-control-custom form-control"
                 :disabled="isDisable || reservations.status === 'cancelled'"
               />
@@ -83,6 +84,7 @@
               <input
                 type="number"
                 v-model="reservations.details.child"
+                min="0"
                 class="form-control-custom form-control"
                 :disabled="isDisable || reservations.status === 'cancelled'"
               />
