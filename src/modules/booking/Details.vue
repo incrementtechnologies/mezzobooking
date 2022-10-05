@@ -307,13 +307,13 @@
           >
             Cancel
           </button>
-          <button
+          <!-- <button
             class="btn btn-primary footerBtn"
             @click="updateRoom('refunded')"
             v-if="isDisable === false"
           >
             Rebook
-          </button>
+          </button> -->
         </div>
         <div class="col-md-6">
           <div style="float: right">
