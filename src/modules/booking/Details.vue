@@ -15,7 +15,7 @@
         <span style="float: right; color: #cbab58"
           >Status:
           <span style="text-transform: capitalize">{{
-            reservations.status
+            reservations.status == 'refunded' ? 'rebooked' : reservations.status
           }}</span></span
         >
       </div>
