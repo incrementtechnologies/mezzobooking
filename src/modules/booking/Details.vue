@@ -39,6 +39,7 @@
               type="date"
               v-model="reservations.check_in"
               class="form-control-custom form-control"
+              min="valdate"
               :disabled="isDisable || reservations.status === 'cancelled'"
             />
           </div>
@@ -307,13 +308,13 @@
           >
             Cancel
           </button>
-          <button
+          <!-- <button
             class="btn btn-primary footerBtn"
             @click="updateRoom('refunded')"
             v-if="isDisable === false"
           >
             Rebook
-          </button>
+          </button> -->
         </div>
         <div class="col-md-6">
           <div style="float: right">
@@ -380,6 +381,7 @@ export default {
     responseErrors: [],
     emptyAssignment: null,
     confirmationMessage: null,
+    valdate: new Date()
   }),
   methods: {
     retrieveCoupon() {
