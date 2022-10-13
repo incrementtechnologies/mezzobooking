@@ -39,6 +39,7 @@
               type="date"
               v-model="reservations.check_in"
               class="form-control-custom form-control"
+              min="valdate"
               :disabled="isDisable || reservations.status === 'cancelled'"
             />
           </div>
@@ -380,6 +381,7 @@ export default {
     responseErrors: [],
     emptyAssignment: null,
     confirmationMessage: null,
+    valdate: new Date()
   }),
   methods: {
     retrieveCoupon() {
