@@ -19,10 +19,10 @@
             <i class="fas fa-circle"></i>
             Cancelled
           </td>
-          <td class="status5">
+          <!-- <td class="status5">
             <i class="fas fa-circle"></i>
             Rebooked
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
