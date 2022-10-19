@@ -76,12 +76,12 @@
         <i :class="`fas ${!toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
       </div> -->
       <div class="form-group" style="width: 100%">
-        <label>Room Only (+ tax rate, if enabled):</label>
+        <label>Cateogry Price (+ tax rate, if enabled):</label>
         <input type="number" class="form-control" v-model="room_price"/>
       </div>
-      <div @click="toggle2 = !toggle2">
+      <!-- <div @click="toggle2 = !toggle2">
         <i :class="`fas ${!toggle2 ? 'fa-toggle-off' : 'fa-toggle-on' } toggle`"/>
-      </div>
+      </div> -->
        <div class="form-group" style="width: 100%">
         <label>Breakfast:</label>
         <input type="number" class="form-control" v-model="break_fast" :disabled="disable"/>
