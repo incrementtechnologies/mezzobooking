@@ -76,7 +76,7 @@
         <i :class="`fas ${!toggle1 ? 'fa-toggle-off' : 'fa-toggle-on'} toggle`"/>
       </div> -->
       <div class="form-group" style="width: 100%">
-        <label>Cateogry Price (+ tax rate, if enabled):</label>
+        <label>Rate (+ tax rate, if enabled):</label>
         <input type="number" class="form-control" v-model="room_price"/>
       </div>
       <!-- <div @click="toggle2 = !toggle2">
