@@ -338,7 +338,7 @@
     </section>
     <section style="margin-left: auto; margin-right: auto">
       <div v-for="(selected, idx) in summary" :key="idx">
-        <RoomCard :list="selected.rooms" />
+        <RoomCard :list="selected.rooms" :page="bookingDetails"/>
       </div>
     </section>
     <Confirmation

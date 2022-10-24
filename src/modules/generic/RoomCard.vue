@@ -15,7 +15,7 @@
                 <b>{{list.currency != null ? list.currency : 'PHP'}} {{$format.format(list.room_price)}}/<span style="text-transform: capitalize">{{list.price_label != null ? list.price_label : 'No Label'}}</span></b>
                 <p>{{list.tax === 1 ? '(Including tax & fees)' : null}}</p>
               </div>
-              <div @click="$router.push('/add-rooms/'+ list.code)">
+              <div @click="$router.push('/add-rooms/'+ list.code)" v-if="page==='bookingDetails'">
                 <i class="fas fa-pencil-alt ml-2"></i>
               </div>
             </span>
@@ -46,7 +46,7 @@
 <script>
 import CONFIG from 'src/config.js'
 export default {
-  props: ['actionBtn', 'list'],
+  props: ['actionBtn', 'list', 'page'],
   mounted(){
   },
   data(){
