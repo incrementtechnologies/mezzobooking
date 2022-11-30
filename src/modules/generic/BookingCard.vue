@@ -36,10 +36,10 @@
             <span style="font-size: 12px">{{item.check_in}}-{{item.check_out}}</span>
           </td>
           <td>
-            <div style="text-align:center"><b>Adults</b> <br/>{{item.details.adults}}</div>
+            <div style="text-align:center"><b>Adults</b> <br/>{{item.bookingDetails.adults}}</div>
           </td>
           <td>
-            <div style="text-align:center"><b>Children</b> <br/>{{item.details.child}}</div>
+            <div style="text-align:center"><b>Children</b> <br/>{{item.bookingDetails.child}}</div>
           </td>
           <td style="padding: 20px 0;">
             <div style="text-align:center;horizontal-alignment:center;font-size:16px;font-weight:bold; color:#CBAB58">PHP {{$format.format(item.total)}}</div>
