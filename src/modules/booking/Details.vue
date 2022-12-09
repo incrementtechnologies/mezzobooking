@@ -167,24 +167,24 @@
               >{{ each.rooms.room_type }}
               <span
                 v-if="
-                  each.rooms.description.room_price != 0 &&
-                  each.rooms.description.break_fast != 0
+                  each.rooms.room_price != 0 &&
+                  each.rooms.break_fast != 0
                 "
               >
                 (with Breakfast)</span
               >
               <span
                 v-if="
-                  each.rooms.description.room_price == 0 &&
-                  each.rooms.description.break_fast != 0
+                  each.rooms.room_price == 0 &&
+                  each.rooms.break_fast != 0
                 "
               >
                 (Breakfast only)</span
               >
               <span
                 v-if="
-                  each.rooms.description.room_price != 0 &&
-                  each.rooms.description.break_fast == 0
+                  each.rooms.room_price != 0 &&
+                  each.rooms.break_fast == 0
                 "
               >
                 (Room only)</span
