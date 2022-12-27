@@ -131,9 +131,9 @@
           class="actionBtns mt-3 ml-auto mr-3"
           :hidden="reservations.status === 'cancelled'"
         >
-          <button class="btn btn-primary" @click="updateChange">
+          <!-- <button class="btn btn-primary" @click="updateChange">
             Apply changes
-          </button>
+          </button> -->
         </div>
       </div>
       <b>Payment Methods</b>
@@ -164,31 +164,8 @@
         <div class="row ml-4" v-for="(each, idx) in summary" :key="idx">
           <div class="col-md-6">
             <span
-              >{{ each.rooms.room_type }}
-              <span
-                v-if="
-                  each.rooms.room_price != 0 &&
-                  each.rooms.break_fast != 0
-                "
-              >
-                (with Breakfast)</span
-              >
-              <span
-                v-if="
-                  each.rooms.room_price == 0 &&
-                  each.rooms.break_fast != 0
-                "
-              >
-                (Breakfast only)</span
-              >
-              <span
-                v-if="
-                  each.rooms.room_price != 0 &&
-                  each.rooms.break_fast == 0
-                "
-              >
-                (Room only)</span
-              >
+              >{{each.qty}} - {{ each.rooms.room_type }}
+              <span>({{each.details['add-on']}})</span>
             </span>
           </div>
           <div class="col-md-6">
@@ -304,7 +281,7 @@
           <button
             class="btn btn-danger footerBtn"
             @click="updateRoom('cancelled')"
-            v-if="isDisable === false"
+            
           >
             Cancel
           </button>
@@ -321,7 +298,6 @@
             <button
               class="btn btn-secondary footerBtn"
               @click="validateUpdate('confirmed')"
-              v-if="isDisable === false"
             >
               Confirm
             </button>
@@ -375,7 +351,7 @@ export default {
     roomAssign: [],
     assignedRoom: [],
     inputs: [],
-    isDisable: false,
+    isDisable: true,
     roomAssignError: null,
     errorMessage: null,
     responseErrors: [],
@@ -404,41 +380,38 @@ export default {
         id: this.$route.params.id,
       };
       $("#loading").css({ display: "block" });
-      this.APIRequest(
-        "reservations/retrieve_all_details",
-        params,
-        (response) => {
-          $("#loading").css({ display: "none" });
-          if (response.data !== null) {
-            this.reservations = response.data.reservation;
-            this.customer = response.data.customer;
-            this.reservations.check_in = moment(
-              new Date(this.reservations.check_in)
-            ).format("YYYY-MM-DD");
-            this.reservations.check_out = moment(
-              new Date(this.reservations.check_out)
-            ).format("YYYY-MM-DD");
-            this.summary = response.data.cart;
-            if (
-              this.reservations.status === "confirmed" ||
-              this.reservations.status === "completed"
-            ) {
-              this.isDisable = true;
-            } else {
-              this.isDisable = false;
-            }
-            this.retrieveCoupon();
-            this.summary.map((el) => {
-              for (let index = 0; index < el.qty; index++) {
-                let input = {
-                  category: null,
-                };
-                this.inputs.push(input);
-              }
-            });
+      this.APIRequest("reservations/retrieve_all_details", params, (response) => {
+        $("#loading").css({ display: "none" });
+        if (response.data !== null) {
+          this.reservations = response.data.reservation;
+          this.customer = response.data.customer;
+          this.reservations.check_in = moment(
+            new Date(this.reservations.check_in)
+          ).format("YYYY-MM-DD");
+          this.reservations.check_out = moment(
+            new Date(this.reservations.check_out)
+          ).format("YYYY-MM-DD");
+          this.summary = response.data.cart;
+          if (
+            this.reservations.status === "confirmed" ||
+            this.reservations.status === "completed"
+          ) {
+            // this.isDisable = true;
+          } else {
+            // this.isDisable = false;
           }
+          this.retrieveCoupon();
+          this.summary.map((el) => {
+            el.details = JSON.parse(el.details)
+            for (let index = 0; index < el.qty; index++) {
+              let input = {
+                category: null,
+              };
+              this.inputs.push(input);
+            }
+          });
         }
-      );
+      });
     },
     retrieveRooms(category) {
       // this.roomAssign = []
