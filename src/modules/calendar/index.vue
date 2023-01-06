@@ -263,11 +263,9 @@ export default {
         }
       }
       let finalPrice = 0
-      if(this.toggle1 && this.toggle2){
+      if(this.selectedAddOn  === 'With Breakfast'){
         finalPrice = parseFloat(this.room_price) + parseFloat(this.break_fast)
-      }else if(!this.toggle1 && this.toggle2){
-        finalPrice =  parseFloat(this.break_fast)
-      }else if(this.toggle1 && !this.toggle2){
+      }else{
         finalPrice = parseFloat(this.room_price)
       }
       let params = {
