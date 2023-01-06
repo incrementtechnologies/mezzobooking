@@ -264,6 +264,7 @@ export default {
       }
       let finalPrice = 0
       if(this.selectedAddOn  === 'With Breakfast'){
+        this.break_fast === null ? 0 : this.break_fasts
         finalPrice = parseFloat(this.room_price) + parseFloat(this.break_fast)
       }else{
         finalPrice = parseFloat(this.room_price)
