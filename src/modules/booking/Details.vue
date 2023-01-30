@@ -248,22 +248,6 @@
         </div>
       </div>
     </section>
-    <!-- <section>
-        <div><b>Room Assigning</b></div>
-        <div style="background-color:white; padding: 20px; margin-left:auto; margin-right:auto;">
-          <p v-if="emptyAssignment !== null" style="color: red">{{emptyAssignment}}<br></p>
-          <div  v-for="(each, idx) in summary" :key="`${each.id}-${idx}`">
-            <p>{{each.rooms[0].payload_value}} x {{each.checkoutQty}}</p>
-              <div class="row">
-              <div class="col-md-6" v-for="(item, indx) in each.inputs" :key="`${indx} - ${item.id}`" >
-                  <select class="form-control" v-model="item.category" :disabled="isDisable || reservations.status === 'cancelled'" @change="getSelectedRoom($event)">
-                    <option v-for="el in each.specificRooms" :key="el.id" :value="el.id">{{el.title}}</option>
-                  </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> -->
     <section
       class="actionBtns mt-3"
       :hidden="reservations.status === 'cancelled'"
@@ -298,13 +282,14 @@
             <button
               class="btn btn-secondary footerBtn"
               @click="validateUpdate('confirmed')"
+              v-if="reservations.status === 'for_approval'"
             >
               Confirm
             </button>
             <button
               class="btn btn-primary footerBtn"
               @click="updateRoom('completed')"
-              v-show="reservations.status === 'confirmed'"
+              v-if="reservations.status === 'confirmed'"
             >
               Complete
             </button>

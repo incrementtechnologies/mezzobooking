@@ -172,6 +172,7 @@ export default {
       document.getElementById("panelheader").style.display = "none";
       document.getElementById("panelContent").style.display = "none";
       document.getElementById("panelFooter").style.display = "none";
+      this.errorMessage = null
     },
     retrieve(){
       this.attributes = [];
@@ -249,18 +250,17 @@ export default {
           this.errorMessage = 'Invalid date range'
           return
         }
-        if(this.toggle1 && this.room_price == null){
-          this.errorMessage = 'Room is enabled, field must not be empty or zero'
+        if(this.selectedAddOn  === 'Room Only' && (this.room_price == null || this.room_price === '')){
+          this.errorMessage = 'Room price should not be empty'
           return
         }
-        if(this.toggle2 && this.break_fast == null){
-          this.errorMessage = 'Break fast is enabled, field  must not be empty of zero'
+        if(this.selectedAddOn  === 'With Breakfast' && (this.break_fast == null || this.break_fast === '')){
+          this.errorMessage = 'Breadfast price should not be empty'
           return
         }
-        if(this.room_price == null && this.break_fast == null){
-          this.errorMessage = 'Atleast one price field should have a value'
-          return
-        }
+      }else if(this.available === null || this.available === ''){
+        this.errorMessage = 'Numbers of availability should not be empty'
+        return
       }
       let finalPrice = 0
       if(this.selectedAddOn  === 'With Breakfast'){
@@ -284,7 +284,7 @@ export default {
         status: this.available <= 0 ? 'not_available' : 'available'
       }
       // if(this.availability == null){
-        this.APIRequest('availabilities/create', params, response => {
+        this.APIRequest('availabilities/', params, response => {
           this.errorMessage = null
           this.closePanel()
           this.retrieve()
@@ -293,6 +293,7 @@ export default {
     },
     resetData(){
       this.retrieveAvailability()
+      this.errorMessage = null
     },
   }
 };
