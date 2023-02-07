@@ -284,7 +284,7 @@ export default {
         status: this.available <= 0 ? 'not_available' : 'available'
       }
       // if(this.availability == null){
-        this.APIRequest('availabilities/', params, response => {
+        this.APIRequest('availabilities/create', params, response => {
           this.errorMessage = null
           this.closePanel()
           this.retrieve()
